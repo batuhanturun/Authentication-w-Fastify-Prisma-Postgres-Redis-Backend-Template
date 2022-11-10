@@ -68,7 +68,7 @@ const postLogin = async (req, reply) => {
             reply.send({state:true, name:user.name});
         }
     } catch (error) {
-        throw createError(400, "Kullanıcı giriş yaparken hata oluştu. " + error);
+        throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
     }
 }
 
@@ -89,12 +89,6 @@ const logOut = async (req, reply) => {
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
-}
-
-const getResetPassword = async (req, reply) => {
-    reply.header("Access-Control-Allow-Origin", "*");
-    reply.header("Access-Control-Allow-Methods", "GET");
-    reply.type('text/html');
 }
 
 const postResetPassword = async (req, reply) => {
@@ -121,7 +115,6 @@ module.exports = {
     postLogin,
     postRegister,
     postResetPassword,
-    getResetPassword,
     home,
     logOut
 }

@@ -17,11 +17,6 @@ const routers = [
         handler: authController.getLogin
     },
     {
-        method: "GET",
-        url: "/api/resetpassword",
-        handler: authController.getResetPassword
-    },
-    {
         method: "POST",
         url: "/api/register",
         handler: authController.postRegister

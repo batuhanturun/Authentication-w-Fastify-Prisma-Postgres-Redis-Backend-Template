@@ -15,7 +15,7 @@ export default function Login() {
 
     console.log("response", response)
     if (response.state === true) {
-      console.log("user logged in", response);
+      console.log("User Successfuly Logged In! ", response);
     }
     else {
       setErrorMessage(response.message)
