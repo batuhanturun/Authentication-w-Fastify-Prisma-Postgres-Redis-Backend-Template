@@ -16,7 +16,6 @@ export default function Login() {
     console.log("response", response)
     if (response.state === true) {
       console.log("user logged in", response);
-      
     }
     else {
       setErrorMessage(response.message)
@@ -25,9 +24,8 @@ export default function Login() {
 
   return (
     <form onSubmit={submitLogin}>
-      <h3>Login</h3>
-      {errorMessage ? <span style={{ color: "red" }}>{errorMessage}</span> : null}
-
+      <h3>Login</h3>  
+      {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
       <div className='mb-3'>
         <label>Email:</label>
         <input type="email" name='email' className="form-control" placeholder="Enter Email" required onChange={(e) => setEmail(e.target.value)} />
