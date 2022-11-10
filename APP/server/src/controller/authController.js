@@ -71,7 +71,6 @@ const postLogin = async (req, reply) => {
     }
 }
 
-
 const logOut = async (req, reply) => {
     reply.header("Access-Control-Allow-Origin", "*");
     reply.header("Access-Control-Allow-Methods", "GET");
