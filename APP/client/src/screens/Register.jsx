@@ -29,28 +29,34 @@ export default function Register() {
             <div className="mb-3">
                 <label>Name:</label>
                 <input
+                    name='name'
                     type="text"
                     className="form-control"
                     placeholder="Enter Name"
                     required
+                    onChange={(e) => setName(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label>Email:</label>
                 <input
+                    name='email'
                     type="email"
                     className="form-control"
                     placeholder="Enter Email"
                     required
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label>Password:</label>
                 <input
+                    name='password'
                     type="password"
                     className="form-control"
                     placeholder="Enter Password"
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
             <div className="d-grid">
