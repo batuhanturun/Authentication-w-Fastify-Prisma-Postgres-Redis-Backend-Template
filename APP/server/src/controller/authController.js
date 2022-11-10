@@ -22,14 +22,13 @@ const postRegister = async (req, reply) => {
             where: { email }
         });
         if (!user) {
-            const newUser = prisma.users.create({
+            const newUser = await prisma.users.create({
                 data: {
                     name,
                     email,
                     password: await bcrypt.hash(password, 10)
                 }
             });
-            reply.send("Kayıt işlemi başarılı.");
             return newUser;
         } else {
             throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
