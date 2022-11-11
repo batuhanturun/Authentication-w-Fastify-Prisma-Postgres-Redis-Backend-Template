@@ -24,7 +24,7 @@ export default function Home() {
         <form onSubmit={submitLogout}>
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-            <button>Deneme</button>
+            <button>Logout</button>
         </form>
     )
 }
