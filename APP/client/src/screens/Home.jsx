@@ -11,7 +11,7 @@ export default function Home() {
 
     async function submitLogout(e) {
         e.preventDefault();
-        const response = await getData("/logout", {});
+        const response = await getData("/logout");
         if(response.state === true) {
             console.log("User Successfuly Logout! ", response);
             nav('/login');
