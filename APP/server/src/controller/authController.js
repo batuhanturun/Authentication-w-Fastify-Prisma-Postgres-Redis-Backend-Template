@@ -75,14 +75,8 @@ const logOut = async (req, reply) => {
     reply.header("Access-Control-Allow-Origin", "*");
     reply.header("Access-Control-Allow-Methods", "GET");
     try {
-        reply.send("Başarıyla çıkış yaptınız.");
-        req.destroySession((err) => {
-            if (err) {
-                throw createError(500, "Internal Server Error");
-            } else {
-                reply.redirect('/');
-            }
-        });
+        await req.session.destroy();
+        reply.send({state: true});
         next();
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);

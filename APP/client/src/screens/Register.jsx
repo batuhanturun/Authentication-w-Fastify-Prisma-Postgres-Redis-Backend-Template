@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import postData from '../functions';
 
 export default function Register() {
@@ -8,14 +9,14 @@ export default function Register() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
+    const nav = useNavigate();
 
     async function submitRegister(e) {
         e.preventDefault();
         const response = await postData("/register", { name: name, email: email, password: password });
-
-        console.log("response", response)
         if (response.state === true) {
             console.log("User Successfuly Registered! ", response);
+            nav('/login');
         }
         else {
             setErrorMessage(response.message)

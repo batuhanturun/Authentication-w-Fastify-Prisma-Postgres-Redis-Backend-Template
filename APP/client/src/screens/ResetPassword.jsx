@@ -1,19 +1,20 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import postData from '../functions';
 
 export default function ResetPassword() {
 
     let [email, setEmail] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
+    const nav = useNavigate();
 
     async function submitResetPassword(e) {
         e.preventDefault();
         const response = await postData("/resetpassword", { email: email });
-
-        console.log("response", response);
         if(response.state === true) {
             console.log("Mail Successfuly Sent! ", response);
+            nav('/login');
         } else {
             setErrorMessage(response.message)
         }

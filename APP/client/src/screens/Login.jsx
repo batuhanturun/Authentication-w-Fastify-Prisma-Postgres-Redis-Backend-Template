@@ -1,21 +1,21 @@
 import React from 'react'
 import { useState } from 'react'
-import postData from '../functions';
-
+import { useNavigate } from "react-router-dom";
+import { postData } from '../functions';
 
 export default function Login() {
 
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [errorMessage, setErrorMessage] = useState(null)
+  const nav = useNavigate();
 
   async function submitLogin(e) {
     e.preventDefault();
     const response = await postData("/login", { email: email, password: password });
-
-    console.log("response", response)
     if (response.state === true) {
       console.log("User Successfuly Logged In! ", response);
+      nav('/');
     }
     else {
       setErrorMessage(response.message)
