@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 const home = async (req, reply) => {
     try {
-        reply.header("Access-Control-Allow-Origin", "*");
-        reply.header("Access-Control-Allow-Methods", "GET");
         reply.type('text/html');
     } catch (error) {
         throw createError(400, "Error : " + error);
@@ -15,8 +13,6 @@ const home = async (req, reply) => {
 
 const postRegister = async (req, reply) => {
     try {
-        reply.header("Access-Control-Allow-Origin", "*");
-        reply.header("Access-Control-Allow-Methods", "POST");
         let { name, email, password } = req.body;
         const user = await prisma.users.findFirst({
             where: { email }
@@ -39,17 +35,17 @@ const postRegister = async (req, reply) => {
 }
 
 const getLogin = async (req, reply) => {
-    reply.header("Access-Control-Allow-Origin", "*");
-    reply.header("Access-Control-Allow-Methods", "GET");
-
-    if(req.session.authenticated){
-        reply.send({state:true, name:req.session.user.name});
+    try {
+        if (req.session.authenticated) {
+            reply.send({ state: true, name: req.session.user.name });
+        }
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
     }
+
 }
 
 const postLogin = async (req, reply) => {
-    reply.header("Access-Control-Allow-Origin", "*");
-    reply.header("Access-Control-Allow-Methods", "POST");
     try {
         let { email, password } = req.body;
         const user = await prisma.users.findFirst({
@@ -64,7 +60,7 @@ const postLogin = async (req, reply) => {
         } else {
             req.session.authenticated = true;
             req.session.user = user;
-            reply.send({state:true, name:user.name});
+            reply.send({ state: true, name: user.name });
         }
     } catch (error) {
         throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
@@ -72,12 +68,10 @@ const postLogin = async (req, reply) => {
 }
 
 const logOut = async (req, reply) => {
-    reply.header("Access-Control-Allow-Origin", "*");
-    reply.header("Access-Control-Allow-Methods", "GET");
     try {
         req.session.authenticated = false;
         await req.session.destroy();
-        reply.send({state: true});
+        reply.send({ state: true });
         next();
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
@@ -85,8 +79,6 @@ const logOut = async (req, reply) => {
 }
 
 const postResetPassword = async (req, reply) => {
-    reply.header("Access-Control-Allow-Origin", "*");
-    reply.header("Access-Control-Allow-Methods", "POST");
     try {
         let { email } = req.body;
         const reset = await prisma.users.findFirst({
