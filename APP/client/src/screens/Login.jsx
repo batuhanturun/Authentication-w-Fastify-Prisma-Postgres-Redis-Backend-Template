@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { postData } from '../functions';
 
 export default function Login() {
@@ -37,8 +37,8 @@ export default function Login() {
       <div className="d-grid">
         <button type="submit" className="btn btn-primary">Login</button>
       </div>
-      <p className="forgot-password text-right">Don't have an account? <a href="/register">Register</a></p>
-      <p className="forgot-password text-right"><a href="/resetpassword">Forgot password?</a></p>
+      <p className="forgot-password text-right">Don't have an account? <Link to="/register">Register!</Link></p>
+      <p className="forgot-password text-right"><Link to="/resetpassword">Forgot password?</Link></p>
     </form>
   )
 

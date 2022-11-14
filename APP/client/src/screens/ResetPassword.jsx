@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import postData from '../functions';
 
 export default function ResetPassword() {
@@ -40,6 +40,7 @@ export default function ResetPassword() {
                         Send Mail
                     </button>
                 </div>
+                <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
             </form>
         )
 }
