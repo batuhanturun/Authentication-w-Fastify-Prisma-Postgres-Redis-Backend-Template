@@ -28,6 +28,7 @@
     "http-errors": "^2.0.0",
     "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",
     "pg-pool": "^3.5.2",

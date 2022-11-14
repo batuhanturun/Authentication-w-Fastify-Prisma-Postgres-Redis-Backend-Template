@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv").config({ path: "./.env" });
+const nodemailer = require('nodemailer');
 const createError = require("http-errors");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -87,9 +89,32 @@ const postResetPassword = async (req, reply) => {
         if (!reset) {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
-            
-            reply.send("Şifre sıfırlama bağlantısı E-Mail hesabınıza gönderildi.");
-            return reset;
+
+            let random = Math.floor(Math.random() * 10000);
+            let dbRandom = bcrypt.hash(random, 10);
+
+            let transporter = nodemailer.createTransport({
+                service: process.env.NODEMAILER_SERVICE,
+                auth: {
+                    user: process.env.NODEMAILER_USER,
+                    pass: process.env.NODEMAILER_PASS
+                }
+            });
+
+            let mailOptions = {
+                from: transporter.auth.user,
+                to: email,
+                subject: 'Password Reset',
+                html: `<h1>Reset Code: ${random}</h1>`
+            };
+
+            transporter.sendMail(mailOptions, (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Mail Gönderildi');
+                }
+            });
         }
     } catch (error) {
         throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
