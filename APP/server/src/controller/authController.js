@@ -121,11 +121,20 @@ const postResetPassword = async (req, reply) => {
     }
 }
 
+const postChangePassword = async (req, reply) => {
+    try {
+        
+    } catch (error) {
+        throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
+    }
+}
+
 module.exports = {
     getLogin,
     postLogin,
     postRegister,
     postResetPassword,
     home,
+    postChangePassword,
     logOut
 }

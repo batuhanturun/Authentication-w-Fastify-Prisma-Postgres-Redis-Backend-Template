@@ -14,7 +14,7 @@ export default function ResetPassword() {
         const response = await postData("/resetpassword", { email: email });
         if(response.state === true) {
             console.log("Mail Successfuly Sent! ", response);
-            nav('/login');
+            nav('/changepassword');
         } else {
             setErrorMessage(response.message)
         }
