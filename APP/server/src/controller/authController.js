@@ -87,6 +87,7 @@ const postResetPassword = async (req, reply) => {
         if (!reset) {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
+            
             reply.send("Şifre sıfırlama bağlantısı E-Mail hesabınıza gönderildi.");
             return reset;
         }

@@ -8,11 +8,24 @@ datasource db {
 }
 
 model users {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(100)
-  email      String   @unique @db.VarChar(150)
-  password   String   @db.VarChar(256)
-  creationAt DateTime @default(now()) @db.Timestamptz(6)
-  isVerified Boolean  @default(false)
-  isAdmin    Boolean  @default(false)
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(100)
+  email          String           @unique @db.VarChar(150)
+  password       String           @db.VarChar(256)
+  creationAt     DateTime         @default(now()) @db.Timestamptz(6)
+  isVerified     Boolean          @default(false)
+  isAdmin        Boolean          @default(false)
+  reset_password reset_password[]
+}
+
+model reset_password {
+  id          Int      @id @default(autoincrement())
+  expiredTime DateTime @db.Timetz(6)
+  userID      Int
+  resetCode   String   @db.VarChar(256)
+  isActive    Boolean  @default(true)
+  isUsed      Boolean  @default(false)
+  users       users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_reset_password_userID")
+
+  @@index([userID], map: "fki_userID_to_reset_password")
 }

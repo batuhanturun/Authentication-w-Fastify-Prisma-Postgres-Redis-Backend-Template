@@ -3,7 +3,7 @@ async function postData(url, data){
     return req.json();
 }
 
-async function getData(url, data){
+async function getData(url){
     let req = await fetch(`/api${url}`, { method: "GET", headers: {'Content-Type': 'application/json'}});
     return req.json();
 }

@@ -66,7 +66,7 @@ export default function Register() {
                 </button>
             </div>
             <p className="forgot-password text-right">
-                Already registered? <a href="/login">Login</a>
+                Already registered? <a href='/login' >Login</a>
             </p>
         </form>
     )
