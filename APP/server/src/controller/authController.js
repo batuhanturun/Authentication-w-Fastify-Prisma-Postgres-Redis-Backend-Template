@@ -130,7 +130,7 @@ const postResetPassword = async (req, reply) => {
 
 const postChangePassword = async (req, reply) => {
     try {
-        let { verfyCode, password, verfyPassword } = req.body;
+        let { email, verfyCode, password, verfyPassword } = req.body;
         if(password !== verfyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir. ");
         } else {
