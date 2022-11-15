@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import postData from '../functions';
+import { postData } from '../functions';
 
 export default function Register() {
 

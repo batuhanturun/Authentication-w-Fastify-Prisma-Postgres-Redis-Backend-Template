@@ -89,9 +89,16 @@ const postResetPassword = async (req, reply) => {
         if (!reset) {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
+            let random = Math.floor(Math.random() * 100000);
+            let dbRandom = await bcrypt.hash(random.toString(), 10);
 
-            let random = Math.floor(Math.random() * 10000);
-            let dbRandom = bcrypt.hash(random, 10);
+            const change = await prisma.reset_password.create({
+                data: {
+                    userID: reset.id,
+                    resetCode: dbRandom,
+                }
+            });
+            reply.send({state: true}); //!
 
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
@@ -102,7 +109,7 @@ const postResetPassword = async (req, reply) => {
             });
 
             let mailOptions = {
-                from: transporter.auth.user,
+                from: process.env.NODEMAILER_USER,
                 to: email,
                 subject: 'Password Reset',
                 html: `<h1>Reset Code: ${random}</h1>`
@@ -112,7 +119,7 @@ const postResetPassword = async (req, reply) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('Mail Gönderildi');
+                    console.log('Mail Gönderildi : ' + data.response);
                 }
             });
         }
@@ -123,7 +130,13 @@ const postResetPassword = async (req, reply) => {
 
 const postChangePassword = async (req, reply) => {
     try {
-        
+        let { verfyCode, password, verfyPassword } = req.body;
+        if(password !== verfyPassword) {
+            throw createError(401, "Şifreler eşleşmemektedir. ");
+        } else {
+
+        }
+        //reply.send({state: true});
     } catch (error) {
         throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
     }

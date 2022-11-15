@@ -20,7 +20,7 @@ model users {
 
 model reset_password {
   id          Int      @id @default(autoincrement())
-  expiredTime DateTime @db.Timetz(6)
+  expiredTime DateTime @default(now()) @db.Timetz(6)
   userID      Int
   resetCode   String   @db.VarChar(256)
   isActive    Boolean  @default(true)

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
+import { postData } from '../functions';
 
 function ChangePassword() {
 
@@ -12,6 +13,14 @@ function ChangePassword() {
 
     async function submitChangePassword(e) {
         e.preventDefault();
+        //! Password check burada da olabilir.
+        const response = await postData("/changepassword", { verfyCode: verfyCode, password: password, verfyPassword: verfyPassword });
+        if(response.state === true) {
+            console.log("Password Successfuly Changed! ", response);
+            nav('/login');
+        } else {
+            setErrorMessage(response.message);
+        }
     }
 
     return (
