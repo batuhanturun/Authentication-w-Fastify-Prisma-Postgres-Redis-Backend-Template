@@ -20,11 +20,11 @@ model users {
 
 model reset_password {
   id          Int      @id @default(autoincrement())
-  expiredTime DateTime @default(now()) @db.Timetz(6)
   userID      Int
   resetCode   String   @db.VarChar(256)
   isActive    Boolean  @default(true)
   isUsed      Boolean  @default(false)
+  expiredTime DateTime @default(now()) @db.Timestamptz(6)
   users       users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_reset_password_userID")
 
   @@index([userID], map: "fki_userID_to_reset_password")
