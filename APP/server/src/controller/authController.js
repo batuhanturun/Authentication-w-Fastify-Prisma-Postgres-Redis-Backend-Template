@@ -27,7 +27,7 @@ const postRegister = async (req, reply) => {
                     password: await bcrypt.hash(password, 10)
                 }
             });
-            return newUser;
+            reply.send({state: true})
         } else {
             throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
         }
@@ -89,7 +89,7 @@ const postResetPassword = async (req, reply) => {
         if (!reset) {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
-            let random = Math.floor(Math.random() * 100000);
+            let random = Math.floor(Math.random()*90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
 
             const change = await prisma.reset_password.create({
@@ -128,15 +128,28 @@ const postResetPassword = async (req, reply) => {
     }
 }
 
-const postChangePassword = async (req, reply) => {
+const patchChangePassword = async (req, reply) => {
     try {
-        let { verfyCode, password, verfyPassword } = req.body;
+        let { resetCode, password, verfyPassword } = req.body;
         if(password !== verfyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir. ");
         } else {
-
+            const user = await prisma.users.findFirst({
+                where: { email }
+            });
+            const change = await prisma.reset_password.findFirst({
+                where: { userID:user.id } //!
+            });
+            let result = await bcrypt.compare(resetCode, change.resetCode);
+            if(!result && user.id !== change.userID && change.isUsed !== false && change.isActive !== true) {
+                throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
+            } else {
+                user.password = await bcrypt.hash(password, 10);
+                change.isActive = false;
+                change.isUsed = true;
+                reply.send({state: true});
+            }
         }
-        //reply.send({state: true});
     } catch (error) {
         throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
     }
@@ -148,6 +161,6 @@ module.exports = {
     postRegister,
     postResetPassword,
     home,
-    postChangePassword,
+    patchChangePassword,
     logOut
 }

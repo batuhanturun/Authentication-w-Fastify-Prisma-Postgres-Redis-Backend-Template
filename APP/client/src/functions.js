@@ -1,5 +1,5 @@
 async function postData(url, data){
-    let req = await fetch(`/api${url}`, { method: "POST", headers: {'Content-Type': 'application/json'},body:JSON.stringify(data)});
+    let req = await fetch(`/api${url}`, { method: "POST", headers: {'Content-Type': 'application/json'}, body:JSON.stringify(data)});
     return req.json();
 }
 
@@ -8,7 +8,13 @@ async function getData(url){
     return req.json();
 }
 
+async function patchData(url, data){
+    let req = await fetch(`/api${url}`, { method: "PATCH", headers: {'Content-Type' : 'application/json'}, body: JSON.stringify(data)});
+    return req.json();
+}
+
 module.exports = {
     postData,
-    getData
+    getData,
+    patchData
 }

@@ -1,11 +1,14 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
-import { postData } from '../functions';
+import { patchData } from '../functions';
+import { UserContext } from '../context';
 
 function ChangePassword() {
 
-    let [verfyCode, setVerfyCode] = useState("");
+    const email = useContext(UserContext);
+    console.log(email);
+
+    let [resetCode, setResetCode] = useState("");
     let [password, setPassword] = useState("");
     let [verfyPassword, setVerfyPassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
@@ -13,8 +16,7 @@ function ChangePassword() {
 
     async function submitChangePassword(e) {
         e.preventDefault();
-        //! Password check burada da olabilir.
-        const response = await postData("/changepassword", { verfyCode: verfyCode, password: password, verfyPassword: verfyPassword });
+        const response = await patchData("/changepassword", { resetCode: resetCode, password: password, verfyPassword: verfyPassword });
         if(response.state === true) {
             console.log("Password Successfuly Changed! ", response);
             nav('/login');
@@ -35,7 +37,7 @@ function ChangePassword() {
                     className="form-control"
                     placeholder="Enter Code"
                     required
-                    onChange={(e) => setVerfyCode(e.target.value)}
+                    onChange={(e) => setResetCode(e.target.value)}
                 />
             </div>
             <div className="mb-3">

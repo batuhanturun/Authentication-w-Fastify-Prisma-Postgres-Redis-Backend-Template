@@ -1,7 +1,7 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { postData } from '../functions';
+import { UserContext } from '../context.js';
 
 export default function ResetPassword() {
 
@@ -21,6 +21,7 @@ export default function ResetPassword() {
     }
 
     return (
+        <UserContext.Provider value={email}>
         <form onSubmit={submitResetPassword}>
             <h3>Reset Password</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
@@ -42,5 +43,6 @@ export default function ResetPassword() {
             </div>
             <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
         </form>
+        </UserContext.Provider>
     )
 }

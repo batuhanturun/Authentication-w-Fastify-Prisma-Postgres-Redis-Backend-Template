@@ -32,9 +32,9 @@ const routers = [
         handler: authController.postResetPassword
     },
     {
-        method: "POST",
+        method: "PATCH",
         url: "/api/changepassword",
-        handler: authController.postChangePassword
+        handler: authController.patchChangePassword
     }
 ]
 
