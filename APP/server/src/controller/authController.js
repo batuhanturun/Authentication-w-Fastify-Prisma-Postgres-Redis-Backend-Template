@@ -32,7 +32,8 @@ const postRegister = async (req, reply) => {
                     password: await bcrypt.hash(password, 10)
                 }
             });
-            reply.send({ state: true })
+            reply.send({ state: true });
+            //email bağlantısı gönderilecek.
         } else {
             throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
         }
