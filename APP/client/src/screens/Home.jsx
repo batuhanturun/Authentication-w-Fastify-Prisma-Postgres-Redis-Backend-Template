@@ -5,6 +5,7 @@ import { getData } from '../functions';
 export default function Home() {
 
     let [data, setData] = useState(null);
+    let [isAuth, setIsAuth] = useState(false);
     let [errorMessage, setErrorMessage] = useState(null)
     const nav = useNavigate();
 
@@ -13,6 +14,7 @@ export default function Home() {
         const response = await getData("/logout");
         if(response.state === true) {
             console.log("User Successfuly Logout! ", response);
+            setIsAuth(false);
             nav('/login');
         } else {
             setErrorMessage(response.message);
@@ -20,10 +22,12 @@ export default function Home() {
     }
 
     return (
+        <>
         <form onSubmit={submitLogout}>
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
             <button>Logout</button>
         </form>
+        </>
     )
 }

@@ -8,6 +8,11 @@ const prisma = new PrismaClient();
 const home = async (req, reply) => {
     try {
         reply.type('text/html');
+        if(req.session.authenticated) {
+            reply.send({state: true})
+        } else {
+            reply.send({state: false})
+        }
     } catch (error) {
         throw createError(400, "Error : " + error);
     }
