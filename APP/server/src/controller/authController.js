@@ -74,7 +74,6 @@ const logOut = async (req, reply) => {
         req.session.authenticated = false;
         await req.session.destroy();
         reply.send({ state: true });
-        next();
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
@@ -130,7 +129,7 @@ const postResetPassword = async (req, reply) => {
 
 const patchChangePassword = async (req, reply) => {
     try {
-        let { resetCode, password, verfyPassword } = req.body;
+        let { email, resetCode, password, verfyPassword } = req.body;
         if(password !== verfyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir. ");
         } else {
@@ -138,15 +137,20 @@ const patchChangePassword = async (req, reply) => {
                 where: { email }
             });
             const change = await prisma.reset_password.findFirst({
-                where: { userID:user.id } //!
+                where: { userID:user.id } 
             });
             let result = await bcrypt.compare(resetCode, change.resetCode);
-            if(!result && user.id !== change.userID && change.isUsed !== false && change.isActive !== true) {
+            if(!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) {
                 throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
             } else {
-                user.password = await bcrypt.hash(password, 10);
-                change.isActive = false;
-                change.isUsed = true;
+                const updateUser = await prisma.users.update({
+                    where: { email },
+                    data: { password: await bcrypt.hash(password, 10) }
+                })
+                const updateCode = await prisma.reset_password.updateMany({
+                    where: { userID:user.id, resetCode: change.resetCode },
+                    data: { isActive : false, isUsed : true }
+                })
                 reply.send({state: true});
             }
         }
