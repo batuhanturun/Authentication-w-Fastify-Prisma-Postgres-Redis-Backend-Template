@@ -8,10 +8,10 @@ const prisma = new PrismaClient();
 const home = async (req, reply) => {
     try {
         reply.type('text/html');
-        if(req.session.authenticated) {
-            reply.send({state: true})
+        if (req.session.authenticated) {
+            reply.send({ state: true })
         } else {
-            reply.send({state: false})
+            reply.send({ state: false })
         }
     } catch (error) {
         throw createError(400, "Error : " + error);
@@ -32,7 +32,7 @@ const postRegister = async (req, reply) => {
                     password: await bcrypt.hash(password, 10)
                 }
             });
-            reply.send({state: true})
+            reply.send({ state: true })
         } else {
             throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
         }
@@ -65,9 +65,13 @@ const postLogin = async (req, reply) => {
         if (!result) {
             throw createError(401, "Şifre veya E-Posta hatalı.");
         } else {
-            req.session.authenticated = true;
-            req.session.user = user;
-            reply.send({ state: true, name: user.name });
+            if (user.isVerified !== true) {
+                throw createError(401, "Lütfen E-Mail adresinize gönderdiğimiz bağlantıdan hesabınızı onaylayın! ( Daha Aktif Değil :D )");
+            } else {
+                req.session.authenticated = true;
+                req.session.user = user;
+                reply.send({ state: true, name: user.name });
+            }
         }
     } catch (error) {
         throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
@@ -93,7 +97,7 @@ const postResetPassword = async (req, reply) => {
         if (!reset) {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
-            let random = Math.floor(Math.random()*90000) + 10000;
+            let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
 
             const change = await prisma.reset_password.create({
@@ -102,7 +106,7 @@ const postResetPassword = async (req, reply) => {
                     resetCode: dbRandom,
                 }
             });
-            reply.send({state: true}); //!
+            reply.send({ state: true }); //!
 
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
@@ -135,17 +139,17 @@ const postResetPassword = async (req, reply) => {
 const patchChangePassword = async (req, reply) => {
     try {
         let { email, resetCode, password, verfyPassword } = req.body;
-        if(password !== verfyPassword) {
+        if (password !== verfyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir. ");
         } else {
             const user = await prisma.users.findFirst({
                 where: { email }
             });
             const change = await prisma.reset_password.findFirst({
-                where: { userID:user.id } 
+                where: { userID: user.id }
             });
             let result = await bcrypt.compare(resetCode, change.resetCode);
-            if(!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) {
+            if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) {
                 throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
             } else {
                 const updateUser = await prisma.users.update({
@@ -153,10 +157,10 @@ const patchChangePassword = async (req, reply) => {
                     data: { password: await bcrypt.hash(password, 10) }
                 })
                 const updateCode = await prisma.reset_password.updateMany({
-                    where: { userID:user.id, resetCode: change.resetCode },
-                    data: { isActive : false, isUsed : true }
+                    where: { userID: user.id, resetCode: change.resetCode },
+                    data: { isActive: false, isUsed: true }
                 })
-                reply.send({state: true});
+                reply.send({ state: true });
             }
         }
     } catch (error) {
