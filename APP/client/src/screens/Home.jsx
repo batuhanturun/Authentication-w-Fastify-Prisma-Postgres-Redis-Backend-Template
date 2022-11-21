@@ -4,7 +4,6 @@ import { getData } from '../functions';
 
 export default function Home() {
 
-    let [data, setData] = useState(null);
     let [isAuth, setIsAuth] = useState(false);
     let [errorMessage, setErrorMessage] = useState(null)
     const nav = useNavigate();
