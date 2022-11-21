@@ -21,11 +21,26 @@ export default function Home() {
         }
     }
 
+    async function submitLogin(e){
+        e.preventDefault();
+        nav('/login');
+    }
+
+    async function home(e) {
+        e.preventDefault();
+        const response = await getData("/");
+        if(response.state === true) {
+            setIsAuth(true);
+        } else {
+            setErrorMessage(response.errorMessage);
+        }
+    }
+
     return (
-        <form >
+        <form>
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-            <button onClick={submitLogout}>Logout</button>
+            {isAuth ? (<button onClick={submitLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
         </form>
     )
 }
