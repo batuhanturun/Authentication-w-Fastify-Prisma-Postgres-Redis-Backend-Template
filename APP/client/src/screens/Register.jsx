@@ -7,19 +7,24 @@ export default function Register() {
     let [name, setName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
+    let [rePassword, setRePassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
     const nav = useNavigate();
 
     async function submitRegister(e) {
         e.preventDefault();
-        const response = await postData("/register", { name: name, email: email, password: password });
-        if (response.state === true) {
-            console.log("User Successfuly Registered! ", response);
-            nav('/login');
-        }
-        else {
-            setErrorMessage(response.message)
-        }
+        if(rePassword !== password) {
+            setErrorMessage("Şifreler uyuşmamaktadır.");
+        } else {
+            const response = await postData("/register", { name: name, email: email, password: password });
+            if (response.state === true) {
+                console.log("User Successfuly Registered! ", response);
+                nav('/login');
+            }
+            else {
+                setErrorMessage(response.message);
+            }
+        }  
     }
 
     return (
@@ -57,6 +62,17 @@ export default function Register() {
                     placeholder="Enter Password"
                     required
                     onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            <div className="mb-3">
+                <label>Re-Password:</label>
+                <input
+                    name='password'
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter Re-Password"
+                    required
+                    onChange={(e) => setRePassword(e.target.value)}
                 />
             </div>
             <div className="d-grid">
