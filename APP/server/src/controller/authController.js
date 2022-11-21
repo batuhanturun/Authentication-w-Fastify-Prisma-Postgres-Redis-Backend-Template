@@ -67,7 +67,7 @@ const postLogin = async (req, reply) => {
             throw createError(401, "Şifre veya E-Posta hatalı.");
         } else {
             if (user.isVerified !== true) {
-                throw createError(401, "Lütfen E-Mail adresinize gönderdiğimiz bağlantıdan hesabınızı onaylayın! ( Daha Aktif Değil :D )");
+                throw createError(401, "Lütfen E-Mail adresinize gönderdiğimiz bağlantıdan hesabınızı onaylayın!");
             } else {
                 req.session.authenticated = true;
                 req.session.user = user;
@@ -107,7 +107,7 @@ const postResetPassword = async (req, reply) => {
                     resetCode: dbRandom,
                 }
             });
-            reply.send({ state: true }); //!
+            reply.send({ state: true });
 
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
@@ -150,7 +150,7 @@ const patchChangePassword = async (req, reply) => {
                 where: { userID: user.id }
             });
             let result = await bcrypt.compare(resetCode, change.resetCode);
-            if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) {
+            if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) { //! çalışmıyor
                 throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
             } else {
                 const updateUser = await prisma.users.update({

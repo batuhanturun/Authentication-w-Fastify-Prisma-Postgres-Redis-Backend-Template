@@ -17,7 +17,7 @@ export default function Login() {
       nav('/');
     }
     else {
-      setErrorMessage(response.message)
+      setErrorMessage(response.message);
     }
   }
 

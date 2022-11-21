@@ -22,12 +22,10 @@ export default function Home() {
     }
 
     return (
-        <>
-        <form onSubmit={submitLogout}>
+        <form >
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-            <button>Logout</button>
+            <button onClick={submitLogout}>Logout</button>
         </form>
-        </>
     )
 }

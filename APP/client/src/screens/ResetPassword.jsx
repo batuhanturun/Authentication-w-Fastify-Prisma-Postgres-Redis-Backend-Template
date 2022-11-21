@@ -12,10 +12,13 @@ export default function ResetPassword() {
     let [password, setPassword] = useState("");
     let [verfyPassword, setVerfyPassword] = useState("");
 
+    let [isSend, setIsSend] = useState(false);
+
     async function submitResetPassword(e) {
         e.preventDefault();
         const response = await postData("/resetpassword", { email: email });
         if (response.state === true) {
+            setIsSend(true);
             console.log("Mail Successfuly Sent! ", response);
         } else {
             setErrorMessage(response.message);
@@ -26,6 +29,7 @@ export default function ResetPassword() {
         e.preventDefault();
         const response = await patchData("/changepassword", { email: email, resetCode: resetCode, password: password, verfyPassword: verfyPassword });
         if (response.state === true) {
+            setIsSend(false);
             console.log("Password Successfuly Changed! ", response);
             nav('/login');
         } else {
@@ -34,28 +38,29 @@ export default function ResetPassword() {
     }
 
     return (
-            <form >
-                    <h3>Reset Password</h3>
-                    {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                    <div className="mb-3">
-                        <label>Email:</label>
-                        <input
-                            name='email'
-                            type="email"
-                            className="form-control"
-                            placeholder="Enter Email"
-                            required
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
-                    <button type='submit' className='btn btn-primary' onClick={submitResetPassword} >Send Code</button>
-                    <hr /> 
+        <form >
+            <h3>Reset Password</h3>
+            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+            <div className="mb-3">
+                <label>Email:</label>
+                <input
+                    name='email'
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter Email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
+            <button type='submit' className='btn btn-primary' onClick={submitResetPassword} >Send Code</button>
+            {isSend ? (<>
+                <hr />
                 <div className="mb-3">
                     <label>Code:</label>
                     <input
                         name='code'
                         type="number"
-                        className="form-control"
+                        className="form-control reset-code"
                         placeholder="Enter Code"
                         required
                         onChange={(e) => setResetCode(e.target.value)}
@@ -89,6 +94,7 @@ export default function ResetPassword() {
                     </button>
                 </div>
                 <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
-            </form>
+            </>) : null}
+        </form>
     )
 }
