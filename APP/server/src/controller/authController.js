@@ -188,7 +188,7 @@ const logOut = async (req, reply) => {
     }
 }
 
-const postResetPassword = async (req, reply) => {
+const postResetPassword = async (req, reply) => { //! Hata
     try {
         let { email } = req.body;
         const reset = await prisma.users.findFirst({
@@ -200,12 +200,23 @@ const postResetPassword = async (req, reply) => {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
 
-            const change = await prisma.reset_password.create({ //! create ile değil update kullan.
-                data: {
-                    userID: reset.id,
-                    resetCode: dbRandom,
-                }
+            const check = await prisma.reset_password.findFirst({
+                where: {userID: reset.id}
             });
+
+            if(check === null) {
+                const change = await prisma.reset_password.create({ //! 
+                    data: {
+                        userID: reset.id,
+                        resetCode: dbRandom,
+                    }
+                });
+            } else {
+                const reChange = await prisma.reset_password.update({ //!Q
+                    where: {userID: check.id},
+                    data: {resetCode: dbRandom}
+                })
+            }
 
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
