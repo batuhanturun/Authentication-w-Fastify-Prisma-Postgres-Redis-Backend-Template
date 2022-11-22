@@ -34,7 +34,7 @@ model reset_password {
 model verify_account {
   id          Int      @id @default(autoincrement())
   userID      Int
-  code        String   @db.VarChar(256)
+  verifyCode  String   @db.VarChar(256)
   expiredTime DateTime @default(now()) @db.Timestamptz(6)
   isUsed      Boolean  @default(false)
   isActive    Boolean  @default(true)

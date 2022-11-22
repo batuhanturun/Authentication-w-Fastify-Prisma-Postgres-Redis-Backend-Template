@@ -32,9 +32,19 @@ const routers = [
         handler: authController.postResetPassword
     },
     {
+        method: "POST",
+        url: "/api/resendverificationemail",
+        handler: authController.postResendVerificationEmail
+    },
+    {
         method: "PATCH",
         url: "/api/changepassword",
         handler: authController.patchChangePassword
+    },
+    {
+        method: "PATCH",
+        url: "/api/verificationuser",
+        handler: authController.patchVerificationUser
     }
 ]
 

@@ -3,6 +3,7 @@ import Home from './screens/Home';
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ResetPassword from "./screens/ResetPassword";
+import ResendVerificationMail from "./screens/ResendVerificationMail";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -40,6 +41,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/resetpassword' element={<ResetPassword />} />
+              <Route path='/resendverificationmail' element={<ResendVerificationMail />} />
               <Route path='/' element={<Home />} />
             </Routes>
           </div>

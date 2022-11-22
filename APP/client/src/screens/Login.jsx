@@ -37,7 +37,8 @@ export default function Login() {
         <button type="submit" className="btn btn-primary">Login</button>
       </div>
       <p className="forgot-password text-right">Don't have an account? <Link to="/register">Register!</Link></p>
-      <p className="forgot-password text-right"><Link to="/resetpassword">Forgot password?</Link></p>
+      <p className="forgot-password text-right"><Link to="/resetpassword">Forgot Password?</Link></p>
+      <p className="forgot-password text-right"><Link to="/resendverificationmail">Verify Your Account!</Link></p>
     </form>
   )
 
