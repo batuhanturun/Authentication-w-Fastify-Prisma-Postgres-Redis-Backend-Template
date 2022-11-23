@@ -98,7 +98,7 @@ const patchVerificationUser = async (req, reply) => {
     }
 }
 
-const postResendVerificationMail = async (req, reply) => { 
+const postResendVerificationMail = async (req, reply) => { //! error is not defined
     try {
         let { email } = req.body;
         const user = await prisma.users.findFirst({
@@ -113,7 +113,11 @@ const postResendVerificationMail = async (req, reply) => {
             let dbRandom = await bcrypt.hash(random.toString(), 10);
             const reset = await prisma.verify_account.update({
                 where: { userID: user.id },
-                data: { verifyCode: dbRandom }
+                data: {
+                    verifyCode: dbRandom,
+                    isActive: true,
+                    isUsed: false
+                }
             });
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
