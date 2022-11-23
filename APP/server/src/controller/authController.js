@@ -283,7 +283,7 @@ const patchChangePassword = async (req, reply) => {
     }
 }
 
-const patchChangePassword2 = async (req, reply) => {
+const patchChangePassword2 = async (req, reply) => {  // ileride password reset için link gönderildiğinde kullanılacak. Şimdilik deneme.
     try {
         let { password, verifyPassword } = req.body;
         let resetCode = req.params.resetCode;
@@ -300,9 +300,7 @@ const patchChangePassword2 = async (req, reply) => {
                     where: { userID: user.id }
                 });
                 let result = await bcrypt.compare(resetCode, change.resetCode);
-                if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) { //! üstteki ile değiştir.
-                    throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
-                } else {
+                if (result && user.id === change.userID && !change.isUsed && change.isActive) { 
                     const updateUser = await prisma.users.update({
                         where: { email: user.email },
                         data: { password: await bcrypt.hash(password, 10) }
@@ -312,6 +310,8 @@ const patchChangePassword2 = async (req, reply) => {
                         data: { isActive: false, isUsed: true }
                     })
                     reply.send({ state: true });
+                } else {
+                    throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
                 }
             }
         }

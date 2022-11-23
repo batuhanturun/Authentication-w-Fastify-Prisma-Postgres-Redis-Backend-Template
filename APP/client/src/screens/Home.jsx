@@ -25,6 +25,7 @@ export default function Home() {
         nav('/login');
     }
 
+    /*
     async function home(e) {
         e.preventDefault();
         const response = await getData("/");
@@ -34,6 +35,7 @@ export default function Home() {
             setErrorMessage(response.errorMessage);
         }
     }
+    */
 
     return (
         <form>
