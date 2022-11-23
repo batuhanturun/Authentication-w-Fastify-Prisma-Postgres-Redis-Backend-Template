@@ -328,7 +328,8 @@ const postVerifyAccount = async (req, reply) => {
         });
         const user = await prisma.users.findFirst({
             where: { id: verify.userID }
-        })
+        });
+        let email = user.email;
         if (!verify) {
             throw createError(401, "We were unable to find a user for this verification. Please Register! " + error);
         } else if (verify.isUsed || user.isVerified) {

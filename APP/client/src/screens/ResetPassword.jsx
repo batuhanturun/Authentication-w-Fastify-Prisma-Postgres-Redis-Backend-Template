@@ -98,5 +98,3 @@ export default function ResetPassword() {
         </form>
     )
 }
-
-// https://stackoverflow.com/questions/39092822/how-to-confirm-email-address-using-express-node
