@@ -45,6 +45,11 @@ const routers = [
         method: "PATCH",
         url: "/api/verificationuser",
         handler: authController.patchVerificationUser
+    },
+    {
+        method: "GET",
+        url: "/api/:email/:verifycode",
+        handler: authController.postVerifyAccount
     }
 ]
 

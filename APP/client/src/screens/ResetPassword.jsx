@@ -10,7 +10,7 @@ export default function ResetPassword() {
 
     let [resetCode, setResetCode] = useState("");
     let [password, setPassword] = useState("");
-    let [verfyPassword, setVerfyPassword] = useState("");
+    let [verifyPassword, setVerifyPassword] = useState("");
 
     let [isSend, setIsSend] = useState(false);
 
@@ -27,7 +27,7 @@ export default function ResetPassword() {
 
     async function submitChangePassword(e) {
         e.preventDefault();
-        const response = await patchData("/changepassword", { email: email, resetCode: resetCode, password: password, verfyPassword: verfyPassword });
+        const response = await patchData("/changepassword", { email: email, resetCode: resetCode, password: password, verifyPassword: verifyPassword });
         if (response.state === true) {
             setIsSend(false);
             console.log("Password Successfuly Changed! ", response);
@@ -86,7 +86,7 @@ export default function ResetPassword() {
                         className="form-control"
                         placeholder="Re-Enter Password"
                         required
-                        onChange={(e) => setVerfyPassword(e.target.value)}
+                        onChange={(e) => setVerifyPassword(e.target.value)}
                     />
                 </div>
                 <div className="d-grid">

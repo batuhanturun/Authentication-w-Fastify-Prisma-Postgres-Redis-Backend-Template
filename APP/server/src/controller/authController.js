@@ -253,8 +253,8 @@ const postResetPassword = async (req, reply) => {
 
 const patchChangePassword = async (req, reply) => {
     try {
-        let { email, resetCode, password, verfyPassword } = req.body;
-        if (password !== verfyPassword) {
+        let { email, resetCode, password, verifyPassword } = req.body;
+        if (password !== verifyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir. ");
         } else {
             const user = await prisma.users.findFirst({
@@ -285,12 +285,12 @@ const patchChangePassword = async (req, reply) => {
 
 const patchChangePassword2 = async (req, reply) => {
     try {
-        let { password, verfyPassword } = req.body;
+        let { password, verifyPassword } = req.body;
         let resetCode = req.params.resetCode;
         if (!resetCode) {
             throw createError(400, "resetCode'da hata oluştu! " + error);
         } else {
-            if (password !== verfyPassword) {
+            if (password !== verifyPassword) {
                 throw createError(401, "Şifreler eşleşmemektedir. ");
             } else {
                 const user = await prisma.users.findFirst({
@@ -300,7 +300,7 @@ const patchChangePassword2 = async (req, reply) => {
                     where: { userID: user.id }
                 });
                 let result = await bcrypt.compare(resetCode, change.resetCode);
-                if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) { //! çalışmıyor
+                if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) { //! üstteki ile değiştir.
                     throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
                 } else {
                     const updateUser = await prisma.users.update({
@@ -320,14 +320,46 @@ const patchChangePassword2 = async (req, reply) => {
     }
 }
 
+const postVerifyAccount = async (req, reply) => {
+    try {
+        let { verifyCode } = req.params;
+        const verify = await prisma.verify_account.findFirst({
+            where: { verifyCode }
+        });
+        const user = await prisma.users.findFirst({
+            where: { id: verify.userID }
+        })
+        if (!verify) {
+            throw createError(401, "We were unable to find a user for this verification. Please Register! " + error);
+        } else if (verify.isUsed || user.isVerified) {
+            throw createError(401, "User has been already verified. Please Login! " + error);
+        } else if (!verify.isActive) {
+            throw createError(401, "Link geçerliliğini kaybetmiştir. " + error);
+        } else {
+            const updateUser = await prisma.users.update({
+                where: { id: verify.userID },
+                data: { isVerified: true }
+            });
+            const updateVerify = await prisma.verify_account.update({
+                where: { verifyCode },
+                data: { isUsed: true, isActive: false }
+            });
+            reply.send({ state: true });
+        }
+    } catch (error) {
+        throw createError(400, "Onaylama işleminde bir hata oluştu. " + error);
+    }
+}
+
 module.exports = {
+    home,
     getLogin,
+    logOut,
+    patchChangePassword,
+    patchVerificationUser,
     postLogin,
     postRegister,
     postResetPassword,
-    home,
-    patchChangePassword,
-    logOut,
-    postResendVerificationMail,
-    patchVerificationUser
+    postVerifyAccount,
+    postResendVerificationMail
 }
