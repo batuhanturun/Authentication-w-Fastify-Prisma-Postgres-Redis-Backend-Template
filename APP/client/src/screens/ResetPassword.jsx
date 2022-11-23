@@ -94,8 +94,9 @@ export default function ResetPassword() {
                         Change Password
                     </button>
                 </div>
-                <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
             </>) : null}
         </form>
     )
 }
+
+// https://stackoverflow.com/questions/39092822/how-to-confirm-email-address-using-express-node

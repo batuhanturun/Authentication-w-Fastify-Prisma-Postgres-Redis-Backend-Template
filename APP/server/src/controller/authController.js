@@ -188,7 +188,7 @@ const logOut = async (req, reply) => {
     }
 }
 
-const postResetPassword = async (req, reply) => { //! Hata
+const postResetPassword = async (req, reply) => {
     try {
         let { email } = req.body;
         const reset = await prisma.users.findFirst({
@@ -201,20 +201,24 @@ const postResetPassword = async (req, reply) => { //! Hata
             let dbRandom = await bcrypt.hash(random.toString(), 10);
 
             const check = await prisma.reset_password.findFirst({
-                where: {userID: reset.id}
+                where: { userID: reset.id }
             });
 
-            if(!check) {
-                const change = await prisma.reset_password.create({ //! 
+            if (!check) {
+                const change = await prisma.reset_password.create({
                     data: {
                         userID: reset.id,
                         resetCode: dbRandom,
                     }
                 });
             } else {
-                const reChange = await prisma.reset_password.update({ //!Q
-                    where: {userID: check.id},
-                    data: {resetCode: dbRandom}
+                const reChange = await prisma.reset_password.updateMany({
+                    where: { userID: reset.id },
+                    data: {
+                        resetCode: dbRandom,
+                        isActive: true,
+                        isUsed: false
+                    }
                 })
             }
 
@@ -260,9 +264,7 @@ const patchChangePassword = async (req, reply) => {
                 where: { userID: user.id }
             });
             let result = await bcrypt.compare(resetCode, change.resetCode);
-            if (!result && user.id !== change.userID && change.isUsed === false && change.isActive === true) { //! çalışmıyor
-                throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
-            } else {
+            if (result && user.id === change.userID && !change.isUsed && change.isActive) {
                 const updateUser = await prisma.users.update({
                     where: { email },
                     data: { password: await bcrypt.hash(password, 10) }
@@ -272,6 +274,8 @@ const patchChangePassword = async (req, reply) => {
                     data: { isActive: false, isUsed: true }
                 })
                 reply.send({ state: true });
+            } else {
+                throw createError(400, "Kod geçerliliğini kaybetmiştir.");
             }
         }
     } catch (error) {

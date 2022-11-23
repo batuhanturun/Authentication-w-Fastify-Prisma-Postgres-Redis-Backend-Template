@@ -12,6 +12,7 @@ export default function ResendVerificationMail() {
         e.preventDefault();
         const response = await postData("/resendverificationmail", { email: email });
         if(response.state === true) {
+            setErrorMessage(null);
             console.log("Mail başarılı bir şekilde gönderildi.");
             nav("/login");
         } else {
