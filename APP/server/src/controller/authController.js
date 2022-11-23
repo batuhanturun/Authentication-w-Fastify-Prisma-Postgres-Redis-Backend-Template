@@ -98,7 +98,7 @@ const patchVerificationUser = async (req, reply) => {
     }
 }
 
-const postResendVerificationMail = async (req, reply) => { //! HATA
+const postResendVerificationMail = async (req, reply) => { 
     try {
         let { email } = req.body;
         const user = await prisma.users.findFirst({
@@ -300,7 +300,7 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
                     where: { userID: user.id }
                 });
                 let result = await bcrypt.compare(resetCode, change.resetCode);
-                if (result && user.id === change.userID && !change.isUsed && change.isActive) { 
+                if (result && user.id === change.userID && !change.isUsed && change.isActive) {
                     const updateUser = await prisma.users.update({
                         where: { email: user.email },
                         data: { password: await bcrypt.hash(password, 10) }
