@@ -98,10 +98,10 @@ const patchVerificationUser = async (req, reply) => {
     }
 }
 
-const postResendVerificationEmail = async (req, reply) => { //! HATA
+const postResendVerificationMail = async (req, reply) => { //! HATA
     try {
         let { email } = req.body;
-        const user = prisma.users.findFirst({
+        const user = await prisma.users.findFirst({
             where: { email }
         });
         if (!user) {
@@ -111,7 +111,7 @@ const postResendVerificationEmail = async (req, reply) => { //! HATA
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
-            const reset = prisma.verify_account.update({
+            const reset = await prisma.verify_account.update({
                 where: { userID: user.id },
                 data: { verifyCode: dbRandom }
             });
@@ -204,7 +204,7 @@ const postResetPassword = async (req, reply) => { //! Hata
                 where: {userID: reset.id}
             });
 
-            if(check === null) {
+            if(!check) {
                 const change = await prisma.reset_password.create({ //! 
                     data: {
                         userID: reset.id,
@@ -324,6 +324,6 @@ module.exports = {
     home,
     patchChangePassword,
     logOut,
-    postResendVerificationEmail,
+    postResendVerificationMail,
     patchVerificationUser
 }

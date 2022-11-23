@@ -33,8 +33,8 @@ const routers = [
     },
     {
         method: "POST",
-        url: "/api/resendverificationemail",
-        handler: authController.postResendVerificationEmail
+        url: "/api/resendverificationmail",
+        handler: authController.postResendVerificationMail
     },
     {
         method: "PATCH",

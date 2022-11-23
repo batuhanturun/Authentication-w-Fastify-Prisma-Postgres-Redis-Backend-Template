@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { postData, patchData } from '../functions';
+import { postData } from '../functions';
 
 export default function ResendVerificationMail() {
 
@@ -10,7 +10,7 @@ export default function ResendVerificationMail() {
 
     async function submitResendVerificationMail(e) {
         e.preventDefault();
-        const response = await postData("/resendverificationemail", { email: email });
+        const response = await postData("/resendverificationmail", { email: email });
         if(response.state === true) {
             console.log("Mail başarılı bir şekilde gönderildi.");
             nav("/login");

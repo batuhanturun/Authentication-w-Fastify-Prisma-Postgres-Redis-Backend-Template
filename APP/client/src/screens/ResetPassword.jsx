@@ -53,6 +53,7 @@ export default function ResetPassword() {
                 />
             </div>
             <button type='submit' className='btn btn-primary' onClick={submitResetPassword} >Send Code</button>
+            <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
             {isSend ? (<>
                 <hr />
                 <div className="mb-3">
