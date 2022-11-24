@@ -10,7 +10,7 @@ export default function Verification() {
 
     async function submitVerification(e) {
         e.preventDefault();
-        const response = await getData("/:email/:verifycode");
+        const response = await getData("/confirmation/:email/:verifycode");
         if (response.state === true) {
             setErrorMessage(null);
             console.log("Kullanıcı başarılı bir şekilde onaylandı. ", response);

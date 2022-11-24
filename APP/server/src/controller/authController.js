@@ -98,21 +98,25 @@ const patchVerificationUser = async (req, reply) => {
     }
 }
 
-const postResendVerificationMail = async (req, reply) => { //! error is not defined
+const postResendVerificationMail = async (req, reply) => { //! error is not defined: if koşulları sağlanmayınca hatayı yanlış oluşturuyor.
+
     try {
         let { email } = req.body;
         const user = await prisma.users.findFirst({
             where: { email }
         });
         if (!user) {
-            throw createError(400, "Bu posta adresine kayıtlı kullanıcı bulunamadı! " + error);
-        } else if (user.isVerified) {
-            throw createError(400, "This account has been already verified. " + error);
+            throw createError(400, "Bu posta adresine kayıtlı kullanıcı bulunamadı! ");
+        } else if (user.isVerified === true) {
+            throw createError(400, "This account has been already verified. ");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
-            const reset = await prisma.verify_account.update({
-                where: { userID: user.id },
+            const find = await prisma.verify_account.findFirst({
+                where: { userID: user.id }
+            });
+            const reset = await prisma.verify_account.updateMany({
+                where: { userID: find.id },
                 data: {
                     verifyCode: dbRandom,
                     isActive: true,
@@ -130,7 +134,7 @@ const postResendVerificationMail = async (req, reply) => { //! error is not defi
                 from: process.env.NODEMAILER_USER,
                 to: email,
                 subject: 'Account Verification',
-                text: 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + user.email + '\/' + reset.verifyCode + '\n\nThank You!\n'
+                text: 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + user.email + '\/' + dbRandom + '\n\nThank You!\n'
             };
             transporter.sendMail(mailOptions, (err, data) => {
                 if (err) {
