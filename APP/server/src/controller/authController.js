@@ -77,15 +77,15 @@ const patchVerificationUser = async (req, reply) => {
             where: { verifyCode: req.params.verifyCode }
         })
         if (!verifyCode) {
-            throw createError(400, "Your verification link may have expired. " + error);
+            throw createError(400, "Your verification link may have expired.");
         } else {
             const user = await prisma.users.findFirst({
                 where: { email: req.params.email }
             });
             if (!user) {
-                throw createError(400, "We were unable to find a user for this verification. " + error);
+                throw createError(400, "We were unable to find a user for this verification.");
             } else if (user.isVerified) {
-                throw createError(400, "User has been already verified. " + error);
+                throw createError(400, "User has been already verified.");
             } else {
                 const updateUser = await prisma.users.update({
                     where: { email: user.email },
@@ -98,17 +98,16 @@ const patchVerificationUser = async (req, reply) => {
     }
 }
 
-const postResendVerificationMail = async (req, reply) => { //! error is not defined: if koşulları sağlanmayınca hatayı yanlış oluşturuyor.
-
+const postResendVerificationMail = async (req, reply) => {
     try {
         let { email } = req.body;
         const user = await prisma.users.findFirst({
             where: { email }
         });
         if (!user) {
-            throw createError(400, "Bu posta adresine kayıtlı kullanıcı bulunamadı! ");
+            throw createError(400, "Bu posta adresine kayıtlı kullanıcı bulunamadı!");
         } else if (user.isVerified === true) {
-            throw createError(400, "This account has been already verified. ");
+            throw createError(400, "This account has been already verified.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = await bcrypt.hash(random.toString(), 10);
@@ -263,7 +262,7 @@ const patchChangePassword = async (req, reply) => {
     try {
         let { email, resetCode, password, verifyPassword } = req.body;
         if (password !== verifyPassword) {
-            throw createError(401, "Şifreler eşleşmemektedir. ");
+            throw createError(401, "Şifreler eşleşmemektedir.");
         } else {
             const user = await prisma.users.findFirst({
                 where: { email }
@@ -296,10 +295,10 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
         let { password, verifyPassword } = req.body;
         let resetCode = req.params.resetCode;
         if (!resetCode) {
-            throw createError(400, "resetCode'da hata oluştu! " + error);
+            throw createError(400, "resetCode'da hata oluştu!");
         } else {
             if (password !== verifyPassword) {
-                throw createError(401, "Şifreler eşleşmemektedir. ");
+                throw createError(401, "Şifreler eşleşmemektedir.");
             } else {
                 const user = await prisma.users.findFirst({
                     where: { email: req.params.email }
@@ -319,7 +318,7 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
                     })
                     reply.send({ state: true });
                 } else {
-                    throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
+                    throw createError(400, "Şifre sıfırlanırken hata oluştu.");
                 }
             }
         }
@@ -339,11 +338,11 @@ const postVerifyAccount = async (req, reply) => {
         });
         let email = user.email;
         if (!verify) {
-            throw createError(401, "We were unable to find a user for this verification. Please Register! " + error);
+            throw createError(401, "We were unable to find a user for this verification. Please Register!");
         } else if (verify.isUsed || user.isVerified) {
-            throw createError(401, "User has been already verified. Please Login! " + error);
+            throw createError(401, "User has been already verified. Please Login!");
         } else if (!verify.isActive) {
-            throw createError(401, "Link geçerliliğini kaybetmiştir. " + error);
+            throw createError(401, "Link geçerliliğini kaybetmiştir.");
         } else {
             const updateUser = await prisma.users.update({
                 where: { id: verify.userID },
