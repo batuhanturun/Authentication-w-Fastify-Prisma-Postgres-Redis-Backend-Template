@@ -42,6 +42,7 @@ export default function Home() {
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
             {isAuth ? (<button onClick={submitLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
+            <button onClick={submitLogout}>Logout</button>
         </form>
     )
 }
