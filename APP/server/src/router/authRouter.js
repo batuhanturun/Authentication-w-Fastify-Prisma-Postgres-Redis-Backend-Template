@@ -17,6 +17,21 @@ const routers = [
         handler: authController.getLogin
     },
     {
+        method: "GET",
+        url: "/api/:email/:verifycode",
+        handler: authController.getVerifyAccount
+    },
+    {
+        method: "PATCH",
+        url: "/api/changepassword",
+        handler: authController.patchChangePassword
+    },
+    {
+        method: "PATCH",
+        url: "/api/verificationuser",
+        handler: authController.patchVerificationUser
+    },
+    {
         method: "POST",
         url: "/api/register",
         handler: authController.postRegister
@@ -35,22 +50,7 @@ const routers = [
         method: "POST",
         url: "/api/resendverificationmail",
         handler: authController.postResendVerificationMail
-    },
-    {
-        method: "PATCH",
-        url: "/api/changepassword",
-        handler: authController.patchChangePassword
-    },
-    {
-        method: "PATCH",
-        url: "/api/verificationuser",
-        handler: authController.patchVerificationUser
-    },
-    {
-        method: "GET",
-        url: "/api/:email/:verifycode",
-        handler: authController.postVerifyAccount
-    }
+    }   
 ]
 
 module.exports = routers;

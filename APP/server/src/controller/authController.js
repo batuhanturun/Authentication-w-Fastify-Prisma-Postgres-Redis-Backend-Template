@@ -327,7 +327,7 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
     }
 }
 
-const postVerifyAccount = async (req, reply) => {
+const getVerifyAccount = async (req, reply) => {
     try {
         let { verifyCode } = req.params;
         const verify = await prisma.verify_account.findFirst({
@@ -362,12 +362,12 @@ const postVerifyAccount = async (req, reply) => {
 module.exports = {
     home,
     getLogin,
+    getVerifyAccount,
     logOut,
     patchChangePassword,
     patchVerificationUser,
     postLogin,
     postRegister,
     postResetPassword,
-    postVerifyAccount,
     postResendVerificationMail
 }
