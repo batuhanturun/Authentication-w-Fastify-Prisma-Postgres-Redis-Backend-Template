@@ -50,7 +50,7 @@ const routers = [
         method: "POST",
         url: "/api/resendverificationmail",
         handler: authController.postResendVerificationMail
-    }   
+    }
 ]
 
 module.exports = routers;

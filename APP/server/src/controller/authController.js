@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 const home = async (req, reply) => {
     try {
-        reply.type('text/html');
         if (req.session.authenticated) {
             reply.send({ state: true })
         } else {
@@ -39,7 +38,7 @@ const postRegister = async (req, reply) => {
                     userID: newUser.id,
                     verifyCode: dbRandom
                 }
-            })
+            });
 
             let transporter = nodemailer.createTransport({
                 service: process.env.NODEMAILER_SERVICE,
@@ -180,6 +179,26 @@ const postLogin = async (req, reply) => {
                 reply.send({ state: true, name: user.name });
             }
         }
+    } catch (error) {
+        throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
+    }
+}
+
+const postAdminLogin = async (req, reply) => {
+    try {
+        let { email, password } = req.body;
+        const admin = await prisma.users.findFirst({
+            where: { email }
+        });
+        let result = await bcrypt.compare(password, user.password);
+        if(!admin && !result && !admin.isAdmin) {
+            throw createError(401, "Şifre veya E-Posta hatalı.");
+        } else {
+            req.session.authenticated = true;
+            req.session.user = user;
+            req.session.isAdmin = true;
+            reply.send({ state: true, name: user.name, isAdmin: true });
+        }    
     } catch (error) {
         throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
     }

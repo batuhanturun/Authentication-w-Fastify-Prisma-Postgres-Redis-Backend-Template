@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getData } from '../functions';
 
@@ -11,7 +11,7 @@ export default function Home() {
     async function submitLogout(e) {
         e.preventDefault();
         const response = await getData("/logout");
-        if(response.state === true) {
+        if (response.state === true) {
             console.log("User Successfuly Logout! ", response);
             setIsAuth(false);
             nav('/login');
@@ -20,29 +20,28 @@ export default function Home() {
         }
     }
 
-    async function submitLogin(e){
+    async function submitLogin(e) {
         e.preventDefault();
         nav('/login');
     }
 
-    /*
+
     async function home(e) {
         e.preventDefault();
         const response = await getData("/");
-        if(response.state === true) {
+        if (response.state === true) {
             setIsAuth(true);
         } else {
             setErrorMessage(response.errorMessage);
         }
     }
-    */
+
 
     return (
         <form>
             <h3>Welcome</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
             {isAuth ? (<button onClick={submitLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
-            <button onClick={submitLogout}>Logout</button>
         </form>
     )
 }

@@ -10,17 +10,20 @@ const router = require("./src/router/authRouter");
 
 const port = process.env.PORT
 
-fastify.register(fastifyCors,{origin:true,methods:["GET","POST"]});
+fastify.register(fastifyCors, { origin: true, methods: ["GET", "POST", "PATCH"] });
 fastify.register(fastifyCookie);
 fastify.register(require('@fastify/formbody'));
+fastify.register(require('@fastify/jwt'), {
+    secret: process.env.JWT_SECRET
+});
 //init session store
 const { createClient } = require("redis");
 let redisClient = createClient({ legacyMode: true });
 redisClient.connect().catch(console.error);
-fastify.register(fastifySession, { 
-    secret: process.env.SESSION_SECRET, 
-    cookie: { secure: false }, 
-    store: new RedisStore({ client: redisClient }) 
+fastify.register(fastifySession, {
+    secret: process.env.SESSION_SECRET,
+    cookie: { secure: false },
+    store: new RedisStore({ client: redisClient })
 });
 
 router.forEach((route, index) => {
