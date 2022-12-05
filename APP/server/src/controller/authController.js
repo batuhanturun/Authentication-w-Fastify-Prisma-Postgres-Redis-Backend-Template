@@ -184,6 +184,16 @@ const postLogin = async (req, reply) => {
     }
 }
 
+const getAdminLogin = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            reply.send({ state: true, name: req.session.user.name, isAdmin: req.session.user.isAdmin });
+        }
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
+    }
+}
+
 const postAdminLogin = async (req, reply) => {
     try {
         let { email, password } = req.body;
@@ -382,10 +392,12 @@ module.exports = {
     home,
     getLogin,
     getVerifyAccount,
+    getAdminLogin,
     logOut,
     patchChangePassword,
     patchVerificationUser,
     postLogin,
+    postAdminLogin,
     postRegister,
     postResetPassword,
     postResendVerificationMail

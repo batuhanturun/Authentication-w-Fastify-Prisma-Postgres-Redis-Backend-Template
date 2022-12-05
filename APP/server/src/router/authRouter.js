@@ -18,6 +18,11 @@ const routers = [
     },
     {
         method: "GET",
+        url: "/api/loginadmin",
+        handler: authController.getAdminLogin
+    },
+    {
+        method: "GET",
         url: "/api/:email/:verifycode",
         handler: authController.getVerifyAccount
     },
@@ -40,6 +45,11 @@ const routers = [
         method: "POST",
         url: "/api/login",
         handler: authController.postLogin
+    },
+    {
+        method: "POST",
+        url: "/api/loginadmin",
+        handler: authController.postAdminLogin
     },
     {
         method: "POST",
