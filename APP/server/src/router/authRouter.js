@@ -23,7 +23,7 @@ const routers = [
     },
     {
         method: "GET",
-        url: "/api/loginadmin",
+        url: "/api/adminlogin",
         handler: authController.getAdminLogin
     },
     {
@@ -53,7 +53,7 @@ const routers = [
     },
     {
         method: "POST",
-        url: "/api/loginadmin",
+        url: "/api/adminlogin",
         handler: authController.postAdminLogin
     },
     {
