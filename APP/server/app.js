@@ -35,7 +35,7 @@ const start = async () => {
         await fastify.listen({ port }).then(() => {
             console.log("Server connection Successful");
         }).catch((err) => {
-            console.log("Server connection Error", err);
+            console.log("Server connection Error ", err);
         })
     } catch (err) {
         fastify.log.error(err);

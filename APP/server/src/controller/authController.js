@@ -224,6 +224,17 @@ const logOut = async (req, reply) => {
     }
 }
 
+const adminLogOut = async (req, reply) => {
+    try {
+        req.session.authenticated = false;
+        req.session.isAdmin = false;
+        await req.session.destroy();
+        reply.send({ state: true });
+    } catch (error) {
+        throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
+    }
+}
+
 const postResetPassword = async (req, reply) => {
     try {
         let { email } = req.body;
@@ -358,14 +369,13 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
 
 const getVerifyAccount = async (req, reply) => {
     try {
-        let { verifyCode } = req.params;
+        let { verifyCode, email } = req.params;
         const verify = await prisma.verify_account.findFirst({
             where: { verifyCode }
         });
         const user = await prisma.users.findFirst({
-            where: { id: verify.userID }
+            where: { id: verify.userID, email: email }
         });
-        let email = user.email;
         if (!verify) {
             throw createError(401, "We were unable to find a user for this verification. Please Register!");
         } else if (verify.isUsed || user.isVerified) {
@@ -393,6 +403,7 @@ module.exports = {
     getLogin,
     getVerifyAccount,
     getAdminLogin,
+    adminLogOut,
     logOut,
     patchChangePassword,
     patchVerificationUser,

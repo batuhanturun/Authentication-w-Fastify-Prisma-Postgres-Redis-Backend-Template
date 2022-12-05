@@ -4,6 +4,8 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ResetPassword from "./screens/ResetPassword";
 import ResendVerificationMail from "./screens/ResendVerificationMail";
+import AdminPage from "./screens/AdminPage";
+import AdminLogin from "./screens/AdminLogin";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -42,6 +44,8 @@ function App() {
               <Route path='/register' element={<Register />} />
               <Route path='/resetpassword' element={<ResetPassword />} />
               <Route path='/resendverificationmail' element={<ResendVerificationMail />} />
+              <Route path='/adminlogin' element={<AdminLogin />} />
+              <Route path='/adminpage' element={<AdminPage />} />
               <Route path='/' element={<Home />} />
             </Routes>
           </div>

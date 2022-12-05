@@ -13,6 +13,11 @@ const routers = [
     },
     {
         method: "GET",
+        url: "/api/adminlogout",
+        handler: authController.adminLogOut
+    },
+    {
+        method: "GET",
         url: "/api/login",
         handler: authController.getLogin
     },
