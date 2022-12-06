@@ -14,7 +14,7 @@ export default function AdminLogin() {
         const response = await postData("/adminlogin", { email, password });
         if(response.state) {
             console.log("Admin Successfuly Logged In! ", response);
-            nav("/");
+            nav("/admin");
         } else {
             setErrorMessage(response.message);
         }

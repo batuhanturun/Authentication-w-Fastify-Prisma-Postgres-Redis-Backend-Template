@@ -17,6 +17,18 @@ const home = async (req, reply) => {
     }
 }
 
+const admin = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            reply.send({ state: true })
+        } else {
+            reply.send({ state: false })
+        }
+    } catch (error) {
+        throw createError(400, "Error : " + error);
+    }
+}
+
 const postRegister = async (req, reply) => {
     try {
         let { name, email, password } = req.body;
@@ -200,14 +212,18 @@ const postAdminLogin = async (req, reply) => {
         const admin = await prisma.users.findFirst({
             where: { email }
         });
-        let result = await bcrypt.compare(password, user.password);
-        if(!admin && !result && !admin.isAdmin) {
+        let result = await bcrypt.compare(password, admin.password);
+        if(!admin) {
+            throw createError(401, "Şifre veya E-Posta hatalı.");
+        } else if (!result) {
+            throw createError(401, "Şifre veya E-Posta hatalı.");
+        } else if (!admin.isAdmin) {
             throw createError(401, "Şifre veya E-Posta hatalı.");
         } else {
             req.session.authenticated = true;
-            req.session.user = user;
+            req.session.user = admin;
             req.session.isAdmin = true;
-            reply.send({ state: true, name: user.name, isAdmin: true });
+            reply.send({ state: true, name: admin.name, isAdmin: true });
         }    
     } catch (error) {
         throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
@@ -399,6 +415,7 @@ const getVerifyAccount = async (req, reply) => {
 }
 
 module.exports = {
+    admin,
     home,
     getLogin,
     getVerifyAccount,

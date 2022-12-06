@@ -39,7 +39,7 @@ export default function AdminPage() {
 
     return (
         <form>
-            <h3>Welcome</h3>
+            <h3>Admin Page</h3>
             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
             {isAuth ? (<button onClick={submitAdminLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
         </form>

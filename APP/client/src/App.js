@@ -45,7 +45,7 @@ function App() {
               <Route path='/resetpassword' element={<ResetPassword />} />
               <Route path='/resendverificationmail' element={<ResendVerificationMail />} />
               <Route path='/adminlogin' element={<AdminLogin />} />
-              <Route path='/adminpage' element={<AdminPage />} />
+              <Route path='/admin' element={<AdminPage />} />
               <Route path='/' element={<Home />} />
             </Routes>
           </div>
