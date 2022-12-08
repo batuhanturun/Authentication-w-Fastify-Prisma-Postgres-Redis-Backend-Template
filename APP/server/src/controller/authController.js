@@ -1,11 +1,15 @@
 const bcrypt = require("bcrypt");
+const CryptoJS = require("crypto-js");
+const AES = require("crypto-js/aes");
+const SHA256 = require("crypto-js/sha256");
 const dotenv = require("dotenv").config({ path: "./.env" });
+const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const createError = require("http-errors");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const home = async (req, reply) => {
+const home = async (req, reply) => { //!
     try {
         if (req.session.authenticated) {
             reply.send({ state: true })
@@ -17,7 +21,7 @@ const home = async (req, reply) => {
     }
 }
 
-const admin = async (req, reply) => {
+const admin = async (req, reply) => { //!
     try {
         if (req.session.authenticated && req.session.isAdmin) {
             reply.send({ state: true })
@@ -44,7 +48,7 @@ const postRegister = async (req, reply) => {
                 }
             });
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = await bcrypt.hash(random.toString(), 10);
+            let dbRandom = await bcrypt.hash(random.toString(), 10); //!
             const verifyCode = await prisma.verify_account.create({
                 data: {
                     userID: newUser.id,
@@ -81,7 +85,7 @@ const postRegister = async (req, reply) => {
     }
 }
 
-const patchVerificationUser = async (req, reply) => {
+const patchVerificationUser = async (req, reply) => { //!
     try {
 
         const verifyCode = await prisma.verify_account.findFirst({
@@ -121,7 +125,7 @@ const postResendVerificationMail = async (req, reply) => {
             throw createError(400, "This account has been already verified.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = await bcrypt.hash(random.toString(), 10);
+            let dbRandom = await bcrypt.hash(random.toString(), 10); //!
             const find = await prisma.verify_account.findFirst({
                 where: { userID: user.id }
             });
@@ -170,7 +174,7 @@ const getLogin = async (req, reply) => {
     }
 }
 
-const postLogin = async (req, reply) => {
+const postLogin = async (req, reply) => { //!
     try {
         let { email, password } = req.body;
         const user = await prisma.users.findFirst({
@@ -186,9 +190,20 @@ const postLogin = async (req, reply) => {
             if (user.isVerified !== true) {
                 throw createError(401, "Lütfen E-Mail adresinize gönderdiğimiz bağlantıdan hesabınızı onaylayın!");
             } else {
+                const token = jwt.sign({
+                    id: user.id,
+                    email: user.email,
+                    isVerified: user.isVerified,
+                    isAdmin: user.isAdmin,
+                },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: "30d"
+                    }
+                );
                 req.session.authenticated = true;
                 req.session.user = user;
-                reply.send({ state: true, name: user.name });
+                reply.send({ state: true, token: token });
             }
         }
     } catch (error) {
@@ -213,7 +228,7 @@ const postAdminLogin = async (req, reply) => {
             where: { email }
         });
         let result = await bcrypt.compare(password, admin.password);
-        if(!admin) {
+        if (!admin) {
             throw createError(401, "Şifre veya E-Posta hatalı.");
         } else if (!result) {
             throw createError(401, "Şifre veya E-Posta hatalı.");
@@ -224,7 +239,7 @@ const postAdminLogin = async (req, reply) => {
             req.session.user = admin;
             req.session.isAdmin = true;
             reply.send({ state: true, name: admin.name, isAdmin: true });
-        }    
+        }
     } catch (error) {
         throw createError(401, "Kullanıcı giriş yaparken hata oluştu. " + error);
     }
@@ -261,7 +276,7 @@ const postResetPassword = async (req, reply) => {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = await bcrypt.hash(random.toString(), 10);
+            let dbRandom = await bcrypt.hash(random.toString(), 10); //!
 
             const check = await prisma.reset_password.findFirst({
                 where: { userID: reset.id }
@@ -293,7 +308,7 @@ const postResetPassword = async (req, reply) => {
                 }
             });
 
-            let mailOptions = {
+            let mailOptions = { //!
                 from: process.env.NODEMAILER_USER,
                 to: email,
                 subject: 'Password Reset',
@@ -383,7 +398,7 @@ const patchChangePassword2 = async (req, reply) => {  // ileride password reset 
     }
 }
 
-const getVerifyAccount = async (req, reply) => {
+const getVerifyAccount = async (req, reply) => { //!
     try {
         let { verifyCode, email } = req.params;
         const verify = await prisma.verify_account.findFirst({

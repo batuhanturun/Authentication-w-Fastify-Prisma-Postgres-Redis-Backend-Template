@@ -13,9 +13,6 @@ const port = process.env.PORT
 fastify.register(fastifyCors, { origin: true, methods: ["GET", "POST", "PATCH"] });
 fastify.register(fastifyCookie);
 fastify.register(require('@fastify/formbody'));
-fastify.register(require('@fastify/jwt'), {
-    secret: process.env.JWT_SECRET
-});
 //init session store
 const { createClient } = require("redis");
 let redisClient = createClient({ legacyMode: true });
