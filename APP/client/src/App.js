@@ -8,6 +8,7 @@ import AdminPage from "./screens/AdminPage";
 import AdminLogin from "./screens/AdminLogin";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Verification from "./screens/Verification";
 
 //! BT Logo -> /login düzelt.
 
@@ -47,6 +48,7 @@ function App() {
               <Route path='/adminlogin' element={<AdminLogin />} />
               <Route path='/admin' element={<AdminPage />} />
               <Route path='/' element={<Home />} />
+              <Route path="/:id/verify/:resetCode" element={<Verification />} />
             </Routes>
           </div>
         </div>

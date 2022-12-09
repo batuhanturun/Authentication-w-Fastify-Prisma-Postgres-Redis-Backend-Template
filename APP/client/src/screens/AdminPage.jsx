@@ -25,18 +25,6 @@ export default function AdminPage() {
         nav('/adminlogin');
     }
 
-
-    async function home(e) {
-        e.preventDefault();
-        const response = await getData("/");
-        if (response.state === true) {
-            setIsAuth(true);
-        } else {
-            setErrorMessage(response.errorMessage);
-        }
-    }
-
-
     return (
         <form>
             <h3>Admin Page</h3>

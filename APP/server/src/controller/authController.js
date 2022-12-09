@@ -2,14 +2,14 @@ const bcrypt = require("bcrypt");
 const CryptoJS = require("crypto-js");
 const AES = require("crypto-js/aes");
 const SHA256 = require("crypto-js/sha256");
-const dotenv = require("dotenv").config({ path: "./.env" });
+const dotenv = require("dotenv").config({ path: "../../.env" });
 const jwt = require("jsonwebtoken");
-const nodemailer = require('nodemailer');
 const createError = require("http-errors");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const sendMail = require("../utils/sendMail");
 
-const home = async (req, reply) => { //!
+const home = async (req, reply) => { //! 
     try {
         if (req.session.authenticated) {
             reply.send({ state: true })
@@ -21,7 +21,7 @@ const home = async (req, reply) => { //!
     }
 }
 
-const admin = async (req, reply) => { //!
+const admin = async (req, reply) => { //! jwt check! aktif değil ise misafir sayfası gösterilecek.
     try {
         if (req.session.authenticated && req.session.isAdmin) {
             reply.send({ state: true })
@@ -48,35 +48,20 @@ const postRegister = async (req, reply) => {
                 }
             });
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = await bcrypt.hash(random.toString(), 10); //!
+            let dbRandom = await bcrypt.hash(random.toString(), 10); //! bcrypt yerine crypto-js ile kod oluştur. 
             const verifyCode = await prisma.verify_account.create({
                 data: {
                     userID: newUser.id,
                     verifyCode: dbRandom
                 }
             });
-
-            let transporter = nodemailer.createTransport({
-                service: process.env.NODEMAILER_SERVICE,
-                auth: {
-                    user: process.env.NODEMAILER_USER,
-                    pass: process.env.NODEMAILER_PASS
-                }
-            });
-            let mailOptions = {
-                from: process.env.NODEMAILER_USER,
-                to: email,
-                subject: 'Account Verification',
-                text: 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + newUser.email + '\/' + verifyCode.verifyCode + '\n\nThank You!\n'
-            };
-            transporter.sendMail(mailOptions, (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Mail Gönderildi : ' + data.response);
-                }
-            });
-            reply.send({ state: true });
+            let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/' + newUser.id + '\/verify\/' + verifyCode.verifyCode + '\n\nThank You!\n'
+            await sendMail(email, "Verify Email", url);
+            if (sendMail) {
+                reply.send({ state: true });
+            } else {
+                console.log("Hata oluştu!");
+            }
         } else {
             throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
         }
@@ -85,7 +70,7 @@ const postRegister = async (req, reply) => {
     }
 }
 
-const patchVerificationUser = async (req, reply) => { //!
+const patchVerificationUser = async (req, reply) => { //! crpyto-js ile oluşturulan kod veri tabanına hash'lenerek yazılacak. Bu koda basınca üyelik aktifleştirelecek.
     try {
 
         const verifyCode = await prisma.verify_account.findFirst({
@@ -137,27 +122,13 @@ const postResendVerificationMail = async (req, reply) => {
                     isUsed: false
                 }
             });
-            let transporter = nodemailer.createTransport({
-                service: process.env.NODEMAILER_SERVICE,
-                auth: {
-                    user: process.env.NODEMAILER_USER,
-                    pass: process.env.NODEMAILER_PASS
-                }
-            });
-            let mailOptions = {
-                from: process.env.NODEMAILER_USER,
-                to: email,
-                subject: 'Account Verification',
-                text: 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + user.email + '\/' + dbRandom + '\n\nThank You!\n'
-            };
-            transporter.sendMail(mailOptions, (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Mail Gönderildi : ' + data.response);
-                }
-            });
-            reply.send({ state: true });
+            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + user.email + '\/' + dbRandom + '\n\nThank You!\n';
+            sendMail(email, "Verify Email", url)
+            if (sendMail) {
+                reply.send({ state: true });
+            } else {
+                console.log("Hata oluştu!");
+            }
         }
     } catch (error) {
         throw createError(400, "Bir hata oluştu. " + error);
@@ -174,7 +145,7 @@ const getLogin = async (req, reply) => {
     }
 }
 
-const postLogin = async (req, reply) => { //!
+const postLogin = async (req, reply) => {
     try {
         let { email, password } = req.body;
         const user = await prisma.users.findFirst({
@@ -266,7 +237,7 @@ const adminLogOut = async (req, reply) => {
     }
 }
 
-const postResetPassword = async (req, reply) => {
+const postResetPassword = async (req, reply) => { //! crpyto-js ile oluşturulan kod veri tabanına hash'lenerek yazılacak. Bu koda basınca resetpassword yönlendirelecek.
     try {
         let { email } = req.body;
         const reset = await prisma.users.findFirst({
@@ -276,7 +247,7 @@ const postResetPassword = async (req, reply) => {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = await bcrypt.hash(random.toString(), 10); //!
+            let dbRandom = await bcrypt.hash(random.toString(), 10);
 
             const check = await prisma.reset_password.findFirst({
                 where: { userID: reset.id }
@@ -299,30 +270,13 @@ const postResetPassword = async (req, reply) => {
                     }
                 })
             }
-
-            let transporter = nodemailer.createTransport({
-                service: process.env.NODEMAILER_SERVICE,
-                auth: {
-                    user: process.env.NODEMAILER_USER,
-                    pass: process.env.NODEMAILER_PASS
-                }
-            });
-
-            let mailOptions = { //!
-                from: process.env.NODEMAILER_USER,
-                to: email,
-                subject: 'Password Reset',
-                html: `<h1>Reset Code: ${random}</h1>`
-            };
-
-            transporter.sendMail(mailOptions, (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Mail Gönderildi : ' + data.response);
-                }
-            });
-            reply.send({ state: true });
+            let url = `Reset Code: ${random}`; //! Link gönder.
+            sendMail(email, "Reset Password", url)
+            if (sendMail) {
+                reply.send({ state: true });
+            } else {
+                console.log("Hata oluştu!");
+            }
         }
     } catch (error) {
         throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
@@ -361,71 +315,73 @@ const patchChangePassword = async (req, reply) => {
     }
 }
 
-const patchChangePassword2 = async (req, reply) => {  // ileride password reset için link gönderildiğinde kullanılacak. Şimdilik deneme.
+const getVerifyAccount = async (req, reply) => { //! crpyto-js ile oluşturulan kod veri tabanına hash'lenerek yazılacak. Bu koda basınca üyelik aktifleştirelecek.
     try {
-        let { password, verifyPassword } = req.body;
-        let resetCode = req.params.resetCode;
-        if (!resetCode) {
-            throw createError(400, "resetCode'da hata oluştu!");
-        } else {
-            if (password !== verifyPassword) {
-                throw createError(401, "Şifreler eşleşmemektedir.");
-            } else {
-                const user = await prisma.users.findFirst({
-                    where: { email: req.params.email }
-                });
-                const change = await prisma.reset_password.findFirst({
-                    where: { userID: user.id }
-                });
-                let result = await bcrypt.compare(resetCode, change.resetCode);
-                if (result && user.id === change.userID && !change.isUsed && change.isActive) {
-                    const updateUser = await prisma.users.update({
-                        where: { email: user.email },
-                        data: { password: await bcrypt.hash(password, 10) }
-                    })
-                    const updateCode = await prisma.reset_password.updateMany({
-                        where: { userID: user.id, resetCode: change.resetCode },
-                        data: { isActive: false, isUsed: true }
-                    })
-                    reply.send({ state: true });
-                } else {
-                    throw createError(400, "Şifre sıfırlanırken hata oluştu.");
-                }
-            }
-        }
-    } catch (error) {
-        throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
-    }
-}
-
-const getVerifyAccount = async (req, reply) => { //!
-    try {
-        let { verifyCode, email } = req.params;
+        let { email, verifyCode } = req.params;
         const verify = await prisma.verify_account.findFirst({
             where: { verifyCode }
         });
         const user = await prisma.users.findFirst({
             where: { id: verify.userID, email: email }
         });
-        if (!verify) {
+        if (!user) {
             throw createError(401, "We were unable to find a user for this verification. Please Register!");
-        } else if (verify.isUsed || user.isVerified) {
-            throw createError(401, "User has been already verified. Please Login!");
-        } else if (!verify.isActive) {
-            throw createError(401, "Link geçerliliğini kaybetmiştir.");
         } else {
-            const updateUser = await prisma.users.update({
-                where: { id: verify.userID },
-                data: { isVerified: true }
-            });
-            const updateVerify = await prisma.verify_account.update({
-                where: { verifyCode },
-                data: { isUsed: true, isActive: false }
-            });
-            reply.send({ state: true });
+            if (!verify) {
+                throw createError(401, "We were unable to find a user for this verification. Please Register!");
+            } else if (verify.isUsed || user.isVerified) {
+                throw createError(401, "User has been already verified. Please Login!");
+            } else if (!verify.isActive) {
+                throw createError(401, "Link geçerliliğini kaybetmiştir.");
+            } else {
+                const updateUser = await prisma.users.update({
+                    where: { id: verify.userID },
+                    data: { isVerified: true }
+                });
+                const updateVerify = await prisma.verify_account.update({
+                    where: { verifyCode },
+                    data: { isUsed: true, isActive: false }
+                });
+                reply.send({ state: true });
+            }
         }
     } catch (error) {
         throw createError(400, "Onaylama işleminde bir hata oluştu. " + error);
+    }
+}
+
+const getResetPassword = async (req, reply) => { //! crpyto-js ile oluşturulan kod veri tabanına hash'lenerek yazılacak. Bu koda basınca üyelik aktifleştirelecek.
+    try {
+        let { resetCode, email } = req.params;
+        const reset = await prisma.reset_password.findFirst({
+            where: { resetCode }
+        });
+        const user = await prisma.users.findFirst({
+            where: { id: reset.userID, email: email }
+        });
+        if (!user) {
+            throw createError(401, "We were unable to find a user for this verification. Please Register!");
+        } else {
+            if (!reset) {
+                throw createError(401, "We were unable to find a user for this verification. Please Register!");
+            } else if (reset.isUsed || user.isVerified) {
+                throw createError(401, "Bu sıfırlama bağlantısı kullanılmış!");
+            } else if (!reset.isActive) {
+                throw createError(401, "Link geçerliliğini kaybetmiştir.");
+            } else {
+                const updateUser = await prisma.users.update({
+                    where: { id: reset.userID },
+                    data: { isVerified: true }
+                });
+                const updateVerify = await prisma.reset_password.update({
+                    where: { resetCode },
+                    data: { isUsed: true, isActive: false }
+                });
+                reply.send({ state: true });
+            }
+        }
+    } catch (error) {
+        throw createError(400, "Şifre sıfırlama işleminde bir hata oluştu. " + error);
     }
 }
 
@@ -433,6 +389,7 @@ module.exports = {
     admin,
     home,
     getLogin,
+    getResetPassword,
     getVerifyAccount,
     getAdminLogin,
     adminLogOut,

@@ -1,4 +1,5 @@
 const authController = require("../controller/authController");
+const jwtVerify = require("../middleware/authTokenVerify");
 
 const routers = [
     {
@@ -33,8 +34,13 @@ const routers = [
     },
     {
         method: "GET",
-        url: "/api/:email/:verifycode",
+        url: "/api/:email/verify/:verifycode",
         handler: authController.getVerifyAccount
+    },
+    {
+        method: "GET",
+        url: "/api/:id/reset/:resetcode",
+        handler: authController.getResetPassword
     },
     {
         method: "PATCH",

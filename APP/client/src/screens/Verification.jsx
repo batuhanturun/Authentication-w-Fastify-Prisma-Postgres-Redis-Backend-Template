@@ -1,28 +1,40 @@
 /*
 Bu kısım link'e tıklanınca onaylama aktifleşmesi için. Daha aktif değil.
 */
-import React, { useState } from 'react'
+import React, { useState, useEffect, Fragment } from 'react';
+import { useParams } from 'react-router-dom';
 import { getData } from '../functions';
 
 export default function Verification() {
 
-    let [errorMessage, setErrorMessage] = useState(null);
+    let [validUrl, setValidUrl] = useState(false);
+    const param = useParams();
 
-    async function submitVerification(e) {
-        e.preventDefault();
-        const response = await getData("/confirmation/:email/:verifycode");
-        if (response.state === true) {
-            setErrorMessage(null);
-            console.log("Kullanıcı başarılı bir şekilde onaylandı. ", response);
-        } else {
-            setErrorMessage(response.message);
-        }
-    }
+    useEffect(() => {
+        const verifyEmailUrl = async () => {
+            try {
+                const response = await getData(`/${param.id}/verify/${param.verifyCode}`);
+                console.log(response);
+                setValidUrl(true);
+            } catch (error) {
+                console.log(error);
+                setValidUrl(false);
+            }
+        };
+        verifyEmailUrl();
+    }, [param]);
 
     return (
-        <form>
-            <h3>User Verification</h3>
-            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı.</span>)}
-        </form>
+        <Fragment>
+            {validUrl ? (
+            <form>
+                <h3>User Verification</h3>
+                <span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı.</span>
+            </form>
+            ) : (
+            <h1>404 Not Found</h1>
+            )}
+
+        </Fragment>
     )
 }
