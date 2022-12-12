@@ -41,7 +41,6 @@ const postRegister = async (req, reply) => {
         if (!user) {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString(); 
-            console.log(dbRandom); //! 
             const newUser = await prisma.users.create({
                 data: {
                     name,
@@ -175,7 +174,7 @@ const postLogin = async (req, reply) => {
                 );
                 req.session.authenticated = true;
                 req.session.user = user;
-                reply.send({ state: true, token: token, authenticated: true });
+                reply.send({ state: true, token: token });
             }
         }
     } catch (error) {

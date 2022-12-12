@@ -24,8 +24,8 @@ function App() {
     const welcome = async () => {
       try {
         const response = await getData("/");
-        if(response.authenticated) {
-          setUser(true);
+        if(response.session.authenticated) {
+          setUser(() => true); //!çalışmıyor.
         }
       } catch (error) {
         console.log("Hata oluştu.");
@@ -43,7 +43,17 @@ function App() {
             <Link className="navbar-brand" to={'/'}>
               Authentication Demo
             </Link>
-            {!user ? (
+            {user ? (
+              <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to={'/logout'}>
+                    Exit
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            ) : (
               <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
@@ -57,25 +67,15 @@ function App() {
                   </Link>
                 </li>
               </ul>
-            </div>
-            ) : (
-              <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/logout'}>
-                    Exit
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            </div>          
             )}        
           </div>
         </nav>
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
-              {!user && <Route path='/' exact element={<Home />} />}
-              {!user && <Route path='/logout' exact element={<Logout />} />}
+              {user && <Route path='/' exact element={<Home />} />}
+              {user && <Route path='/logout' exact element={<Logout />} />}
               <Route path='/login' exact element={<Login />} />
               <Route path='/register' exact element={<Register />} />
               <Route path='/resetpassword' exact element={<ResetPassword />} />
