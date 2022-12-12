@@ -12,10 +12,9 @@ export default function Logout() {
                 var counter = 0;
                 var interval = setInterval(async function () {
                     counter++;
-                    if (counter == 5) {
+                    if (counter === 3) {
                         const response = await getData("/logout");
                         console.log(response);
-                        localStorage.removeItem("token");
                         nav("/login");
                         clearInterval(interval);
                     }

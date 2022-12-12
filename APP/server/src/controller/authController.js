@@ -175,7 +175,7 @@ const postLogin = async (req, reply) => {
                 );
                 req.session.authenticated = true;
                 req.session.user = user;
-                reply.send({ state: true, token: token });
+                reply.send({ state: true, token: token, authenticated: true });
             }
         }
     } catch (error) {

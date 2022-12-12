@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import Home from './screens/Home';
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -12,9 +12,28 @@ import Verification from "./screens/Verification";
 import ResetPasswordMail from "./screens/ResetPasswordMail";
 import Logout from "./screens/Logout";
 
+import { getData } from "./functions";
+import { useEffect, useState } from "react";
+
 function App() {
 
-  const user = localStorage.getItem("token"); //! Düzelt
+  let [user, setUser] = useState(false);
+  //! Üst bar değişmiyor.
+
+  useEffect(() => {
+    const welcome = async () => {
+      try {
+        const response = await getData("/");
+        if(response.authenticated) {
+          setUser(true);
+        }
+      } catch (error) {
+        console.log("Hata oluştu.");
+      }
+    };
+    welcome();
+  });
+  
 
   return (
     <BrowserRouter>
@@ -55,8 +74,8 @@ function App() {
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
-              {user && <Route path='/' exact element={<Home />} />}
-              {user && <Route path='/logout' exact element={<Logout />} />}
+              {!user && <Route path='/' exact element={<Home />} />}
+              {!user && <Route path='/logout' exact element={<Logout />} />}
               <Route path='/login' exact element={<Login />} />
               <Route path='/register' exact element={<Register />} />
               <Route path='/resetpassword' exact element={<ResetPassword />} />
