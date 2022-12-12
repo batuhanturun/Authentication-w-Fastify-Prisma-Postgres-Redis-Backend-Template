@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Home from './screens/Home';
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -9,20 +9,22 @@ import AdminLogin from "./screens/AdminLogin";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Verification from "./screens/Verification";
-
-//! BT Logo -> /login düzelt.
+import ResetPasswordMail from "./screens/ResetPasswordMail";
 
 function App() {
+
+  const user = localStorage.getItem("token"); //! Düzelt
 
   return (
     <BrowserRouter>
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container">
-            <Link className="navbar-brand" to={'/login'}>
-              BT
+            <Link className="navbar-brand" to={'/'}>
+              Authentication Demo
             </Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+            {!user ? (
+              <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <Link className="nav-link" to={'/login'}>
@@ -36,19 +38,32 @@ function App() {
                 </li>
               </ul>
             </div>
+            ) : (
+              <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to={'/logout'}>
+                    Exit
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            )}        
           </div>
         </nav>
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/resetpassword' element={<ResetPassword />} />
-              <Route path='/resendverificationmail' element={<ResendVerificationMail />} />
-              <Route path='/adminlogin' element={<AdminLogin />} />
-              <Route path='/admin' element={<AdminPage />} />
-              <Route path='/' element={<Home />} />
-              <Route path="/:id/verify/:resetCode" element={<Verification />} />
+              {user && <Route path='/' exact element={<Home />} />}
+              <Route path='/login' exact element={<Login />} />
+              <Route path='/register' exact element={<Register />} />
+              <Route path='/resetpassword' exact element={<ResetPassword />} />
+              <Route path='/resendverificationmail' exact element={<ResendVerificationMail />} />
+              <Route path='/adminlogin' exact element={<AdminLogin />} />
+              <Route path='/admin' exact element={<AdminPage />} />
+              <Route path='/' exact element={<Navigate replace to ="/login" />} />
+              <Route path="/:id/verify/:verifyCode" element={<Verification />} />
+              <Route path="/:id/verify/:resetCode" element={<ResetPasswordMail />} />
             </Routes>
           </div>
         </div>

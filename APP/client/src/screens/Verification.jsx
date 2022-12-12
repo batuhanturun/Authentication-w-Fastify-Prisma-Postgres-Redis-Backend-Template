@@ -1,6 +1,3 @@
-/*
-Bu kısım link'e tıklanınca onaylama aktifleşmesi için. Daha aktif değil.
-*/
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { getData } from '../functions';
