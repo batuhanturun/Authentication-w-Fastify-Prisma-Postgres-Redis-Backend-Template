@@ -14,6 +14,7 @@ export default function Login() {
     const response = await postData("/login", { email: email, password: password });
     if (response.state === true) {
       console.log("User Successfuly Logged In! ", response);
+      localStorage.setItem("token", response.data);
       nav('/');
     }
     else {

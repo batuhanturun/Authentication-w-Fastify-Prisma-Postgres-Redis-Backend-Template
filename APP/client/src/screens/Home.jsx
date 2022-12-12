@@ -13,6 +13,7 @@ export default function Home() {
         const response = await getData("/logout");
         if (response.state === true) {
             console.log("User Successfuly Logout! ", response);
+            localStorage.removeItem("token");
             setIsAuth(false);
             nav('/login');
         } else {
@@ -25,17 +26,21 @@ export default function Home() {
         nav('/login');
     }
 
-
-    async function home(e) {
-        e.preventDefault();
-        const response = await getData("/");
-        if (response.state === true) {
-            setIsAuth(true);
-        } else {
-            setErrorMessage(response.errorMessage);
-        }
-    }
-
+    useEffect(() => {
+        const home = async () => {
+            try {
+                const response = await getData("/");
+                if (response.state === true) {
+                    setIsAuth(true);
+                } else {
+                    setErrorMessage(response.errorMessage);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        home();
+    })
 
     return (
         <form>

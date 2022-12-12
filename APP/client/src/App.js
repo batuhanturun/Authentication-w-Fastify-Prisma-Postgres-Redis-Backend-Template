@@ -10,6 +10,7 @@ import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Verification from "./screens/Verification";
 import ResetPasswordMail from "./screens/ResetPasswordMail";
+import Logout from "./screens/Logout";
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
           <div className="auth-inner">
             <Routes>
               {user && <Route path='/' exact element={<Home />} />}
+              {user && <Route path='/logout' exact element={<Logout />} />}
               <Route path='/login' exact element={<Login />} />
               <Route path='/register' exact element={<Register />} />
               <Route path='/resetpassword' exact element={<ResetPassword />} />
@@ -62,6 +64,7 @@ function App() {
               <Route path='/adminlogin' exact element={<AdminLogin />} />
               <Route path='/admin' exact element={<AdminPage />} />
               <Route path='/' exact element={<Navigate replace to ="/login" />} />
+              <Route path='/logout' exact element={<Navigate replace to ="/login" />} />
               <Route path="/:id/verify/:verifyCode" element={<Verification />} />
               <Route path="/:id/verify/:resetCode" element={<ResetPasswordMail />} />
             </Routes>
