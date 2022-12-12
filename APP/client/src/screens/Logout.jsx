@@ -1,20 +1,25 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react';
+import { useNavigate } from "react-router-dom";
 import { getData } from '../functions';
 
 export default function Logout() {
 
+    const nav = useNavigate();
+
     useEffect(() => {
         const logOut = async () => {
             try {
-                var timeleft = 3;
-                var downloadTimer = setInterval(function () {
-                    if (timeleft <= 0) {
-                        clearInterval(downloadTimer);
+                var counter = 0;
+                var interval = setInterval(async function () {
+                    counter++;
+                    if (counter == 5) {
+                        const response = await getData("/logout");
+                        console.log(response);
+                        localStorage.removeItem("token");
+                        nav("/login");
+                        clearInterval(interval);
                     }
-                    timeleft -= 1;
                 }, 1000);
-                const response = await getData("/logout");
-                console.log(response);
             } catch (error) {
                 console.log(error);
             }

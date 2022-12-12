@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-const home = async (req, reply) => { //! jwt check! aktif değil ise misafir sayfası gösterilecek.
+const home = async (req, reply) => { 
     try {
         if (req.session.authenticated) {
             reply.send({ state: true })
