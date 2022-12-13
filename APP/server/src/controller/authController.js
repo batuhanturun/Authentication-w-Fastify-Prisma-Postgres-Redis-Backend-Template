@@ -9,6 +9,7 @@ const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
 //! session veya jwt geçerken reply.send'leri düzeltmeyi unutma.
+//! güvenlik açığı için mailler hashlenebilir. DB elegeçerse resetpassword ile şifre sıfırlayıp hesaplar ele geçmesin diye.
 
 const home = async (req, reply) => {
     try {
@@ -73,15 +74,15 @@ const postRegister = async (req, reply) => {
 
 const patchVerificationUser = async (req, reply) => {
     try {
-
-        const verifyCode = await prisma.verify_account.findFirst({
-            where: { verifyCode: req.params.verifyCode }
+        let { id, verifyCode } = req.params;
+        const checkCode = await prisma.verify_account.findFirst({
+            where: { verifyCode }
         })
-        if (!verifyCode) {
+        if (!checkCode) {
             throw createError(400, "Your verification link may have expired.");
         } else {
             const user = await prisma.users.findFirst({
-                where: { email: req.params.email }
+                where: { id }
             });
             if (!user) {
                 throw createError(400, "We were unable to find a user for this verification.");
@@ -89,7 +90,7 @@ const patchVerificationUser = async (req, reply) => {
                 throw createError(400, "User has been already verified.");
             } else {
                 const updateUser = await prisma.users.update({
-                    where: { email: user.email },
+                    where: { id: user.id },
                     data: { isVerified: true }
                 })
                 reply.send({ state: true });
