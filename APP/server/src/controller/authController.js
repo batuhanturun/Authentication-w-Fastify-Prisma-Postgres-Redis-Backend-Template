@@ -8,10 +8,12 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-const home = async (req, reply) => { 
+//! session veya jwt geçerken reply.send'leri düzeltmeyi unutma.
+
+const home = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            reply.send({ state: true })
+            reply.send({ state: true, authenticated: true });
         } else {
             reply.send({ state: false })
         }
@@ -40,7 +42,7 @@ const postRegister = async (req, reply) => {
         });
         if (!user) {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString(); 
+            let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString();
             const newUser = await prisma.users.create({
                 data: {
                     name,
@@ -69,7 +71,7 @@ const postRegister = async (req, reply) => {
     }
 }
 
-const patchVerificationUser = async (req, reply) => { 
+const patchVerificationUser = async (req, reply) => {
     try {
 
         const verifyCode = await prisma.verify_account.findFirst({
@@ -90,7 +92,7 @@ const patchVerificationUser = async (req, reply) => {
                     where: { email: user.email },
                     data: { isVerified: true }
                 })
-                reply.send({state: true});
+                reply.send({ state: true });
             }
         }
     } catch (error) {
@@ -122,7 +124,7 @@ const postResendVerificationMail = async (req, reply) => {
                     isUsed: false
                 }
             });
-            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + user.email + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + user.id + '\/' + dbRandom + '\n\nThank You!\n';
             sendMail(email, "Verify Email", url)
             if (sendMail) {
                 reply.send({ state: true });
@@ -174,7 +176,7 @@ const postLogin = async (req, reply) => {
                 );
                 req.session.authenticated = true;
                 req.session.user = user;
-                reply.send({ state: true, token: token });
+                reply.send({ state: true, authenticated: true, token: token });
             }
         }
     } catch (error) {
@@ -237,7 +239,7 @@ const adminLogOut = async (req, reply) => {
     }
 }
 
-const postResetPassword = async (req, reply) => { 
+const postResetPassword = async (req, reply) => {
     try {
         let { email } = req.body;
         const reset = await prisma.users.findFirst({
@@ -268,9 +270,9 @@ const postResetPassword = async (req, reply) => {
                         isActive: true,
                         isUsed: false
                     }
-                })
-            }
-            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + user.email + '\/' + dbRandom + '\n\nThank You!\n';
+                });
+            }        
+            let url = 'Hello ' + reset.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + reset.id + '\/' + dbRandom + '\n\nThank You!\n';
             sendMail(email, "Reset Password", url)
             if (sendMail) {
                 reply.send({ state: true });
@@ -342,7 +344,7 @@ const patchResetPassword = async (req, reply) => {
                 } else {
                     throw createError(400, "Kod geçerliliğini kaybetmiştir.");
                 }
-            } else {    
+            } else {
                 throw createError(400, "Kullanıcı bulunamadı.");
             }
         }
@@ -351,7 +353,7 @@ const patchResetPassword = async (req, reply) => {
     }
 }
 
-const getVerifyAccount = async (req, reply) => { 
+const getVerifyAccount = async (req, reply) => {
     try {
         let { id, verifyCode } = req.params;
         const verify = await prisma.verify_account.findFirst({
@@ -360,7 +362,7 @@ const getVerifyAccount = async (req, reply) => {
         const user = await prisma.users.findFirst({
             where: { id }
         });
-        if(user.id !== verify.userID) {
+        if (user.id !== verify.userID) {
             throw createError(401, "We were unable to find a user for this verification. Please Register!");
         } else {
             if (!user) {
@@ -384,7 +386,7 @@ const getVerifyAccount = async (req, reply) => {
                     reply.send({ state: true });
                 }
             }
-        }    
+        }
     } catch (error) {
         throw createError(400, "Onaylama işleminde bir hata oluştu. " + error);
     }
@@ -399,7 +401,7 @@ const getResetPassword = async (req, reply) => {
         const user = await prisma.users.findFirst({
             where: { id: verify.userID }
         });
-        if(user.id !== verify.userID) {
+        if (user.id !== verify.userID) {
             throw createError(401, "We were unable to find a user. Please Register!");
         } else {
             reply.send({ state: true });

@@ -8,7 +8,7 @@ let RedisStore = require("connect-redis")(fastifySession);
 
 const router = require("./src/router/authRouter");
 
-const port = process.env.PORT
+const port = process.env.PORT;
 
 fastify.register(fastifyCors, { origin: true, methods: ["GET", "POST", "PATCH"] });
 fastify.register(fastifyCookie);
@@ -25,7 +25,7 @@ fastify.register(fastifySession, {
 
 router.forEach((route, index) => {
     fastify.route(route)
-})
+});
 
 const start = async () => {
     try {

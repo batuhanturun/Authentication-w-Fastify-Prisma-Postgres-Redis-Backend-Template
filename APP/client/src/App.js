@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Home from './screens/Home';
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -17,22 +17,23 @@ import { useEffect, useState } from "react";
 
 function App() {
 
-  let [user, setUser] = useState(false);
-  //! Üst bar değişmiyor.
+  let [user, setUser] = useState();
 
   useEffect(() => {
     const welcome = async () => {
       try {
         const response = await getData("/");
-        if(response.session.authenticated) {
-          setUser(() => true); //!çalışmıyor.
+        if(response.authenticated) {
+          setUser(() => true); //! Logout olunca güncellenmiyor.
+        } else{
+          setUser(() => false);
         }
       } catch (error) {
-        console.log("Hata oluştu.");
+        console.log(error);
       }
     };
     welcome();
-  });
+  }, [user]);
   
 
   return (

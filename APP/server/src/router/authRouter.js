@@ -1,5 +1,4 @@
 const authController = require("../controller/authController");
-const jwtVerify = require("../middleware/authTokenVerify");
 
 const routers = [
     {
