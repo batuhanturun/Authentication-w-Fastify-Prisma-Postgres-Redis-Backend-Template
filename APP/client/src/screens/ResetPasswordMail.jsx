@@ -14,9 +14,9 @@ export default function ResetPasswordMail() {
     let [validUrl, setValidUrl] = useState(false);
     const param = useParams();
 
-    async function submitChangePassword(e) {
+    async function submitChangePassword(e, param) {
         e.preventDefault();
-        const response = await patchData(`/${param.id}/verify/${param.resetCode}`, { password: password, verifyPassword: verifyPassword });
+        const response = await patchData(`/verify/${param.id}/${param.resetCode}`, { password: password, verifyPassword: verifyPassword });
         if (response.state === true) {
             console.log("Password Successfuly Changed! ", response);
             nav('/login');
@@ -28,7 +28,7 @@ export default function ResetPasswordMail() {
     useEffect(() => {
         const resetEmailUrl = async () => {
             try {
-                const response = await getData(`/${param.id}/verify/${param.resetCode}`);
+                const response = await getData(`/verify/${param.id}/${param.resetCode}`);
                 console.log(response);
                 setValidUrl(true);
             } catch (error) {

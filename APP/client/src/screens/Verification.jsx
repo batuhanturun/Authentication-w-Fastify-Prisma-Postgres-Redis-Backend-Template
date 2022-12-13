@@ -10,7 +10,7 @@ export default function Verification() {
     useEffect(() => {
         const verifyEmailUrl = async () => {
             try {
-                const response = await getData(`/${param.id}/verify/${param.verifyCode}`);
+                const response = await getData(`/verify/${param.id}/${param.verifyCode}`);
                 console.log(response);
                 setValidUrl(true);
             } catch (error) {

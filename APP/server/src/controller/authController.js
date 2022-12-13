@@ -124,7 +124,7 @@ const postResendVerificationMail = async (req, reply) => {
                     isUsed: false
                 }
             });
-            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + user.id + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + user.id + '\/' + dbRandom + '\n\nThank You!\n';
             sendMail(email, "Verify Email", url)
             if (sendMail) {
                 reply.send({ state: true });
@@ -272,7 +272,7 @@ const postResetPassword = async (req, reply) => {
                     }
                 });
             }        
-            let url = 'Hello ' + reset.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/confirmation\/' + reset.id + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + reset.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/reset\/' + reset.id + '\/' + dbRandom + '\n\nThank You!\n';
             sendMail(email, "Reset Password", url)
             if (sendMail) {
                 reply.send({ state: true });

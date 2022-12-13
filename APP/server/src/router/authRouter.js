@@ -33,17 +33,17 @@ const routers = [
     },
     {
         method: "GET",
-        url: "/api/:id/verify/:verifyCode",
+        url: "/api/verify/:id/:verifyCode",
         handler: authController.getVerifyAccount
     },
     {
         method: "GET",
-        url: "/api/:id/reset/:resetCode",
+        url: "/api/reset/:id/:resetCode",
         handler: authController.getResetPassword
     },
     {
         method: "PATCH",
-        url: "/api/:id/reset/:resetCode",
+        url: "/api/reset/:id/:resetCode",
         handler: authController.patchResetPassword
     },
     {
