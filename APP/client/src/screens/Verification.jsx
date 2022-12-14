@@ -11,11 +11,13 @@ export default function Verification() {
         const verifyEmailUrl = async () => {
             try {
                 const response = await getData(`/verify/${param.id}/${param.verifyCode}`);
-                console.log(response);
-                setValidUrl(true);
+                if(response.state) {
+                    setValidUrl(true);
+                } else {
+                    setValidUrl(false);
+                }             
             } catch (error) {
-                console.log(error);
-                setValidUrl(false);
+                console.log(error);         
             }
         };
         verifyEmailUrl();
@@ -26,7 +28,7 @@ export default function Verification() {
             {validUrl ? (
             <form>
                 <h3>User Verification</h3>
-                <span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı.</span>
+                <span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>
             </form>
             ) : (
             <h1>404 Not Found</h1>

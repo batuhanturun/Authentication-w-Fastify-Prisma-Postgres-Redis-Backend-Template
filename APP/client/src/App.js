@@ -17,24 +17,7 @@ import { useEffect, useState } from "react";
 
 function App() {
 
-  let [user, setUser] = useState();
-
-  useEffect(() => {
-    const welcome = async () => {
-      try {
-        const response = await getData("/");
-        if(response.authenticated) {
-          setUser(() => true); //! Logout olunca güncellenmiyor.
-        } else{
-          setUser(() => false);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    welcome();
-  }, [user]);
-  
+  let [user, setUser] = useState(false); //! Bunu kaldırmayı unutma.
 
   return (
     <BrowserRouter>
@@ -85,8 +68,8 @@ function App() {
               <Route path='/admin' exact element={<AdminPage />} />
               <Route path='/' exact element={<Navigate replace to ="/login" />} />
               <Route path='/logout' exact element={<Navigate replace to ="/login" />} />
-              <Route path="/:id/verify/:verifyCode" element={<Verification />} />
-              <Route path="/:id/verify/:resetCode" element={<ResetPasswordMail />} />
+              <Route path="/verify/:id/:verifyCode" element={<Verification />} />
+              <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />
             </Routes>
           </div>
         </div>

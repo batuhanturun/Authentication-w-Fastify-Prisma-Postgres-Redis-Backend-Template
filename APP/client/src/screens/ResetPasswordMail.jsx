@@ -17,7 +17,7 @@ export default function ResetPasswordMail() {
     async function submitChangePassword(e, param) {
         e.preventDefault();
         const response = await patchData(`/reset/${param.id}/${param.resetCode}`, { password: password, verifyPassword: verifyPassword });
-        if (response.state === true) {
+        if (response.state) {
             console.log("Password Successfuly Changed! ", response);
             nav('/login');
         } else {
@@ -29,11 +29,13 @@ export default function ResetPasswordMail() {
         const resetEmailUrl = async () => {
             try {
                 const response = await getData(`/reset/${param.id}/${param.resetCode}`);
-                console.log(response);
-                setValidUrl(true);
+                if(response.state) {
+                    setValidUrl(true);
+                } else {
+                    setValidUrl(false);
+                }              
             } catch (error) {
                 console.log(error);
-                setValidUrl(false);
             }
         };
         resetEmailUrl();
@@ -42,7 +44,7 @@ export default function ResetPasswordMail() {
   return (
     <Fragment>
             {validUrl ? (
-            <form onSubmit={submitChangePassword}>
+            <form>
                 <h3>Reset Password</h3>
                 {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                 <div className="mb-3">
@@ -68,7 +70,7 @@ export default function ResetPasswordMail() {
                     />
                 </div>
                 <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" onClick={submitChangePassword}>
                         Change Password
                     </button>
                 </ div>

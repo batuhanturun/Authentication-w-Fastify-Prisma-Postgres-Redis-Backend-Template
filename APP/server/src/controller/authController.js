@@ -43,7 +43,7 @@ const postRegister = async (req, reply) => {
         });
         if (!user) {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString();
+            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
             const newUser = await prisma.users.create({
                 data: {
                     name,
@@ -57,7 +57,7 @@ const postRegister = async (req, reply) => {
                     verifyCode: dbRandom
                 }
             });
-            let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/' + newUser.id.toString() + '\/verify\/' + verifyCode.verifyCode + '\n\nThank You!\n'
+            let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + newUser.id + '\/' + dbRandom + '\n\nThank You!\n';
             await sendMail(email, "Verify Email", url);
             if (sendMail) {
                 reply.send({ state: true });
@@ -74,15 +74,14 @@ const postRegister = async (req, reply) => {
 
 const patchVerificationUser = async (req, reply) => {
     try {
-        let { id, verifyCode } = req.params;
         const checkCode = await prisma.verify_account.findFirst({
-            where: { verifyCode }
+            where: { verifyCode: req.params.verifyCode }
         })
         if (!checkCode) {
             throw createError(400, "Your verification link may have expired.");
         } else {
             const user = await prisma.users.findFirst({
-                where: { id }
+                where: { id: parseInt(req.params.id) }
             });
             if (!user) {
                 throw createError(400, "We were unable to find a user for this verification.");
@@ -113,7 +112,7 @@ const postResendVerificationMail = async (req, reply) => {
             throw createError(400, "This account has been already verified.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString();
+            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
             const find = await prisma.verify_account.findFirst({
                 where: { userID: user.id }
             });
@@ -250,7 +249,7 @@ const postResetPassword = async (req, reply) => {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.AES.encrypt(random.toString(), process.env.CRYPTO_SECRET).toString();
+            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
 
             const check = await prisma.reset_password.findFirst({
                 where: { userID: reset.id }
@@ -288,16 +287,15 @@ const postResetPassword = async (req, reply) => {
 
 const patchChangePassword = async (req, reply) => {
     try {
-        let { id, resetCode } = req.params;
         let { password, verifyPassword } = req.body;
         if (password !== verifyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir.");
         } else {
             const user = await prisma.users.findFirst({
-                where: { id }
+                where: { id: parseInt(req.params.id) }
             });
             const change = await prisma.reset_password.findFirst({
-                where: { userID: user.id, resetCode }
+                where: { userID: user.id, resetCode: req.params.resetCode }
             });
             if (user.id === change.userID && !change.isUsed && change.isActive) {
                 const updateUser = await prisma.users.update({
@@ -321,12 +319,11 @@ const patchChangePassword = async (req, reply) => {
 const patchResetPassword = async (req, reply) => {
     try {
         let { password, verifyPassword } = req.body;
-        let { id, resetCode } = req.params;
         if (password !== verifyPassword) {
             throw createError(401, "Şifreler eşleşmemektedir.");
         } else {
             const change = await prisma.reset_password.findFirst({
-                where: { resetCode, userID: id }
+                where: { resetCode: req.params.resetCode, userID: parseInt(req.params.id) }
             });
             const user = await prisma.users.findFirst({
                 where: { id: change.userID }
@@ -334,7 +331,7 @@ const patchResetPassword = async (req, reply) => {
             if (change && user) {
                 if (user.id === change.userID && !change.isUsed && change.isActive) {
                     const updateUser = await prisma.users.update({
-                        where: { id },
+                        where: { id: parseInt(req.params.id) },
                         data: { password: await bcrypt.hash(password, 10) }
                     })
                     const updateCode = await prisma.reset_password.updateMany({
@@ -356,12 +353,11 @@ const patchResetPassword = async (req, reply) => {
 
 const getVerifyAccount = async (req, reply) => {
     try {
-        let { id, verifyCode } = req.params;
         const verify = await prisma.verify_account.findFirst({
-            where: { verifyCode, userID: id }
+            where: { verifyCode: req.params.verifyCode, userID: parseInt(req.params.id) }
         });
         const user = await prisma.users.findFirst({
-            where: { id }
+            where: { id: parseInt(req.params.id) }
         });
         if (user.id !== verify.userID) {
             throw createError(401, "We were unable to find a user for this verification. Please Register!");
@@ -381,7 +377,7 @@ const getVerifyAccount = async (req, reply) => {
                         data: { isVerified: true }
                     });
                     const updateVerify = await prisma.verify_account.update({
-                        where: { verifyCode },
+                        where: { verifyCode: req.params.verifyCode },
                         data: { isUsed: true, isActive: false }
                     });
                     reply.send({ state: true });
@@ -395,14 +391,13 @@ const getVerifyAccount = async (req, reply) => {
 
 const getResetPassword = async (req, reply) => {
     try {
-        let { id, resetCode } = req.params;
         const reset = await prisma.reset_password.findFirst({
-            where: { resetCode, userID: id }
+            where: { resetCode: req.params.resetCode, userID: parseInt(req.params.id) }
         });
         const user = await prisma.users.findFirst({
-            where: { id: verify.userID }
+            where: { id: reset.userID }
         });
-        if (user.id !== verify.userID) {
+        if (user.id !== reset.userID) {
             throw createError(401, "We were unable to find a user. Please Register!");
         } else {
             reply.send({ state: true });
