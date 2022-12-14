@@ -30,7 +30,7 @@ export default function Home() {
         const home = async () => {
             try {
                 const response = await getData("/");
-                if (response.state === true) {
+                if (response.state) {
                     setIsAuth(true);
                 } else {
                     setErrorMessage(response.errorMessage);

@@ -5,6 +5,7 @@ import { getData } from '../functions';
 export default function Verification() {
 
     let [validUrl, setValidUrl] = useState(false);
+    let [errorMessage, setErrorMessage] = useState(null)
     const param = useParams();
 
     useEffect(() => {
@@ -17,7 +18,7 @@ export default function Verification() {
                     setValidUrl(false);
                 }             
             } catch (error) {
-                console.log(error);         
+                setErrorMessage(error);        
             }
         };
         verifyEmailUrl();
@@ -28,7 +29,7 @@ export default function Verification() {
             {validUrl ? (
             <form>
                 <h3>User Verification</h3>
-                <span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>
+                {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>)}
             </form>
             ) : (
             <h1>404 Not Found</h1>

@@ -12,7 +12,7 @@ export default function Login() {
   async function submitLogin(e) {
     e.preventDefault();
     const response = await postData("/login", { email: email, password: password });
-    if (response.state === true) {
+    if (response.state) {
       console.log("User Successfuly Logged In! ", response);
       nav('/');
     }

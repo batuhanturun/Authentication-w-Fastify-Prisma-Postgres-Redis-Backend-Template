@@ -14,7 +14,7 @@ const host = "localhost:3000";
 const home = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            reply.send({ state: true, authenticated: true });
+            reply.send({ state: true });
         } else {
             reply.send({ state: false })
         }
@@ -76,7 +76,7 @@ const patchVerificationUser = async (req, reply) => {
     try {
         const checkCode = await prisma.verify_account.findFirst({
             where: { verifyCode: req.params.verifyCode }
-        })
+        });
         if (!checkCode) {
             throw createError(400, "Your verification link may have expired.");
         } else {
@@ -141,6 +141,8 @@ const getLogin = async (req, reply) => {
     try {
         if (req.session.authenticated) {
             reply.send({ state: true, name: req.session.user.name });
+        } else {
+            reply.send({ state: false });
         }
     } catch (error) {
         throw createError(400, "Bir hata oluştu. " + error);

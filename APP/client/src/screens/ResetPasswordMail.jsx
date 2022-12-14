@@ -35,7 +35,7 @@ export default function ResetPasswordMail() {
                     setValidUrl(false);
                 }              
             } catch (error) {
-                console.log(error);
+                setErrorMessage(error); 
             }
         };
         resetEmailUrl();

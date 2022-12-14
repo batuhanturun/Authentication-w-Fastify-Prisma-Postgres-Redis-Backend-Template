@@ -1,4 +1,5 @@
 const dotenv = require("dotenv").config({ path: "./.env" });
+const jwtCheck = require("./src/middleware/authTokenVerify"); //! 
 
 const fastify = require("fastify")({ logger: true });
 const fastifyCors = require('@fastify/cors');
@@ -24,7 +25,7 @@ fastify.register(fastifySession, {
 });
 
 router.forEach((route, index) => {
-    fastify.route(route)
+    fastify.route(route);
 });
 
 const start = async () => {
