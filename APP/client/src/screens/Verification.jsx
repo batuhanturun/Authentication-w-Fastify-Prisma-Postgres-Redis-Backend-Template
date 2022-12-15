@@ -12,11 +12,11 @@ export default function Verification() {
         const verifyEmailUrl = async () => {
             try {
                 const response = await getData(`/verify/${param.id}/${param.verifyCode}`);
-                if(response.state) {
+                if (response.state) {
                     setValidUrl(true);
-                }        
+                }
             } catch (error) {
-                setErrorMessage(error);       
+                setErrorMessage(error);
             }
         };
         verifyEmailUrl();
@@ -25,12 +25,12 @@ export default function Verification() {
     return (
         <Fragment>
             {validUrl ? (
-            <form>
-                <h3>User Verification</h3>
-                {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>)}
-            </form>
+                <form>
+                    <h3>User Verification</h3>
+                    {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>)}
+                </form>
             ) : (
-            <h1>404 Not Found</h1>
+                <h1>404 Not Found</h1>
             )}
 
         </Fragment>

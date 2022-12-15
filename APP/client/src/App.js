@@ -106,9 +106,6 @@ function App() {
 export default App;
 
 /*
-<div className="App">
-<div className="auth-wrapper">
-          <div className="auth-inner">
              <Routes>
               {user && <Route path='/' exact element={<Home />} />}
               {user && <Route path='/logout' exact element={<Logout />} />}
@@ -128,10 +125,7 @@ export default App;
               <Route path='/logout' exact element={<Navigate replace to="/login" />} />
               <Route path="/verify/:id/:verifyCode" element={<Verification />} />
               <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+            </Routes>       
 */
 
 /*
@@ -170,7 +164,13 @@ export default App;
             )}
           </div>
         </nav>
+        <div className="App">
+<div className="auth-wrapper">
+          <div className="auth-inner">
         //! Buraya
+         </div>
+        </div>
+      </div>
         </div>
     </BrowserRouter>
 */

@@ -9,7 +9,6 @@ const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
 //! session veya jwt geçerken reply.send'leri düzeltmeyi unutma.
-//! güvenlik açığı için mailler hashlenebilir. DB elegeçerse resetpassword ile şifre sıfırlayıp hesaplar ele geçmesin diye.
 //! Verification'a 2 defa gidiliyor, hata veriyor.
 
 const home = async (req, reply) => {
@@ -44,8 +43,9 @@ const postRegister = async (req, reply) => {
         });
         if (!user) {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
-            
+            let sendLink = CryptoJS.SHA256(random.toString()).toString();
+            let dbSave = CryptoJS.SHA256(sendLink.toString()).toString();
+
             const newUser = await prisma.users.create({
                 data: {
                     name,
@@ -56,10 +56,10 @@ const postRegister = async (req, reply) => {
             const verifyCode = await prisma.verify_account.create({
                 data: {
                     userID: newUser.id,
-                    verifyCode: dbRandom
+                    verifyCode: dbSave
                 }
             });
-            let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + newUser.id + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + newUser.id + '\/' + sendLink + '\n\nThank You!\n';
             await sendMail(email, "Verify Email", url);
             if (sendMail) {
                 reply.send({ state: true });
@@ -76,7 +76,9 @@ const postRegister = async (req, reply) => {
 
 const patchVerificationUser = async (req, reply) => {
     try {
-        let verifyCode = req.params.verifyCode;
+        let encrypt = req.params.verifyCode;
+        let verifyCode = CryptoJS.SHA256(encrypt.toString()).toString();
+
         let id = req.params.id;
         const checkCode = await prisma.verify_account.findFirst({
             where: { verifyCode: verifyCode }
@@ -116,19 +118,21 @@ const postResendVerificationMail = async (req, reply) => {
             throw createError(400, "This account has been already verified.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
+            let sendLink = CryptoJS.SHA256(random.toString()).toString();
+            let dbSave = CryptoJS.SHA256(sendLink.toString()).toString();
+
             const find = await prisma.verify_account.findFirst({
                 where: { userID: user.id }
             });
             const reset = await prisma.verify_account.updateMany({
                 where: { userID: find.id },
                 data: {
-                    verifyCode: dbRandom,
+                    verifyCode: dbSave,
                     isActive: true,
                     isUsed: false
                 }
             });
-            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + user.id + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + user.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + user.id + '\/' + sendLink + '\n\nThank You!\n';
             sendMail(email, "Verify Email", url)
             if (sendMail) {
                 reply.send({ state: true });
@@ -255,7 +259,8 @@ const postResetPassword = async (req, reply) => {
             throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
-            let dbRandom = CryptoJS.SHA256(random.toString(), process.env.CRYPTO_SECRET).toString();
+            let sendLink = CryptoJS.SHA256(random.toString()).toString();
+            let dbSave = CryptoJS.SHA256(sendLink.toString()).toString();
 
             const check = await prisma.reset_password.findFirst({
                 where: { userID: reset.id }
@@ -265,20 +270,20 @@ const postResetPassword = async (req, reply) => {
                 const change = await prisma.reset_password.create({
                     data: {
                         userID: reset.id,
-                        resetCode: dbRandom,
+                        resetCode: dbSave,
                     }
                 });
             } else {
                 const reChange = await prisma.reset_password.updateMany({
                     where: { userID: reset.id },
                     data: {
-                        resetCode: dbRandom,
+                        resetCode: dbSave,
                         isActive: true,
                         isUsed: false
                     }
                 });
             }
-            let url = 'Hello ' + reset.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/reset\/' + reset.id + '\/' + dbRandom + '\n\nThank You!\n';
+            let url = 'Hello ' + reset.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/reset\/' + reset.id + '\/' + sendLink + '\n\nThank You!\n';
             sendMail(email, "Reset Password", url)
             if (sendMail) {
                 reply.send({ state: true });
@@ -293,7 +298,8 @@ const postResetPassword = async (req, reply) => {
 
 const patchResetPassword = async (req, reply) => {
     try {
-        let resetCode = req.params.resetCode;
+        let encrypt = req.params.resetCode;
+        let resetCode = CryptoJS.SHA256(encrypt.toString()).toString();
         let id = parseInt(req.params.id);
         let { password, verifyPassword } = req.body;
         if (password !== verifyPassword) {
@@ -330,7 +336,8 @@ const patchResetPassword = async (req, reply) => {
 
 const getVerifyAccount = async (req, reply) => {
     try {
-        let verifyCode = req.params.verifyCode;
+        let encrypt = req.params.verifyCode;
+        let verifyCode = CryptoJS.SHA256(encrypt.toString()).toString();
         let id = req.params.id;
         let parse = parseInt(id);
         const verify = await prisma.verify_account.findFirst({
@@ -373,7 +380,8 @@ const getVerifyAccount = async (req, reply) => {
 
 const getResetPassword = async (req, reply) => {
     try {
-        let resetCode = req.params.resetCode;
+        let encrypt = req.params.resetCode;
+        let resetCode = CryptoJS.SHA256(encrypt.toString()).toString();
         let id = parseInt(req.params.id);
         const reset = await prisma.reset_password.findFirst({
             where: { resetCode: resetCode, userID: id }
@@ -384,7 +392,13 @@ const getResetPassword = async (req, reply) => {
         if (user.id !== reset.userID) {
             throw createError(401, "We were unable to find a user. Please Register!");
         } else {
-            reply.send({ state: true });
+            if (!reset.isActive) {
+                throw createError(400, "Kod geçerliliğini kaybetmiştir.");
+            } else if (reset.isUsed) {
+                throw createError(400, "Kod geçerliliğini kaybetmiştir.");
+            } else {
+                reply.send({ state: true });
+            }
         }
     } catch (error) {
         throw createError(400, "Şifre sıfırlama işleminde bir hata oluştu. " + error);
