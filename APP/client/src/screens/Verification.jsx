@@ -14,11 +14,9 @@ export default function Verification() {
                 const response = await getData(`/verify/${param.id}/${param.verifyCode}`);
                 if(response.state) {
                     setValidUrl(true);
-                } else {
-                    setValidUrl(false);
-                }             
+                }        
             } catch (error) {
-                setErrorMessage(error);        
+                setErrorMessage(error);       
             }
         };
         verifyEmailUrl();

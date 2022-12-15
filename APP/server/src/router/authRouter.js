@@ -48,11 +48,6 @@ const routers = [
     },
     {
         method: "PATCH",
-        url: "/api/changepassword",
-        handler: authController.patchChangePassword
-    },
-    {
-        method: "PATCH",
         url: "/api/verificationuser",
         handler: authController.patchVerificationUser
     },

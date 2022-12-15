@@ -14,7 +14,7 @@ export default function ResetPasswordMail() {
     let [validUrl, setValidUrl] = useState(false);
     const param = useParams();
 
-    async function submitChangePassword(e, param) {
+    async function submitChangePassword(e) {
         e.preventDefault();
         const response = await patchData(`/reset/${param.id}/${param.resetCode}`, { password: password, verifyPassword: verifyPassword });
         if (response.state) {
