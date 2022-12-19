@@ -12,7 +12,7 @@ export default function AdminPage() {
     async function submitAdminLogout(e) {
         e.preventDefault();
         const response = await getData("/adminlogout");
-        if (response.state === true) {
+        if (response.logout) {
             console.log("Admin Successfuly Logout! ", response);
             setIsAuth(false);
             nav('/adminlogin');

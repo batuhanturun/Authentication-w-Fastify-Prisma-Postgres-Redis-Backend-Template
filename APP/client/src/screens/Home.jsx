@@ -12,7 +12,7 @@ export default function Home() {
     async function submitLogout(e) {
         e.preventDefault();
         const response = await getData("/logout");
-        if (response.state === true) {
+        if (response.logout) {
             console.log("User Successfuly Logout! ", response);
             localStorage.removeItem("token");
             setIsAuth(false);
