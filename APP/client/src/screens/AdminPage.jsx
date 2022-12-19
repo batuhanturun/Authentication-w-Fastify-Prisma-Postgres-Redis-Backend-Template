@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { getData } from '../functions';
 
@@ -6,8 +6,22 @@ export default function AdminPage() {
 
     let [isAuth, setIsAuth] = useState(false);
     let [errorMessage, setErrorMessage] = useState(null);
-    let [onExit, setOnExit] = useState(true);
+    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
+
+    useEffect(() => {
+        const check = async () => {
+            const response = await getData("/admin");
+            if(!response.state) {
+                setOnExit(false);
+                nav("/adminlogin");
+            } else {
+                setOnExit(true);
+                setIsAuth(true);         
+            }
+        };
+        check();
+    });
 
     async function submitAdminLogout(e) {
         e.preventDefault();

@@ -5,7 +5,7 @@ import { getData } from '../functions';
 export default function Verification() {
 
     let [validUrl, setValidUrl] = useState(false);
-    let [errorMessage, setErrorMessage] = useState(null)
+    let [errorMessage, setErrorMessage] = useState(null);
     const param = useParams();
 
     useEffect(() => {

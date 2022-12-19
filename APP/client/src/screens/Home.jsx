@@ -6,7 +6,7 @@ export default function Home() {
 
     let [isAuth, setIsAuth] = useState(false);
     let [errorMessage, setErrorMessage] = useState(null);
-    let [onExit, setOnExit] = useState(true);
+    let [onExit, setOnExit] = useState();
     const nav = useNavigate();
 
     async function submitLogout(e) {
@@ -16,6 +16,7 @@ export default function Home() {
             console.log("User Successfuly Logout! ", response);
             localStorage.removeItem("token");
             setIsAuth(false);
+            setOnExit(false);
             nav('/login');
         } else {
             setErrorMessage(response.message);
@@ -31,13 +32,15 @@ export default function Home() {
         const home = async () => {
             try {
                 const response = await getData("/");
-                if (response.state) {
-                    setIsAuth(true);
+                if (!response.state) {
+                    nav("/login");
+                    setOnExit(false);
                 } else {
-                    setErrorMessage(response.errorMessage);
+                    setOnExit(true);
+                    setIsAuth(true);
                 }
             } catch (error) {
-                console.log(error);
+                setErrorMessage(error);
             }
         };
         home();

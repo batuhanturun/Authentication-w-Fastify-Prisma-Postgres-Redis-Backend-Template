@@ -1,21 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { postData } from '../functions';
+import { getData, postData } from '../functions';
 
 export default function AdminLogin() {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
+    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
+
+    useEffect(() => {
+        const check = async () => {
+            const response = await getData("/adminlogin");
+            if (response.state) {
+                setOnExit(true);
+                nav("/admin");
+            } else {
+                setOnExit(false);
+            }
+        };
+        check();
+    });
 
     async function submitAdminLogin(e) {
         e.preventDefault();
         const response = await postData("/adminlogin", { email, password });
         if (response.state) {
+            setOnExit(true);
             console.log("Admin Successfuly Logged In! ", response);
             nav("/admin");
         } else {
+            setOnExit(false);
             setErrorMessage(response.message);
         }
     }
@@ -25,9 +41,18 @@ export default function AdminLogin() {
         <div className="App">
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <div className="container">
-                    <Link className="navbar-brand" to={'/admin'}>
+                    <Link className="navbar-brand" to={'/adminlogin'}>
                         Authentication Demo (Admin)
                     </Link>
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            {onExit ? (<li className="nav-item">
+                                <Link className="nav-link" onClick={setOnExit(false)} to={'/adminlogout'}>
+                                    Exit
+                                </Link>
+                            </li>) : null}
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <div className="App">

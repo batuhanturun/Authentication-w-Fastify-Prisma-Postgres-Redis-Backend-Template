@@ -27,7 +27,7 @@ export default function Logout() {
             }
         };
         logOut();
-    })
+    });
 
     return (
         <div className="App">
