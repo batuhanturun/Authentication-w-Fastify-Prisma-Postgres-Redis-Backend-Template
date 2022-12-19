@@ -5,7 +5,8 @@ import { getData } from '../functions';
 export default function AdminPage() {
 
     let [isAuth, setIsAuth] = useState(false);
-    let [errorMessage, setErrorMessage] = useState(null)
+    let [errorMessage, setErrorMessage] = useState(null);
+    let [onExit, setOnExit] = useState(true);
     const nav = useNavigate();
 
     async function submitAdminLogout(e) {
@@ -32,22 +33,20 @@ export default function AdminPage() {
                     <Link className="navbar-brand" to={'/admin'}>
                         Authentication Demo (Admin)
                     </Link>
-                    (
-                        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-                            <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <Link className="nav-link" to={'/adminlogout'}>
-                                        Exit
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    )
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            {onExit ? (<li className="nav-item">
+                                <Link className="nav-link" onClick={setOnExit(false)} to={'/adminlogout'}>
+                                    Exit
+                                </Link>
+                            </li>) : null}
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <div className="App">
                 <div className="auth-wrapper">
-                    <div className="auth-inner"> 
+                    <div className="auth-inner">
                         <form>
                             <h3>Admin Page</h3>
                             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}

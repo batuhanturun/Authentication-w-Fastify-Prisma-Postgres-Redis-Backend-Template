@@ -5,7 +5,8 @@ import { getData } from '../functions';
 export default function Home() {
 
     let [isAuth, setIsAuth] = useState(false);
-    let [errorMessage, setErrorMessage] = useState(null)
+    let [errorMessage, setErrorMessage] = useState(null);
+    let [onExit, setOnExit] = useState(true);
     const nav = useNavigate();
 
     async function submitLogout(e) {
@@ -51,11 +52,11 @@ export default function Home() {
                     </Link>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
+                            {onExit ? (<li className="nav-item">
                                 <Link className="nav-link" to={'/logout'}>
                                     Exit
                                 </Link>
-                            </li>
+                            </li>) : null}
                         </ul>
                     </div>
                 </div>

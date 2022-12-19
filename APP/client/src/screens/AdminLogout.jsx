@@ -14,9 +14,12 @@ export default function AdminLogOut() {
                     counter++;
                     if (counter === 3) {
                         const response = await getData("/adminlogout");
-                        console.log(response);
-                        nav("/adminlogin");
-                        clearInterval(interval);
+                        if (response.logout) {
+                            nav("/adminlogin");
+                            clearInterval(interval);
+                        } else {
+                            console.log("Hata oluştu.");
+                        }
                     }
                 }, 1000);
             } catch (error) {
@@ -27,10 +30,14 @@ export default function AdminLogOut() {
     })
 
     return (
-        <Fragment>
-            <form>
-                <h3>Çıkış Yapılıyor...</h3>
-            </form>
-        </Fragment>
+        <div className="App">
+            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+                <Fragment>
+                    <form>
+                        <h3>Çıkış Yapılıyor...</h3>
+                    </form>
+                </Fragment>
+            </nav>
+        </div>
     )
 }

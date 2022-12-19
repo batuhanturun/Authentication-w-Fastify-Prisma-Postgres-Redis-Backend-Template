@@ -6,7 +6,7 @@ export default function AdminLogin() {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
-    let [errorMessage, setErrorMessage] = useState(null)
+    let [errorMessage, setErrorMessage] = useState(null);
     const nav = useNavigate();
 
     async function submitAdminLogin(e) {

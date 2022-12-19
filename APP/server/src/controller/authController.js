@@ -199,6 +199,8 @@ const getAdminLogin = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
             reply.send({ state: true, name: req.session.user.name, isAdmin: req.session.user.isAdmin });
+        } else {
+            reply.send({ state: false });
         }
     } catch (error) {
         throw createError(400, "Bir hata oluştu. " + error);
@@ -233,7 +235,7 @@ const logOut = async (req, reply) => {
     try {
         req.session.authenticated = false;
         await req.session.destroy();
-        reply.send({ state: true });
+        reply.send({ logout: true });
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
@@ -244,7 +246,7 @@ const adminLogOut = async (req, reply) => {
         req.session.authenticated = false;
         req.session.isAdmin = false;
         await req.session.destroy();
-        reply.send({ state: true });
+        reply.send({ logout: true });
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
