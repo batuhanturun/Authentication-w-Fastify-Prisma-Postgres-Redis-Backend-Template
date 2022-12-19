@@ -53,7 +53,7 @@ export default function Home() {
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
                             {onExit ? (<li className="nav-item">
-                                <Link className="nav-link" to={'/logout'}>
+                                <Link className="nav-link" onClick={setOnExit(false)} to={'/logout'}>
                                     Exit
                                 </Link>
                             </li>) : null}
