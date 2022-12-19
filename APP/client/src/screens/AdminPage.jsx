@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getData } from '../functions';
 
 export default function AdminPage() {
@@ -26,10 +26,39 @@ export default function AdminPage() {
     }
 
     return (
-        <form>
-            <h3>Admin Page</h3>
-            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-            {isAuth ? (<button onClick={submitAdminLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
-        </form>
+        <div className="App">
+            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+                <div className="container">
+                    <Link className="navbar-brand" to={'/admin'}>
+                        Authentication Demo (Admin)
+                    </Link>
+                    (
+                        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                            <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <Link className="nav-link" to={'/adminlogout'}>
+                                        Exit
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    )
+                </div>
+            </nav>
+            <div className="App">
+                <div className="auth-wrapper">
+                    <div className="auth-inner"> 
+                        <form>
+                            <h3>Admin Page</h3>
+                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                            {isAuth ? (<button onClick={submitAdminLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     )
 }

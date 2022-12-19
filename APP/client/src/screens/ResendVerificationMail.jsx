@@ -11,7 +11,7 @@ export default function ResendVerificationMail() {
     async function submitResendVerificationMail(e) {
         e.preventDefault();
         const response = await postData("/resendverificationmail", { email: email });
-        if(response.state === true) {
+        if (response.state === true) {
             console.log("Mail başarılı bir şekilde gönderildi.");
             nav("/login");
         } else {
@@ -20,26 +20,41 @@ export default function ResendVerificationMail() {
     }
 
     return (
-        <form onSubmit={submitResendVerificationMail}>
-            <h3>Resend Verification Email</h3>
-            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-            <div className='mb-3'>
-                <label>Email:</label>
-                <input
-                    name='email'
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter Email"
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">
-                        Resend Verification Email
-                    </button>
+        <div className="App">
+            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+                <div className="container">
+                    <Link className="navbar-brand" to={'/'}>
+                        Authentication Demo
+                    </Link>
                 </div>
-            <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
-        </form>
+            </nav>
+            <div className="App">
+                <div className="auth-wrapper">
+                    <div className="auth-inner">
+                        <form onSubmit={submitResendVerificationMail}>
+                            <h3>Resend Verification Email</h3>
+                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                            <div className='mb-3'>
+                                <label>Email:</label>
+                                <input
+                                    name='email'
+                                    type="email"
+                                    className="form-control"
+                                    placeholder="Enter Email"
+                                    required
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className="d-grid">
+                                <button type="submit" className="btn btn-primary">
+                                    Resend Verification Email
+                                </button>
+                            </div>
+                            <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
