@@ -12,6 +12,8 @@ import Verification from "./screens/Verification";
 import ResetPasswordMail from "./screens/ResetPasswordMail";
 import Logout from "./screens/Logout";
 import AdminLogOut from "./screens/AdminLogout";
+import Logging from "./screens/Logging";
+import AdminLogging from "./screens/AdminLogging";
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
         <Route path='/admin' exact element={<AdminPage />} />
         <Route path='/' exact element={<Home />} />
         <Route path='/logout' exact element={<Logout />} />
+        <Route path='/logging' exact element={<Logging />} />
+        <Route path='/adminlogging' exact element={<AdminLogging />} />
         <Route path='/adminlogout' exact element={<AdminLogOut />} />
         <Route path="/verify/:id/:verifyCode" element={<Verification />} />
         <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />

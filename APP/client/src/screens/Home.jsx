@@ -17,7 +17,7 @@ export default function Home() {
             localStorage.removeItem("token");
             setIsAuth(false);
             setOnExit(false);
-            nav('/login');
+            nav('/logout');
         } else {
             setErrorMessage(response.message);
         }

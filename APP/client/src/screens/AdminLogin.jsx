@@ -15,7 +15,7 @@ export default function AdminLogin() {
             const response = await getData("/adminlogin");
             if (response.state) {
                 setOnExit(true);
-                nav("/admin");
+                nav("/adminlogging");
             } else {
                 setOnExit(false);
             }

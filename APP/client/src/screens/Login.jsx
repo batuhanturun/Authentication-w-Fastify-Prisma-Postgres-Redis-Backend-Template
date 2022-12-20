@@ -27,8 +27,7 @@ export default function Login() {
     e.preventDefault();
     const response = await postData("/login", { email: email, password: password });
     if (response.state) {
-      console.log("User Successfuly Logged In! ", response);
-      nav('/');
+      nav("/logging");
     }
     else {
       setErrorMessage(response.message);
@@ -79,5 +78,4 @@ export default function Login() {
       </div>
     </div>
   )
-
 }
