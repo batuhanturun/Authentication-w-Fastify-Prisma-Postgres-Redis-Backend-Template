@@ -8,8 +8,9 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-//! useEffect getData sürekli çalışıyor.
-//! Session'lar silinmiyor.
+//! Home.jsx ve AdminPage.jsx'de kullanıcı giriş yapmış ise useEffect getData sürekli çalışıyor, 1 kere çalışması yeterli. Nasıl düzelir?
+//! Session'lar silinmiyor, her logout işleminde 3 yeni kayıt açılıyor.
+//! Uncaught (in promise) Error. Chrome'dan geliyor.
 
 const home = async (req, reply) => {
     try {
