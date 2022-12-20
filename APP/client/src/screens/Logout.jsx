@@ -9,19 +9,25 @@ export default function Logout() {
     useEffect(() => {
         const logOut = async () => {
             try {
-                var counter = 0;
-                var interval = setInterval(async function () {
-                    counter++;
-                    if (counter === 3) {
-                        const response = await getData("/logout");
-                        if (response.logout) {
-                            nav("/login");
-                            clearInterval(interval);
-                        } else {
-                            console.log("Hata oluştu.");
+                const check = await getData("/login");
+                if (check.state) {
+                    var counter = 0;
+                    var interval = setInterval(async function () {
+                        counter++;
+                        if (counter === 3) {
+                            const response = await getData("/logout");
+                            if (response.logout) {
+                                nav("/login");
+                                clearInterval(interval);
+                            } else {
+                                console.log("Hata oluştu.");
+                            }
                         }
-                    }
-                }, 1000);
+                    }, 1000);
+                } else {
+                    nav("/login")
+                }
+
             } catch (error) {
                 console.log(error);
             }

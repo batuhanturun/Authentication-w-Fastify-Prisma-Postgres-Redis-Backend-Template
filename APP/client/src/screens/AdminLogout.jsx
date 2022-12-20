@@ -9,19 +9,24 @@ export default function AdminLogOut() {
     useEffect(() => {
         const adminLogOut = async () => {
             try {
-                var counter = 0;
-                var interval = setInterval(async function () {
-                    counter++;
-                    if (counter === 3) {
-                        const response = await getData("/adminlogout");
-                        if (response.logout) {
-                            nav("/adminlogin");
-                            clearInterval(interval);
-                        } else {
-                            console.log("Hata oluştu.");
+                const check = await getData("/adminlogin");
+                if (check.state) {
+                    var counter = 0;
+                    var interval = setInterval(async function () {
+                        counter++;
+                        if (counter === 3) {
+                            const response = await getData("/adminlogout");
+                            if (response.logout) {
+                                nav("/adminlogin");
+                                clearInterval(interval);
+                            } else {
+                                console.log("Hata oluştu.");
+                            }
                         }
-                    }
-                }, 1000);
+                    }, 1000);
+                } else {
+                    nav("/adminlogin")
+                }
             } catch (error) {
                 console.log(error);
             }

@@ -11,7 +11,8 @@ const host = "localhost:3000";
 //! session veya jwt geçerken reply.send'leri düzeltmeyi unutma.
 //! Verification'a 2 defa gidiliyor, hata veriyor.
 //! Error mesajlarını timer ile göster, timer bitince yönlendir.
-//! Client App.js'deki user ve admin parametrelerindeki bağımlılığı kaldır. Her sayfa için useEffect dön.
+//! useEffect getData sürekli çalışıyor.
+//! Session'lar silinmiyor.
 
 const home = async (req, reply) => {
     try {

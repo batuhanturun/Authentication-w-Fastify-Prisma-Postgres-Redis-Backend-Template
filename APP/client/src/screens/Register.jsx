@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { postData } from '../functions';
+import { getData, postData } from '../functions';
 
 export default function Register() {
 
@@ -9,7 +9,21 @@ export default function Register() {
     let [password, setPassword] = useState("");
     let [rePassword, setRePassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
+    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
+
+    useEffect(() => {
+        const check = async () => {
+            const response = await getData("/login");
+            if (response.state) {
+                setOnExit(true);
+                nav("/");
+            } else {
+                setOnExit(false);
+            }
+        };
+        check();
+    });
 
     async function submitRegister(e) {
         e.preventDefault();
@@ -34,11 +48,20 @@ export default function Register() {
                     <Link className="navbar-brand" to={'/'}>
                         Authentication Demo
                     </Link>
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            {onExit ? (<li className="nav-item">
+                                <Link className="nav-link" onClick={setOnExit(false)} to={'/logout'}>
+                                    Exit
+                                </Link>
+                            </li>) : null}
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <div className="App">
                 <div className="auth-wrapper">
-                    <div className="auth-inner"> 
+                    <div className="auth-inner">
                         <form onSubmit={submitRegister}>
                             <h3>Register</h3>
                             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}

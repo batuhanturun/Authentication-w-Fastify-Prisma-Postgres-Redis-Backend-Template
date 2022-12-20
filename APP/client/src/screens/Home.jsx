@@ -30,21 +30,17 @@ export default function Home() {
 
     useEffect(() => {
         const home = async () => {
-            try {
-                const response = await getData("/");
-                if (!response.state) {
-                    nav("/login");
-                    setOnExit(false);
-                } else {
-                    setOnExit(true);
-                    setIsAuth(true);
-                }
-            } catch (error) {
-                setErrorMessage(error);
+            const response = await getData("/");
+            if (!response.state) {
+                setOnExit(false);
+                nav("/login");
+            } else {
+                setOnExit(true);
+                setIsAuth(true);
             }
         };
         home();
-    })
+    });
 
     return (
         <div className="App">

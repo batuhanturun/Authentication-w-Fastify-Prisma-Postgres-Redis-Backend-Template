@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { postData } from '../functions';
+import { postData, getData } from '../functions';
 
 export default function ResendVerificationMail() {
 
     let [email, setEmail] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
+    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
+
+    useEffect(() => {
+        const check = async () => {
+            const response = await getData("/login");
+            if (response.state) {
+                setOnExit(true);
+                nav("/");
+            } else {
+                setOnExit(false);
+            }
+        };
+        check();
+    });
 
     async function submitResendVerificationMail(e) {
         e.preventDefault();
@@ -26,6 +40,15 @@ export default function ResendVerificationMail() {
                     <Link className="navbar-brand" to={'/'}>
                         Authentication Demo
                     </Link>
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            {onExit ? (<li className="nav-item">
+                                <Link className="nav-link" onClick={setOnExit(false)} to={'/logout'}>
+                                    Exit
+                                </Link>
+                            </li>) : null}
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <div className="App">
