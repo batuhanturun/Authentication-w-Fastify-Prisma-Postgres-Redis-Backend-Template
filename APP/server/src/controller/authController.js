@@ -8,9 +8,6 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-//! session veya jwt geçerken reply.send'leri düzeltmeyi unutma.
-//! Verification'a 2 defa gidiliyor, hata veriyor.
-//! Error mesajlarını timer ile göster, timer bitince yönlendir.
 //! useEffect getData sürekli çalışıyor.
 //! Session'lar silinmiyor.
 

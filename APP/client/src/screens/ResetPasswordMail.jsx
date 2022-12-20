@@ -18,7 +18,7 @@ export default function ResetPasswordMail() {
         const response = await patchData(`/reset/${param.id}/${param.resetCode}`, { password: password, verifyPassword: verifyPassword });
         if (response.state) {
             console.log("Password Successfuly Changed! ", response);
-            nav('/login');
+            nav('/successful');
         } else {
             setErrorMessage(response.message);
         }

@@ -14,6 +14,7 @@ import Logout from "./screens/Logout";
 import AdminLogOut from "./screens/AdminLogout";
 import Logging from "./screens/Logging";
 import AdminLogging from "./screens/AdminLogging";
+import Successful from "./screens/Successful";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Route path='/' exact element={<Home />} />
         <Route path='/logout' exact element={<Logout />} />
         <Route path='/logging' exact element={<Logging />} />
+        <Route path='/successful' exact element={<Successful />} />
         <Route path='/adminlogging' exact element={<AdminLogging />} />
         <Route path='/adminlogout' exact element={<AdminLogOut />} />
         <Route path="/verify/:id/:verifyCode" element={<Verification />} />
