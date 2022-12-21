@@ -51,31 +51,30 @@ export default function ResendVerificationMail() {
                     </div>
                 </div>
             </nav>
-            <div className="App">
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form onSubmit={submitResendVerificationMail}>
-                            <h3>Resend Verification Email</h3>
-                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                            <div className='mb-3'>
-                                <label>Email:</label>
-                                <input
-                                    name='email'
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Enter Email"
-                                    required
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="d-grid">
-                                <button type="submit" className="btn btn-primary">
-                                    Resend Verification Email
-                                </button>
-                            </div>
-                            <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
-                        </form>
-                    </div>
+
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <form onSubmit={submitResendVerificationMail}>
+                        <h3>Resend Verification Email</h3>
+                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                        <div className='mb-3'>
+                            <label>Email:</label>
+                            <input
+                                name='email'
+                                type="email"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="d-grid">
+                            <button type="submit" className="btn btn-primary">
+                                Resend Verification Email
+                            </button>
+                        </div>
+                        <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
+                    </form>
                 </div>
             </div>
         </div>

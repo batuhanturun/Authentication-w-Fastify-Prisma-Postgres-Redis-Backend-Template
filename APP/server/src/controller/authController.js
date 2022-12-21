@@ -8,9 +8,8 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-//! Home.jsx ve AdminPage.jsx'de kullanıcı giriş yapmış ise useEffect getData sürekli çalışıyor, 1 kere çalışması yeterli. Nasıl düzelir?
-//! Session'lar silinmiyor, her logout işleminde 3 yeni kayıt açılıyor.
-//! Uncaught (in promise) Error. Chrome'dan geliyor.
+//! Home.jsx ve AdminPage.jsx'de kullanıcı giriş yapmış ise useEffect getData sürekli çalışıyor, 1 kere çalışması yeterli.
+//! Session'lar silinmiyor, her logout işleminde yeni ve boş kayıtlar açılıyor.
 
 const home = async (req, reply) => {
     try {
@@ -187,6 +186,7 @@ const postLogin = async (req, reply) => {
                 );
                 req.session.authenticated = true;
                 req.session.user = user;
+                req.session({state: true, authenticated: true, user: user});
                 reply.send({ state: true, authenticated: true, token: token });
             }
         }
@@ -233,9 +233,9 @@ const postAdminLogin = async (req, reply) => {
 
 const logOut = async (req, reply) => {
     try {
-        req.session.authenticated = false;
-        await req.session.destroy();
+        req.session.authenticated = false;     
         reply.send({ logout: true });
+        await req.session.destroy();
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
@@ -245,8 +245,8 @@ const adminLogOut = async (req, reply) => {
     try {
         req.session.authenticated = false;
         req.session.isAdmin = false;
-        await req.session.destroy();
         reply.send({ logout: true });
+        await req.session.destroy();      
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }

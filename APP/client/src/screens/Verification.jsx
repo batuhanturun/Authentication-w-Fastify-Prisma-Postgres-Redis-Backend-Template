@@ -31,20 +31,19 @@ export default function Verification() {
                     </Link>
                 </div>
             </nav>
-            <div className="App">
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <Fragment>
-                            {validUrl ? (
-                                <form>
-                                    <h3>User Verification</h3>
-                                    {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>)}
-                                </form>
-                            ) : (
-                                <h1>404 Not Found</h1>
-                            )}
-                        </Fragment>
-                    </div>
+
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <Fragment>
+                        {validUrl ? (
+                            <form>
+                                <h3>User Verification</h3>
+                                {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (<span style={{ color: "green" }}>Kullanıcı başarılı bir şekilde onaylandı. Bu sayfayı kapatabilirsiniz.</span>)}
+                            </form>
+                        ) : (
+                            <h1>404 Not Found</h1>
+                        )}
+                    </Fragment>
                 </div>
             </div>
         </div>

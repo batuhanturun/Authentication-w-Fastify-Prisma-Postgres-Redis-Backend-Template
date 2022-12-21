@@ -37,46 +37,42 @@ export default function AdminLogin() {
     }
 
     return (
-
         <div className="App">
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <div className="container">
                     <Link className="navbar-brand" to={'/adminlogin'}>
                         Authentication Demo (Admin)
                     </Link>
-                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <div id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
-                            {onExit ? (<li className="nav-item">
-                                <Link className="nav-link" onClick={setOnExit(false)} to={'/adminlogout'}>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/adminlogout'}>
                                     Exit
                                 </Link>
-                            </li>) : null}
+                            </li>
                         </ul>
                     </div>
                 </div>
             </nav>
-            <div className="App">
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form onSubmit={submitAdminLogin}>
-                            <h3>Admin Login</h3>
-                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                            <div className='mb-3'>
-                                <label>Email:</label>
-                                <input type="email" name='email' className="form-control" placeholder="Enter Email" required onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-                            <div className="mb-3">
-                                <label>Password:</label>
-                                <input type="password" name='password' className="form-control" placeholder="Enter Password" required onChange={(e) => setPassword(e.target.value)} />
-                            </div>
-                            <div className="d-grid">
-                                <button type="submit" className="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <form onSubmit={submitAdminLogin}>
+                        <h3>Admin Login</h3>
+                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                        <div className='mb-3'>
+                            <label>Email:</label>
+                            <input type="email" name='email' className="form-control" placeholder="Enter Email" required onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <div className="mb-3">
+                            <label>Password:</label>
+                            <input type="password" name='password' className="form-control" placeholder="Enter Password" required onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                        <div className="d-grid">
+                            <button type="submit" className="btn btn-primary">Login</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
     )
 }

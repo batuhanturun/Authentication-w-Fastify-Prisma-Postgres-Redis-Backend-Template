@@ -12,12 +12,12 @@ export default function AdminPage() {
     useEffect(() => {
         const check = async () => {
             const response = await getData("/admin");
-            if(!response.state) {
+            if (!response.state) {
                 setOnExit(false);
                 nav("/adminlogin");
             } else {
                 setOnExit(true);
-                setIsAuth(true);         
+                setIsAuth(true);
             }
         };
         check();
@@ -58,20 +58,16 @@ export default function AdminPage() {
                     </div>
                 </div>
             </nav>
-            <div className="App">
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form>
-                            <h3>Admin Page</h3>
-                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                            {isAuth ? (<button onClick={submitAdminLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
-                        </form>
-                    </div>
+
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <form>
+                        <h3>Admin Page</h3>
+                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                        {isAuth ? (<button onClick={submitAdminLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
+                    </form>
                 </div>
             </div>
         </div>
-
-
-
     )
 }

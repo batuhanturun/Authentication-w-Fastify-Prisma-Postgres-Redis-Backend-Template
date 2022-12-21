@@ -59,66 +59,64 @@ export default function Register() {
                     </div>
                 </div>
             </nav>
-            <div className="App">
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form onSubmit={submitRegister}>
-                            <h3>Register</h3>
-                            {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                            <div className="mb-3">
-                                <label>Name:</label>
-                                <input
-                                    name='name'
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Name"
-                                    required
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label>Email:</label>
-                                <input
-                                    name='email'
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Enter Email"
-                                    required
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label>Password:</label>
-                                <input
-                                    name='password'
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="Enter Password"
-                                    required
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label>Re-Password:</label>
-                                <input
-                                    name='password'
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="Enter Re-Password"
-                                    required
-                                    onChange={(e) => setRePassword(e.target.value)}
-                                />
-                            </div>
-                            <div className="d-grid">
-                                <button type="submit" className="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                            <p className="forgot-password text-right">
-                                Already registered? <Link to='/login' >Login!</Link>
-                            </p>
-                        </form>
-                    </div>
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <form onSubmit={submitRegister}>
+                        <h3>Register</h3>
+                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                        <div className="mb-3">
+                            <label>Name:</label>
+                            <input
+                                name='name'
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Name"
+                                required
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Email:</label>
+                            <input
+                                name='email'
+                                type="email"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Password:</label>
+                            <input
+                                name='password'
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter Password"
+                                required
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Re-Password:</label>
+                            <input
+                                name='password'
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter Re-Password"
+                                required
+                                onChange={(e) => setRePassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="d-grid">
+                            <button type="submit" className="btn btn-primary">
+                                Register
+                            </button>
+                        </div>
+                        <p className="forgot-password text-right">
+                            Already registered? <Link to='/login' >Login!</Link>
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
