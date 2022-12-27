@@ -79,7 +79,7 @@ export default function ResetPasswordMail() {
                                     />
                                 </div>
                                 <div className="d-grid">
-                                    <button type="submit" className="btn btn-primary" onClick={submitChangePassword}>
+                                    <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}} onClick={submitChangePassword}>
                                         Change Password
                                     </button>
                                 </ div>

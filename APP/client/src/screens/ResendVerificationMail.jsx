@@ -69,7 +69,7 @@ export default function ResendVerificationMail() {
                             />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>
                                 Resend Verification Email
                             </button>
                         </div>

@@ -186,7 +186,7 @@ const postLogin = async (req, reply) => {
                 );
                 req.session.authenticated = true;
                 req.session.user = user;
-                req.session({state: true, authenticated: true, user: user});
+                req.session({ state: true, authenticated: true, user: user });
                 reply.send({ state: true, authenticated: true, token: token });
             }
         }
@@ -233,7 +233,7 @@ const postAdminLogin = async (req, reply) => {
 
 const logOut = async (req, reply) => {
     try {
-        req.session.authenticated = false;     
+        req.session.authenticated = false;
         reply.send({ logout: true });
         await req.session.destroy();
     } catch (error) {
@@ -246,7 +246,7 @@ const adminLogOut = async (req, reply) => {
         req.session.authenticated = false;
         req.session.isAdmin = false;
         reply.send({ logout: true });
-        await req.session.destroy();      
+        await req.session.destroy();
     } catch (error) {
         throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
@@ -408,6 +408,38 @@ const getResetPassword = async (req, reply) => {
     }
 }
 
+const postMessage = async (req, reply) => {
+    try {
+        let { name, issue, location, phone, message } = req.body;
+        let id = req.session.user.id;
+        if (req.session.authenticated) {
+            const find = await prisma.users.findFirst({
+                where: { id }
+            });
+            if (find) {
+                const save = await prisma.contact_messages.create({
+                    data: {
+                        userID: find.id,
+                        issue,
+                        location,
+                        phone,
+                        message
+                    }
+                });
+                let url = "Hello " + name + ',\n\n' + "We have received your request and forwarded it to our staff for processing. \nThis message has been generated automatically by our system. \nIn case you have further questions and want to contact us, please refer to the above noted reference number. \n*Unfortunately, we are unable to retrieve a message from a web portal. In this case, we kindly ask you to send us your request directly. \nKind regards, \nYour Customer Care";
+                await sendMail(find.email, `Issue: ${save.id}`, url);
+                reply.send({ send: true });
+            } else {
+                throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            }
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Mesajınız gönderilirken hata oluştu. " + error);
+    }
+}
+
 module.exports = {
     admin,
     home,
@@ -420,6 +452,7 @@ module.exports = {
     patchVerificationUser,
     patchResetPassword,
     postLogin,
+    postMessage,
     postAdminLogin,
     postRegister,
     postResetPassword,

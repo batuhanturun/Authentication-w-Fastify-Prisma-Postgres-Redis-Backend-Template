@@ -7,17 +7,13 @@ export default function AdminLogin() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
-    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
 
     useEffect(() => {
         const check = async () => {
             const response = await getData("/adminlogin");
             if (response.state) {
-                setOnExit(true);
                 nav("/adminlogging");
-            } else {
-                setOnExit(false);
             }
         };
         check();
@@ -27,11 +23,9 @@ export default function AdminLogin() {
         e.preventDefault();
         const response = await postData("/adminlogin", { email, password });
         if (response.state) {
-            setOnExit(true);
             console.log("Admin Successfuly Logged In! ", response);
             nav("/admin");
         } else {
-            setOnExit(false);
             setErrorMessage(response.message);
         }
     }
@@ -68,7 +62,7 @@ export default function AdminLogin() {
                             <input type="password" name='password' className="form-control" placeholder="Enter Password" required onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-primary">Login</button>
+                            <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>Login</button>
                         </div>
                     </form>
                 </div>

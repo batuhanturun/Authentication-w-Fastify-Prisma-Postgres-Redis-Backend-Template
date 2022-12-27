@@ -69,7 +69,7 @@ export default function ResetPassword() {
                             />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-primary">Reset Password</button>
+                            <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>Reset Password</button>
                         </div>
                         <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
                     </form>

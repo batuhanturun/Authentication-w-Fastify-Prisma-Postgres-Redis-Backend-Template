@@ -54,7 +54,7 @@ export default function Login() {
               <input type="password" name='password' className="form-control" placeholder="Enter Password" required onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className="d-grid">
-              <button type="submit" className="btn btn-primary">Login</button>
+              <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>Login</button>
             </div>
             <p className="forgot-password text-right">Don't have an account? <Link to="/register">Register!</Link></p>
             <p className="forgot-password text-right"><Link to="/resetpassword">Forgot Password?</Link></p>

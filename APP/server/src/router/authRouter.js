@@ -75,6 +75,11 @@ const routers = [
         method: "POST",
         url: "/api/resendverificationmail",
         handler: authController.postResendVerificationMail
+    },
+    {
+        method: "POST",
+        url: "/api/contact",
+        handler: authController.postMessage
     }
 ]
 

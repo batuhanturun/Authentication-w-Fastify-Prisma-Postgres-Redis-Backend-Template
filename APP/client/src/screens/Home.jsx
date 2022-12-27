@@ -1,42 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { getData } from '../functions';
 
+// <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+
 export default function Home() {
 
-    let [isAuth, setIsAuth] = useState(false);
-    let [errorMessage, setErrorMessage] = useState(null);
-    let [onExit, setOnExit] = useState();
     const nav = useNavigate();
-
-    async function submitLogout(e) {
-        e.preventDefault();
-        const response = await getData("/logout");
-        if (response.logout) {
-            console.log("User Successfuly Logout! ", response);
-            localStorage.removeItem("token");
-            setIsAuth(false);
-            setOnExit(false);
-            nav('/logout');
-        } else {
-            setErrorMessage(response.message);
-        }
-    }
-
-    async function submitLogin(e) {
-        e.preventDefault();
-        nav('/login');
-    }
 
     useEffect(() => {
         const home = async () => {
             const response = await getData("/");
             if (!response.state) {
-                setOnExit(false);
                 nav("/login");
-            } else {
-                setOnExit(true);
-                setIsAuth(true);
             }
         };
         home();
@@ -49,6 +25,36 @@ export default function Home() {
                     <Link className="navbar-brand" to={'/'}>
                         Authentication Demo
                     </Link>
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/'}>
+                                    Homepage
+                                </Link>
+                            </li>
+                        </ul>
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/patchnotes'}>
+                                    Patch Notes
+                                </Link>
+                            </li>
+                        </ul>
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/forum'}>
+                                    Forum
+                                </Link>
+                            </li>
+                        </ul>
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/contact'}>
+                                    Contact
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                     <div id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
@@ -65,8 +71,7 @@ export default function Home() {
                 <div className="auth-inner">
                     <form>
                         <h3>Welcome</h3>
-                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                        {isAuth ? (<button onClick={submitLogout}>Logout</button>) : (<button onClick={submitLogin}>Login</button>)}
+                        
                     </form>
                 </div>
             </div>

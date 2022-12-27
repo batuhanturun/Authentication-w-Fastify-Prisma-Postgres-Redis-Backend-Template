@@ -8,15 +8,16 @@ datasource db {
 }
 
 model users {
-  id             Int              @id @default(autoincrement())
-  name           String           @db.VarChar(100)
-  email          String           @unique @db.VarChar(150)
-  password       String           @db.VarChar(256)
-  creationAt     DateTime         @default(now()) @db.Timestamptz(6)
-  isVerified     Boolean          @default(false)
-  isAdmin        Boolean          @default(false)
-  reset_password reset_password[]
-  verify_account verify_account[]
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(100)
+  email            String             @unique @db.VarChar(150)
+  password         String             @db.VarChar(256)
+  creationAt       DateTime           @default(now()) @db.Timestamptz(6)
+  isVerified       Boolean            @default(false)
+  isAdmin          Boolean            @default(false)
+  contact_messages contact_messages[]
+  reset_password   reset_password[]
+  verify_account   verify_account[]
 }
 
 model reset_password {
@@ -34,12 +35,25 @@ model reset_password {
 model verify_account {
   id          Int      @id @default(autoincrement())
   userID      Int
-  verifyCode  String   @db.VarChar(256)
   expiredTime DateTime @default(now()) @db.Timestamptz(6)
   isUsed      Boolean  @default(false)
   isActive    Boolean  @default(true)
+  verifyCode  String   @db.VarChar(256)
   users       users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_verify_account_userID")
 
-  @@index([userID], map: "fki_b")
   @@index([userID], map: "fki_users_id_to_verify_account_userID")
+  @@index([userID], map: "fki_b")
+}
+
+model contact_messages {
+  id       Int     @id
+  userID   Int
+  location String  @db.VarChar(100)
+  message  String  @db.VarChar(3000)
+  isRead   Boolean @default(false)
+  issue    String  @db.VarChar(100)
+  phone    String  @db.VarChar(15)
+  users    users   @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_contact_messages_userID")
+
+  @@index([userID], map: "fki_users_id_to_contact_messages_userID")
 }

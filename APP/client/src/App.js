@@ -15,6 +15,10 @@ import AdminLogOut from "./screens/AdminLogout";
 import Logging from "./screens/Logging";
 import AdminLogging from "./screens/AdminLogging";
 import Successful from "./screens/Successful";
+import PatchNotes from "./screens/PatchNotes";
+import Contact from "./screens/Contact";
+import ComingSoon from "./screens/ComingSoon";
+import Forum from "./screens/Forum";
 
 function App() {
 
@@ -35,6 +39,10 @@ function App() {
         <Route path='/adminlogout' exact element={<AdminLogOut />} />
         <Route path="/verify/:id/:verifyCode" element={<Verification />} />
         <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />
+        <Route path='/patchnotes' exact element={<PatchNotes />} />
+        <Route path='/contact' exact element={<Contact />} />
+        <Route path='/forum' exact element={<Forum />} />
+        <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
   );

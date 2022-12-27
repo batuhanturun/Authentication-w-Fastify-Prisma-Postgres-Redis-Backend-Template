@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #1C8EF9 !important;
+  background: #202020 !important;
   min-height: 100vh;
   display: flex;
   font-weight: 400;
@@ -34,7 +34,7 @@ html,
 }
 
 .navbar-light {
-  background-color: #ffffff;
+  background-color: #D3D3D3;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 }
 
@@ -48,7 +48,7 @@ html,
 .auth-inner {
   width: 450px;
   margin: auto;
-  background: #ffffff;
+  background: #D3D3D3;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
@@ -56,7 +56,7 @@ html,
 }
 
 .auth-wrapper .form-control:focus {
-  border-color: #167bff;
+  border-color: #202020;
   box-shadow: none;
 }
 
@@ -81,7 +81,7 @@ html,
 }
 
 .forgot-password a {
-  color: #167bff;
+  color: #B22222;
 }
 
 /* Code: input arrow kaldırma. */
@@ -95,4 +95,83 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+@import url(//fonts.googleapis.com/css?family=Montserrat:300,400,500);
+.contact2 {
+  font-family: "Montserrat", sans-serif;
+  color: #8d97ad;
+  font-weight: 400;
+	padding: 310px 0;
+  margin-bottom: 170px;
+  background-position: center bottom;
+}
+
+.contact2 h1,
+.contact2 h2,
+.contact2 h3,
+.contact2 h4,
+.contact2 h5,
+.contact2 h6 {
+  color: #8d97ad;
+}
+
+.contact2 .font-weight-medium {
+  font-weight: 500;
+}
+
+.contact2 .subtitle {
+  color: #8d97ad;
+  line-height: 24px;
+}
+
+.contact2 .bg-image {
+  background-size: cover;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.contact2 .card.card-shadow {
+    -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+    box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+}
+
+.contact2 .detail-box .round-social {
+  margin-top: 50px;
+}
+
+.contact2 .round-social a {
+  background: transparent;
+  margin: 0 7px;
+  padding: 11px 12px;
+}
+
+.contact2 .contact-container .links a {
+  color: #8d97ad;
+}
+
+.contact2 .contact-container {
+  position: relative;
+  top: 310px;
+}
+
+.contact2 .btn-danger-gradiant {
+  background: #ff4d7e;
+  background: -webkit-linear-gradient(legacy-direction(to right), #ff4d7e 0%, #ff6a5b 100%);
+  background: -webkit-gradient(linear, left top, right top, from(#ff4d7e), to(#ff6a5b));
+  background: -webkit-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+  background: -o-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+  background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+}
+
+ .contact2 .btn-danger-gradiant:hover {
+  background: #ff6a5b;
+  background: -webkit-linear-gradient(legacy-direction(to right), #ff6a5b 0%, #ff4d7e 100%);
+  background: -webkit-gradient(linear, left top, right top, from(#ff6a5b), to(#ff4d7e));
+  background: -webkit-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+  background: -o-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+  background: linear-gradient(to right, #ff6a5b 0%, #ff4d7e 100%);
 }
