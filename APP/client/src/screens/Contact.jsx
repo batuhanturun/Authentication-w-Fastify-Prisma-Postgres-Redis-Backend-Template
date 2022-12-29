@@ -76,6 +76,15 @@ export default function Contact() {
           <div id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
+                <Link className="nav-link" to={'/profile'}>
+                  Profile
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div id="navbarTogglerDemo02">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
                 <Link className="nav-link" to={'/logout'}>
                   Exit
                 </Link>

@@ -19,6 +19,7 @@ import PatchNotes from "./screens/PatchNotes";
 import Contact from "./screens/Contact";
 import ComingSoon from "./screens/ComingSoon";
 import Forum from "./screens/Forum";
+import Profile from "./screens/Profile";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
         <Route path='/patchnotes' exact element={<PatchNotes />} />
         <Route path='/contact' exact element={<Contact />} />
         <Route path='/forum' exact element={<Forum />} />
+        <Route path='/profile' exact element={<Profile />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>

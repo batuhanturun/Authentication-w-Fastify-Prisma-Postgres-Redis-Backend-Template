@@ -58,6 +58,15 @@ export default function Home() {
                     <div id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
+                                <Link className="nav-link" to={'/profile'}>
+                                    Profile
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="navbarTogglerDemo02">
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item">
                                 <Link className="nav-link" to={'/logout'}>
                                     Exit
                                 </Link>
@@ -71,7 +80,7 @@ export default function Home() {
                 <div className="auth-inner">
                     <form>
                         <h3>Welcome</h3>
-                        
+
                     </form>
                 </div>
             </div>

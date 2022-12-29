@@ -426,6 +426,7 @@ const postMessage = async (req, reply) => {
                         message
                     }
                 });
+                await sendMail(process.env.NODEMAILER_USER, `Issue: ${save.id}`, save.message);
                 let url = "Hello " + name + ',\n\n' + "We have received your request and forwarded it to our staff for processing. \nThis message has been generated automatically by our system. \nIn case you have further questions and want to contact us, please refer to the above noted reference number. \n*Unfortunately, we are unable to retrieve a message from a web portal. In this case, we kindly ask you to send us your request directly. \nKind regards, \nYour Customer Care";
                 await sendMail(find.email, `Issue: ${save.id}`, url);
                 reply.send({ send: true });
