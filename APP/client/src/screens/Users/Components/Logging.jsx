@@ -1,32 +1,32 @@
 import React, { useEffect, Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
-export default function Successful() {
+export default function Logging() {
 
     const nav = useNavigate();
 
     useEffect(() => {
-        const successful = async () => {
+        const logging = async () => {
             try {
                 const check = await getData("/login");
-                if (!check.state) {
+                if (check.state) {
                     var counter = 0;
                     var interval = setInterval(async function () {
                         counter++;
                         if (counter === 3) {
-                            nav("/login");
+                            nav("/");
                             clearInterval(interval);
                         }
                     }, 1000);
                 } else {
-                    nav("/")
+                    nav("/login")
                 }
             } catch (error) {
                 console.log(error);
             }
         };
-        successful();
+        logging();
     });
 
     return (
@@ -34,7 +34,7 @@ export default function Successful() {
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <Fragment>
                     <form>
-                        <h3>İşlem Başarılı! Giriş Sayfasına Yönlendiriliyorsunuz...</h3>
+                        <h3>Giriş Yapılıyor...</h3>
                     </form>
                 </Fragment>
             </nav>

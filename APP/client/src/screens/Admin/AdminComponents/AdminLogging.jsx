@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
 export default function AdminLogging() {
 

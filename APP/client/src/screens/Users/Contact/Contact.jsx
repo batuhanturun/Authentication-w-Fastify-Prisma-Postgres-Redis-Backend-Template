@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { getData, postData } from '../functions';
+import { getData, postData } from '../../../functions';
 import { FaLinkedinIn } from "react-icons/fa";
-import map from "../assets/images/Map.png"
-import image from "../assets/images/3.jpg"
+import map from "../../../assets/images/Map.png"
+import building from "../../../assets/images/Building.jpg"
 
 
 export default function Contact() {
@@ -131,7 +131,7 @@ export default function Contact() {
                       </form>
                     </div>
                   </div>
-                  <div className="col-lg-4 bg-image" style={{ backgroundImage: `url(${image})` }}>
+                  <div className="col-lg-4 bg-image" style={{ backgroundImage: `url(${building})` }}>
                     <div className="detail-box p-4">
                       <h5 className="text-white font-weight-light mb-3">ADDRESS</h5>
                       <p className="text-white op-7">Hacettepe Teknokent 6. Ar-Ge C Blok

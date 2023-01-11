@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
 export default function Verification() {
 

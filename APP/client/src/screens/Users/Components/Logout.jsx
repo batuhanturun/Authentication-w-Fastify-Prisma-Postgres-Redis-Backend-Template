@@ -1,13 +1,13 @@
 import React, { useEffect, Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
-export default function Logging() {
+export default function Logout() {
 
     const nav = useNavigate();
 
     useEffect(() => {
-        const logging = async () => {
+        const logOut = async () => {
             try {
                 const check = await getData("/login");
                 if (check.state) {
@@ -15,8 +15,13 @@ export default function Logging() {
                     var interval = setInterval(async function () {
                         counter++;
                         if (counter === 3) {
-                            nav("/");
-                            clearInterval(interval);
+                            const response = await getData("/logout");
+                            if (response.logout) {
+                                nav("/login");
+                                clearInterval(interval);
+                            } else {
+                                console.log("Hata oluştu.");
+                            }
                         }
                     }, 1000);
                 } else {
@@ -26,7 +31,7 @@ export default function Logging() {
                 console.log(error);
             }
         };
-        logging();
+        logOut();
     });
 
     return (
@@ -34,7 +39,7 @@ export default function Logging() {
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <Fragment>
                     <form>
-                        <h3>Giriş Yapılıyor...</h3>
+                        <h3>Çıkış Yapılıyor...</h3>
                     </form>
                 </Fragment>
             </nav>

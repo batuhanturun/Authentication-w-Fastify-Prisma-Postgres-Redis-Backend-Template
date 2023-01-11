@@ -1,23 +1,23 @@
 import React, { useEffect, Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
-export default function Logout() {
+export default function AdminLogOut() {
 
     const nav = useNavigate();
 
     useEffect(() => {
-        const logOut = async () => {
+        const adminLogOut = async () => {
             try {
-                const check = await getData("/login");
+                const check = await getData("/adminlogin");
                 if (check.state) {
                     var counter = 0;
                     var interval = setInterval(async function () {
                         counter++;
                         if (counter === 3) {
-                            const response = await getData("/logout");
+                            const response = await getData("/adminlogout");
                             if (response.logout) {
-                                nav("/login");
+                                nav("/adminlogin");
                                 clearInterval(interval);
                             } else {
                                 console.log("Hata oluştu.");
@@ -25,14 +25,14 @@ export default function Logout() {
                         }
                     }, 1000);
                 } else {
-                    nav("/login")
+                    nav("/adminlogin")
                 }
             } catch (error) {
                 console.log(error);
             }
         };
-        logOut();
-    });
+        adminLogOut();
+    })
 
     return (
         <div className="App">

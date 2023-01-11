@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { postData, getData } from '../functions';
+import { Link, useNavigate } from 'react-router-dom';
+import { postData, getData } from '../../../functions';
 
-export default function ResendVerificationMail() {
+export default function ResetPassword() {
 
     let [email, setEmail] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
@@ -22,11 +22,11 @@ export default function ResendVerificationMail() {
         check();
     });
 
-    async function submitResendVerificationMail(e) {
+    async function submitResetPassword(e) {
         e.preventDefault();
-        const response = await postData("/resendverificationmail", { email: email });
+        const response = await postData("/resetpassword", { email: email });
         if (response.state) {
-            console.log("Mail başarılı bir şekilde gönderildi.");
+            console.log("Mail Successfuly Sent! ", response);
             nav("/successful");
         } else {
             setErrorMessage(response.message);
@@ -54,10 +54,10 @@ export default function ResendVerificationMail() {
 
             <div className="auth-wrapper">
                 <div className="auth-inner">
-                    <form onSubmit={submitResendVerificationMail}>
-                        <h3>Resend Verification Email</h3>
+                    <form onSubmit={submitResetPassword}>
+                        <h3>Reset Password</h3>
                         {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                        <div className='mb-3'>
+                        <div className="mb-3">
                             <label>Email:</label>
                             <input
                                 name='email'
@@ -69,9 +69,7 @@ export default function ResendVerificationMail() {
                             />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>
-                                Resend Verification Email
-                            </button>
+                            <button type="submit" className="btn" style={{backgroundColor: "#202020", color: "#FFFFFF"}}>Reset Password</button>
                         </div>
                         <p className="forgot-password text-right">Go back <Link to="/login">Login</Link> page!</p>
                     </form>

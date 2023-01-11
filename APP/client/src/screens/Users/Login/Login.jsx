@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import { postData, getData } from '../functions';
+import { postData, getData } from '../../../functions';
 
 export default function Login() {
 

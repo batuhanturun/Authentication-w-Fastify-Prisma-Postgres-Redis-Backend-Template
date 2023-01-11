@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { getData, postData } from '../functions';
+import { getData, postData } from '../../../functions';
 
 export default function AdminLogin() {
 

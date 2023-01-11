@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { getData, patchData } from '../functions';
+import { getData, patchData } from '../../../functions';
 
 export default function ResetPasswordMail() {
 

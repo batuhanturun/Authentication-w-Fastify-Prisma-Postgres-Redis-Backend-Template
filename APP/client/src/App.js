@@ -1,25 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './screens/Home';
-import Login from "./screens/Login";
-import Register from "./screens/Register";
-import ResetPassword from "./screens/ResetPassword";
-import ResendVerificationMail from "./screens/ResendVerificationMail";
-import AdminPage from "./screens/AdminPage";
-import AdminLogin from "./screens/AdminLogin";
+import Home from './screens/Users/HomePage/Home';
+import Login from "./screens/Users/Login/Login";
+import Register from "./screens/Users/Register/Register";
+import ResetPassword from "./screens/Users/ResetPassword/ResetPassword";
+import ResendVerificationMail from "./screens/Users/Verification/ResendVerificationMail";
+import AdminPage from "./screens/Admin/AdminHomePage/AdminPage";
+import AdminLogin from "./screens/Admin/AdminLoginPage/AdminLogin";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Verification from "./screens/Verification";
-import ResetPasswordMail from "./screens/ResetPasswordMail";
-import Logout from "./screens/Logout";
-import AdminLogOut from "./screens/AdminLogout";
-import Logging from "./screens/Logging";
-import AdminLogging from "./screens/AdminLogging";
-import Successful from "./screens/Successful";
-import PatchNotes from "./screens/PatchNotes";
-import Contact from "./screens/Contact";
-import ComingSoon from "./screens/ComingSoon";
-import Forum from "./screens/Forum";
-import Profile from "./screens/Profile";
+import Verification from "./screens/Users/Verification/Verification";
+import ResetPasswordMail from "./screens/Users/ResetPassword/ResetPasswordMail";
+import Logout from "./screens/Users/Components/Logout";
+import AdminLogOut from "./screens/Admin/AdminComponents/AdminLogout";
+import Logging from "./screens/Users/Components/Logging";
+import AdminLogging from "./screens/Admin/AdminComponents/AdminLogging";
+import Successful from "./screens/Users/Components/Successful";
+import PatchNotes from "./screens/Users/PatchNotes/PatchNotes";
+import Contact from "./screens/Users/Contact/Contact";
+import ComingSoon from "./screens/Users/Components/ComingSoon";
+import Forum from "./screens/Users/Forum/Forum";
+import Profile from "./screens/Users/Profile/Profile";
 
 function App() {
 

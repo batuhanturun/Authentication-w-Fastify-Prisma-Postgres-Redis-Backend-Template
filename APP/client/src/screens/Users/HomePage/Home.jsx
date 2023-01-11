@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import { getData } from '../functions';
+import { getData } from '../../../functions';
 
 // <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
 
