@@ -2,6 +2,55 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.container{
+  display: flex;
+}
+
+main{
+  width: 100%;
+  padding: 20px;
+}
+
+.sidebar{
+  margin-left: -65px;
+  margin-top: 56px;
+  background-color: #7f7d7d;
+  color: #202020;
+  height: 100vh;
+  width: 250px;
+}
+
+.top-section{
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.link{
+  display: flex;
+  color: #202020;
+  padding: 10px;
+  gap: 25px;
+}
+
+.link:hover{
+  background: aqua;
+  color: #202020;
+}
+
+.active{
+  background: aqua;
+  color: #202020;
+}
+
+.icon,.link-text{
+  font-size: 20px;
+
 }
 
 body {

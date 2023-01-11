@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getData, postData } from '../../../functions';
 import { FaLinkedinIn } from "react-icons/fa";
 import map from "../../../assets/images/Map.png"
 import building from "../../../assets/images/Building.jpg"
+import UsersNavbar from '../../../components/UsersNavbar';
 
 
 export default function Contact() {
@@ -38,54 +39,7 @@ export default function Contact() {
 
   return (
     <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to={'/'}>
-            Authentication Demo
-          </Link>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/'}>
-                  Patch Notes
-                </Link>
-              </li>
-            </ul>
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/'}>
-                  Forum
-                </Link>
-              </li>
-            </ul>
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/contact'}>
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/profile'}>
-                  Profile
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/logout'}>
-                  Exit
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <UsersNavbar />
 
       <div className="contact2" style={{ backgroundImage: `url(${map})` }} id="contact">
         <div className="container">
