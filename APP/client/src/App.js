@@ -20,6 +20,8 @@ import Contact from "./screens/Users/Contact/Contact";
 import ComingSoon from "./screens/Users/Components/ComingSoon";
 import Forum from "./screens/Users/Forum/Forum";
 import Profile from "./screens/Users/Profile/Profile";
+import ChangeEmail from "./screens/Users/Profile/ChangeEmail";
+import ChangePassword from "./screens/Users/Profile/ChangePassword";
 
 function App() {
 
@@ -43,7 +45,9 @@ function App() {
         <Route path='/patchnotes' exact element={<PatchNotes />} />
         <Route path='/contact' exact element={<Contact />} />
         <Route path='/forum' exact element={<Forum />} />
-        <Route path='/profile' exact element={<Profile />} />
+        <Route path='/profile/main' exact element={<Profile />} />
+        <Route path='/profile/changemail' exact element={<ChangeEmail />} />
+        <Route path='/profile/changepassword' exact element={<ChangePassword />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>

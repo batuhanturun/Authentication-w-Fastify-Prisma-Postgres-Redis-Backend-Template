@@ -22,7 +22,6 @@ export default function Home() {
     return (
         <div className="App">
             <UsersNavbar />
-
             <div className="auth-wrapper">
                 <div className="auth-inner">
                     <form>

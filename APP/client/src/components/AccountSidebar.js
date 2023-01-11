@@ -11,17 +11,17 @@ const AccountSidebar = ({children}) => {
 
     const menuItem = [
         {
-            path: "/profile",
+            path: "/profile/main",
             name: "Profile",
             icon: <BsPersonFill />
         },
         {
-            path: "/changemail",
+            path: "/profile/changemail",
             name: "Change Email",
             icon: <BsEnvelopeFill />
         },
         {
-            path: "/changepassword",
+            path: "/profile/changepassword",
             name: "Change Password",
             icon: <BsFillKeyFill />
         },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { IoPersonCircleOutline } from "react-icons/io5"
 
 export default function UsersNavbar() {
     return (
@@ -35,17 +36,8 @@ export default function UsersNavbar() {
                     <div id="navbarTogglerDemo02">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <Link className="nav-link" to={'/profile'}>
-                                    Profile
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="navbarTogglerDemo02">
-                        <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <Link className="nav-link" to={'/logout'}>
-                                    Exit
+                                <Link className="nav-link" to={'/profile/main'}>
+                                    <IoPersonCircleOutline size={30} />
                                 </Link>
                             </li>
                         </ul>
