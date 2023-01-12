@@ -4,6 +4,8 @@ import {
     BsEnvelopeFill,
     BsFillKeyFill,
     BsDoorOpenFill,
+    BsServer,
+    BsFillCreditCardFill,
 } from "react-icons/bs"
 import { NavLink } from 'react-router-dom'
 
@@ -14,6 +16,16 @@ const AccountSidebar = ({children}) => {
             path: "/profile/main",
             name: "Profile",
             icon: <BsPersonFill />
+        },
+        {
+            path: "/profile/services",
+            name: "Services",
+            icon: <BsServer />
+        },
+        {
+            path: "/profile/paymentmethods",
+            name: "Payment",
+            icon: <BsFillCreditCardFill />
         },
         {
             path: "/profile/changemail",

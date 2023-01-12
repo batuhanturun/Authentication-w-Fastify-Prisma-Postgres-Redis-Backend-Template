@@ -10,6 +10,7 @@ const host = "localhost:3000";
 
 //! Home.jsx ve AdminPage.jsx'de kullanıcı giriş yapmış ise useEffect getData sürekli çalışıyor, 1 kere çalışması yeterli.
 //! Session'lar silinmiyor, her logout işleminde yeni ve boş kayıtlar açılıyor.
+//! Yeni eklenen özelliklerin email bağlantısı göndermesi gerekmektedir.
 
 const home = async (req, reply) => {
     try {
@@ -299,6 +300,63 @@ const postResetPassword = async (req, reply) => {
     }
 }
 
+const postProfileChangePassword = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let { oldPassword, newPassword, reNewPassword } = req.body;
+            let email = req.session.user.email;
+            if (newPassword !== reNewPassword) {
+                throw createError(401, "Şifreler eşleşmemektedir.");
+            } else {
+                const change = await prisma.users.findFirst({
+                    where: { email: email }
+                });
+                if (change.password !== oldPassword) {
+                    throw createError(401, "Şifreler eşleşmemektedir.");
+                } else {
+                    const updatePassword = await prisma.users.update({
+                        where: { email: change.email },
+                        data: { password: newPassword }
+                    });
+                    reply.send({ state: true })
+                }
+            }
+        } else {
+            throw createError(500, "Beklenmeyen bir hata oluştu.");
+        }
+    } catch (error) {
+        throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
+    }
+}
+
+const postProfileChangeEmail = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let { oldEmail, newEmail, reNewEmail} = req.body;
+            if(newEmail !== reNewEmail) {
+                throw createError(401, "Emailler eşleşmemektedir.");
+            } else {
+                const change = await prisma.users.findFirst({
+                    where: { email: oldEmail }
+                });
+                if(!change) {
+                    throw createError(401, "Emailler eşleşmemektedir.");
+                } else {
+                    const updateEmail = await prisma.users.update({
+                        where: { email: change.email },
+                        data: { email: newEmail }
+                    });
+                    reply.send({ state: true });
+                }
+            }
+        } else {
+            throw createError(500, "Beklenmeyen bir hata oluştu.");
+        }
+    } catch (error) {
+        throw createError(400, "Email değiştirilirken hata oluştu. " + error);
+    }
+}
+
 const patchResetPassword = async (req, reply) => {
     try {
         let encrypt = req.params.resetCode;
@@ -457,5 +515,7 @@ module.exports = {
     postAdminLogin,
     postRegister,
     postResetPassword,
-    postResendVerificationMail
+    postResendVerificationMail,
+    postProfileChangeEmail,
+    postProfileChangePassword
 }

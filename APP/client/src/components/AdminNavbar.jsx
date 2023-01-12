@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function AdminNavbar() {
     return (
         <div>
-            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+            <nav className="navbar navbar-expand-lg navbar-light">
                 <div className="container">
                     <Link className="navbar-brand" to={'/admin'}>
                         Authentication Demo (Admin)

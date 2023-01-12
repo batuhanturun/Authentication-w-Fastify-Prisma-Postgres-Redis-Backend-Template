@@ -18,8 +18,9 @@ import Successful from "./screens/Users/Components/Successful";
 import PatchNotes from "./screens/Users/PatchNotes/PatchNotes";
 import Contact from "./screens/Users/Contact/Contact";
 import ComingSoon from "./screens/Users/Components/ComingSoon";
-import Forum from "./screens/Users/Forum/Forum";
 import Profile from "./screens/Users/Profile/Profile";
+import Services from "./screens/Users/Profile/Services";
+import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
 import ChangeEmail from "./screens/Users/Profile/ChangeEmail";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
 
@@ -44,8 +45,9 @@ function App() {
         <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />
         <Route path='/patchnotes' exact element={<PatchNotes />} />
         <Route path='/contact' exact element={<Contact />} />
-        <Route path='/forum' exact element={<Forum />} />
         <Route path='/profile/main' exact element={<Profile />} />
+        <Route path='/profile/services' exact element={<Services />} />
+        <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
         <Route path='/profile/changemail' exact element={<ChangeEmail />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />

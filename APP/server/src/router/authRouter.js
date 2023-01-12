@@ -80,6 +80,16 @@ const routers = [
         method: "POST",
         url: "/api/contact",
         handler: authController.postMessage
+    },
+    {
+        method: "POST",
+        url: "/api/profile/changepassword",
+        handler: authController.postProfileChangePassword
+    },
+    {
+        method: "POST",
+        url: "/api/profile/changemail",
+        handler: authController.postProfileChangeEmail
     }
 ]
 
