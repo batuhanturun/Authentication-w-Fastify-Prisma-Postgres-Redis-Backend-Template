@@ -29,6 +29,7 @@ export default function Profile() {
         const response = await postData("/profile/changemail", { oldEmail: oldEmail, newEmail: newEmail, reNewEmail: reNewEmail });
         if(response.state) {
             setSuccessMessage("Email değiştirme talebiniz oluşturuldu. Lütfen Email adresinize gelen bağlantıya tıklayın, aksi takdirde Email adresiniz değişmeyecektir.");
+            nav("/logout");
         } else {
             setErrorMessage(response.message);
         }

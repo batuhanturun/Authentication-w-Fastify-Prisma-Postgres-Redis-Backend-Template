@@ -29,6 +29,7 @@ export default function Profile() {
         const response = await postData("/profile/changepassword", { oldPassword: oldPassword, newPassword: newPassword, reNewPassword: reNewPassword });
         if (response.state) {
             setSuccessMessage("Şifre değiştirme talebiniz oluşturuldu. Lütfen Email Adresinize gelen bağlantıya tıklayın, aksi takdirde şifreniz değişmeyecektir.");
+            nav("/logout");
         } else {
             setErrorMessage(response.message);
         }

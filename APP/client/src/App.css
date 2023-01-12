@@ -27,7 +27,7 @@ main{
 }
 
 .sidebar{
-  background-color: #D3D3D3;
+  background-color: #f1f1f1;
   color: #202020;
   height: 100vh;
   width: 300px;
@@ -85,7 +85,7 @@ span {
 }
 
 .navbar-light {
-  background-color: #D3D3D3;
+  background-color: #f1f1f1;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 }
 
@@ -99,7 +99,7 @@ span {
 .auth-inner {
   width: 450px;
   margin: auto;
-  background: #D3D3D3;
+  background: #f1f1f1;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
@@ -127,7 +127,7 @@ span {
   text-align: right;
   font-size: 13px;
   padding-top: 10px;
-  color: #7f7d7d;
+  color: #f1f1f1;
   margin: 0;
 }
 
