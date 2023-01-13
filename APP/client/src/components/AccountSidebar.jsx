@@ -1,7 +1,6 @@
 import React from 'react'
 import {
     BsPersonFill,
-    BsEnvelopeFill,
     BsFillKeyFill,
     BsDoorOpenFill,
     BsServer,
@@ -26,11 +25,6 @@ const AccountSidebar = ({children}) => {
             path: "/profile/paymentmethods",
             name: "Payment",
             icon: <BsFillCreditCardFill />
-        },
-        {
-            path: "/profile/changemail",
-            name: "Change Email",
-            icon: <BsEnvelopeFill />
         },
         {
             path: "/profile/changepassword",

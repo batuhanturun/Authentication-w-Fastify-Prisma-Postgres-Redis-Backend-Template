@@ -21,7 +21,6 @@ import ComingSoon from "./screens/Users/Components/ComingSoon";
 import Profile from "./screens/Users/Profile/Profile";
 import Services from "./screens/Users/Profile/Services";
 import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
-import ChangeEmail from "./screens/Users/Profile/ChangeEmail";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
 
 function App() {
@@ -48,7 +47,6 @@ function App() {
         <Route path='/profile/main' exact element={<Profile />} />
         <Route path='/profile/services' exact element={<Services />} />
         <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
-        <Route path='/profile/changemail' exact element={<ChangeEmail />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>

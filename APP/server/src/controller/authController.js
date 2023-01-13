@@ -8,14 +8,17 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-//! Home.jsx ve AdminPage.jsx'de kullanıcı giriş yapmış ise useEffect getData sürekli çalışıyor, 1 kere çalışması yeterli.
 //! Session'lar silinmiyor, her logout işleminde yeni ve boş kayıtlar açılıyor.
 //! Yeni eklenen özelliklerin email bağlantısı göndermesi gerekmektedir.
+//! CSS rahmetli, değiştir.
 
 const home = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            reply.send({ state: true });
+            let name = req.session.user.name;
+            let email = req.session.user.email
+            let accType = req.session.user.isAdmin;
+            reply.send({ state: true, name, email, accType });
         } else {
             reply.send({ state: false })
         }
@@ -311,13 +314,17 @@ const postProfileChangePassword = async (req, reply) => {
                 const change = await prisma.users.findFirst({
                     where: { email: email }
                 });
-                if (change.password !== oldPassword) {
-                    throw createError(401, "Şifreler eşleşmemektedir.");
+                let result = await bcrypt.compare(oldPassword, change.password);
+                if (!result) {
+                    throw createError(401, "Şifre hatalı.");
                 } else {
+
                     const updatePassword = await prisma.users.update({
                         where: { email: change.email },
-                        data: { password: newPassword }
+                        data: { password: await bcrypt.hash(newPassword, 10) }
                     });
+                    let url = 'Hello ' + change.name + ',\n\n' + 'Your password has been changed.' + '\nIf this was you, then you can safely ignore this email.' + '\nIf this wasn\'t you, your account has been compromised. Please follow these steps:' + '\n*1. Reset your password.' + '\n*2. Learn how to make your account more secure.' + '\n\nThank You!\n';
+                    sendMail(email, "Your Password Changed", url);
                     reply.send({ state: true })
                 }
             }
@@ -326,34 +333,6 @@ const postProfileChangePassword = async (req, reply) => {
         }
     } catch (error) {
         throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
-    }
-}
-
-const postProfileChangeEmail = async (req, reply) => {
-    try {
-        if (req.session.authenticated) {
-            let { oldEmail, newEmail, reNewEmail} = req.body;
-            if(newEmail !== reNewEmail) {
-                throw createError(401, "Emailler eşleşmemektedir.");
-            } else {
-                const change = await prisma.users.findFirst({
-                    where: { email: oldEmail }
-                });
-                if(!change) {
-                    throw createError(401, "Emailler eşleşmemektedir.");
-                } else {
-                    const updateEmail = await prisma.users.update({
-                        where: { email: change.email },
-                        data: { email: newEmail }
-                    });
-                    reply.send({ state: true });
-                }
-            }
-        } else {
-            throw createError(500, "Beklenmeyen bir hata oluştu.");
-        }
-    } catch (error) {
-        throw createError(400, "Email değiştirilirken hata oluştu. " + error);
     }
 }
 
@@ -516,6 +495,5 @@ module.exports = {
     postRegister,
     postResetPassword,
     postResendVerificationMail,
-    postProfileChangeEmail,
     postProfileChangePassword
 }

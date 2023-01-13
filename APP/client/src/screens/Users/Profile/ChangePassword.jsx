@@ -28,7 +28,7 @@ export default function Profile() {
         e.preventDefault();
         const response = await postData("/profile/changepassword", { oldPassword: oldPassword, newPassword: newPassword, reNewPassword: reNewPassword });
         if (response.state) {
-            setSuccessMessage("Şifre değiştirme talebiniz oluşturuldu. Lütfen Email Adresinize gelen bağlantıya tıklayın, aksi takdirde şifreniz değişmeyecektir.");
+            setSuccessMessage("Şifre başarılı bir şekilde değiştirildi.");
             nav("/logout");
         } else {
             setErrorMessage(response.message);
@@ -46,15 +46,15 @@ export default function Profile() {
                             {successMessage ? (<span style={{ color: "green"}}>{successMessage}</span>) : (null)}
                             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                             <div className='mb-3'>
-                                <label>Old Email:</label>
+                                <label>Old Password:</label>
                                 <input type="password" name="password" className="form-control" placeholder="Enter Old Password" required onChange={(e) => setOldPassword(e.target.value)} />
                             </div>
                             <div className='mb-3'>
-                                <label>New Email:</label>
+                                <label>New Password:</label>
                                 <input type="password" name='password' className="form-control" placeholder="Enter New Password" required onChange={(e) => setNewPassword(e.target.value)} />
                             </div>
                             <div className='mb-3'>
-                                <label>Re-Enter New Email:</label>
+                                <label>Re-Enter New Password:</label>
                                 <input type="password" name='password' className="form-control" placeholder="Re-Enter New Password" required onChange={(e) => setReNewPassword(e.target.value)} />
                             </div>
                             <div className='d-grid'>
