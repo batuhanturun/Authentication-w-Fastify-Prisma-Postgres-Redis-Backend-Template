@@ -15,8 +15,8 @@ model users {
   creationAt       DateTime           @default(now()) @db.Timestamptz(6)
   isVerified       Boolean            @default(false)
   isAdmin          Boolean            @default(false)
-  change_email     change_email[]
   contact_messages contact_messages[]
+  patch_notes      patch_notes[]
   reset_password   reset_password[]
   verify_account   verify_account[]
 }
@@ -59,15 +59,12 @@ model contact_messages {
   @@index([userID], map: "fki_users_id_to_contact_messages_userID")
 }
 
-model change_email {
-  id          Int      @id(map: "reset_email_pkey") @default(autoincrement())
-  userID      Int
-  emailCode   String   @db.VarChar(256)
-  isActive    Boolean  @default(true)
-  isUsed      Boolean  @default(false)
-  expiredTime DateTime @default(now()) @db.Timestamptz(6)
-  oldEmail    String   @db.VarChar(256)
-  users       users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_reset_email_userID")
+model patch_notes {
+  id         Int      @id
+  userID     Int
+  notes      String   @db.VarChar(5000)
+  creationAt DateTime @default(now()) @db.Timestamptz(6)
+  users      users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_patch_notes_userID")
 
-  @@index([userID], map: "fki_users_id_to_reset_email_userID")
+  @@index([userID], map: "fki_users_id_to_patch_notes_userID")
 }

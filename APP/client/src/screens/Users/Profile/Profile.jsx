@@ -30,24 +30,26 @@ export default function Profile() {
         <div className="App">
             <UsersNavbar />
             <AccountSidebar>
-                <div className='auth-wrapper'>
-                    <div className='auth-inner'>
-                        <form>
-                            <h3>My Profile</h3>
-                            <IoPersonCircleOutline size={340} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }} />
+                
+                    <div className='auth-wrapper'>
+                        <div className='auth-inner'>
+                            <form>
+                                <h3>My Profile</h3>
+                                <IoPersonCircleOutline size={340} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }} />
 
-                            <div className='mb-3'>
-                                <label>Name: {name}</label>
-                            </div>
-                            <div className='mb-3'>
-                                <label>Email: {email}</label>               
-                            </div>
-                            <div className='mb-3'>
-                                <label>Account Type: {accType ? "Admin" : "Trial"}</label>                              
-                            </div>
-                        </form>
+                                <div className='mb-3'>
+                                    <label>Name: {name}</label>
+                                </div>
+                                <div className='mb-3'>
+                                    <label>Email: {email}</label>
+                                </div>
+                                <div className='mb-3'>
+                                    <label>Account Type: {accType ? "Admin" : "Trial"}</label>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                
             </AccountSidebar>
         </div>
     )

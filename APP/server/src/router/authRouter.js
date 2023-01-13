@@ -85,6 +85,26 @@ const routers = [
         method: "POST",
         url: "/api/profile/changepassword",
         handler: authController.postProfileChangePassword
+    },
+    {
+        method: "GET",
+        url: "/api/patchnotes",
+        handler: authController.getPatchNotes
+    },
+    {
+        method: "POST",
+        url: "/api/patchnotes",
+        handler: authController.postPatchNotes
+    },
+    {
+        method: "PATCH",
+        url: "/api/patchnotes/:id",
+        handler: authController.patchPatchNotes
+    },
+    {
+        method: "DELETE",
+        url: "/api/patchnotes/:id",
+        handler: authController.deletePatchNotes
     }
 ]
 

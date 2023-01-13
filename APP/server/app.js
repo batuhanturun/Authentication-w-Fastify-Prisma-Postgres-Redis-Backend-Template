@@ -11,7 +11,7 @@ const router = require("./src/router/authRouter");
 
 const port = process.env.PORT;
 
-fastify.register(fastifyCors, { origin: true, methods: ["GET", "POST", "PATCH"] });
+fastify.register(fastifyCors, { origin: true, methods: ["GET", "POST", "PATCH", "DELETE"] });
 fastify.register(fastifyCookie);
 fastify.register(require('@fastify/formbody'));
 //init session store

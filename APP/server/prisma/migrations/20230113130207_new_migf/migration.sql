@@ -49,16 +49,13 @@ CREATE TABLE "contact_messages" (
 );
 
 -- CreateTable
-CREATE TABLE "change_email" (
-    "id" SERIAL NOT NULL,
+CREATE TABLE "patch_notes" (
+    "id" INTEGER NOT NULL,
     "userID" INTEGER NOT NULL,
-    "emailCode" VARCHAR(256) NOT NULL,
-    "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "isUsed" BOOLEAN NOT NULL DEFAULT false,
-    "expiredTime" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "oldEmail" VARCHAR(256) NOT NULL,
+    "notes" VARCHAR(5000) NOT NULL,
+    "creationAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "reset_email_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "patch_notes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -77,7 +74,7 @@ CREATE INDEX "fki_b" ON "verify_account"("userID");
 CREATE INDEX "fki_users_id_to_contact_messages_userID" ON "contact_messages"("userID");
 
 -- CreateIndex
-CREATE INDEX "fki_users_id_to_reset_email_userID" ON "change_email"("userID");
+CREATE INDEX "fki_users_id_to_patch_notes_userID" ON "patch_notes"("userID");
 
 -- AddForeignKey
 ALTER TABLE "reset_password" ADD CONSTRAINT "users_id_to_reset_password_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -89,4 +86,4 @@ ALTER TABLE "verify_account" ADD CONSTRAINT "users_id_to_verify_account_userID" 
 ALTER TABLE "contact_messages" ADD CONSTRAINT "users_id_to_contact_messages_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "change_email" ADD CONSTRAINT "users_id_to_reset_email_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "patch_notes" ADD CONSTRAINT "users_id_to_patch_notes_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

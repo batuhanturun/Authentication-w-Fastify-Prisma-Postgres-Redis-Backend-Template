@@ -6,8 +6,6 @@ import ResetPassword from "./screens/Users/ResetPassword/ResetPassword";
 import ResendVerificationMail from "./screens/Users/Verification/ResendVerificationMail";
 import AdminPage from "./screens/Admin/AdminHomePage/AdminPage";
 import AdminLogin from "./screens/Admin/AdminLoginPage/AdminLogin";
-import './App.css'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Verification from "./screens/Users/Verification/Verification";
 import ResetPasswordMail from "./screens/Users/ResetPassword/ResetPasswordMail";
 import Logout from "./screens/Users/Components/Logout";
@@ -22,6 +20,9 @@ import Profile from "./screens/Users/Profile/Profile";
 import Services from "./screens/Users/Profile/Services";
 import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
+import AdminPatchNotes from "./screens/Admin/AdminPatchNotes/AdminPatchNotes";
+import './App.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
         <Route path='/profile/services' exact element={<Services />} />
         <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
+        <Route path='/admin/patchnotes' exact element={<AdminPatchNotes />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>

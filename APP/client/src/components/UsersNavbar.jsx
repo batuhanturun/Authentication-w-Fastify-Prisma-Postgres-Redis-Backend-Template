@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { IoPersonCircleOutline } from "react-icons/io5"
+import { IoPersonCircleOutline } from "react-icons/io5";
 
 export default function UsersNavbar() {
     return (
@@ -13,7 +13,7 @@ export default function UsersNavbar() {
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item ">
-                                <Link className="nav-link" to={'/'}>
+                                <Link className="nav-link" to={'/patchnotes'}>
                                     Patch Notes
                                 </Link>
                             </li>

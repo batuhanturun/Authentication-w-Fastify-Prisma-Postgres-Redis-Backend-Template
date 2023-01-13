@@ -9,7 +9,6 @@ const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
 //! Session'lar silinmiyor, her logout işleminde yeni ve boş kayıtlar açılıyor.
-//! Yeni eklenen özelliklerin email bağlantısı göndermesi gerekmektedir.
 //! CSS rahmetli, değiştir.
 
 const home = async (req, reply) => {
@@ -374,6 +373,104 @@ const patchResetPassword = async (req, reply) => {
     }
 }
 
+const getPatchNotes = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            const find = await prisma.patch_notes.findMany({
+               
+            });
+            if(find) {
+                reply.send({state: true});
+            } else {
+                throw createError(401, "Notlar bulunamadı. " + error);
+            }
+        } else {
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
+    }
+}
+
+const postPatchNotes = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            let { notes } = req.body;
+            let id = req.session.user.id;
+            const create = await prisma.patch_notes.create({
+                data: { userID: id, notes: notes }
+            });
+            if (create) {
+                reply.send({ state: true });
+            } else {
+                throw createError(401, "Not eklenirken beklenmeyen bir hata oluştu. " + error);
+            }
+        } else {
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Not eklenirken bir hata oluştu. " + error);
+    }
+}
+
+const patchPatchNotes = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            let { newNotes } = req.body;
+            let id = req.params.id;
+            let parse = parseInt(id);
+            const find = await prisma.patch_notes.findFirst({
+                where: { id: parse }
+            });
+            if (find) {
+                const fix = await prisma.patch_notes.update({
+                    where: { id: find.id },
+                    data: { notes: newNotes }
+                });
+                if (fix) {
+                    reply.send({ state: true });
+                } else {
+                    throw createError(400, "Not düzeltilirken bir hata oluştu. " + error);
+                }
+            } else {
+                throw createError(401, "Düzeltilecek not bulunamadı. " + error);
+            }
+        } else {
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Not düzenlenirken bir hata oluştu. " + error);
+    }
+}
+
+const deletePatchNotes = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            let id = req.params.id;
+            let parse = parseInt(id);
+            const find = await prisma.patch_notes.findFirst({
+                where: { id: parse }
+            });
+            if (find) {
+                const destroy = await prisma.patch_notes.delete({
+                    where: { id: find.id }
+                });
+                if (destroy) {
+                    reply.send({ state: true });
+                } else {
+                    throw createError(400, "Not silinirken bir hata oluştu. " + error);
+                }
+            } else {
+                throw createError(401, "Silinecek not bulunamadı. " + error);
+            }
+        } else {
+            throw createError(500, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Not silinirken bir hata oluştu. " + error);
+    }
+}
+
 const getVerifyAccount = async (req, reply) => {
     try {
         let encrypt = req.params.verifyCode;
@@ -481,7 +578,9 @@ const postMessage = async (req, reply) => {
 module.exports = {
     admin,
     home,
+    deletePatchNotes,
     getLogin,
+    getPatchNotes,
     getVerifyAccount,
     getAdminLogin,
     getResetPassword,
@@ -489,10 +588,12 @@ module.exports = {
     logOut,
     patchVerificationUser,
     patchResetPassword,
+    patchPatchNotes,
     postLogin,
     postMessage,
     postAdminLogin,
     postRegister,
+    postPatchNotes,
     postResetPassword,
     postResendVerificationMail,
     postProfileChangePassword
