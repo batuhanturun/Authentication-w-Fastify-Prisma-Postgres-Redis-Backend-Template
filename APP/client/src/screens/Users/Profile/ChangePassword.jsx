@@ -28,8 +28,7 @@ export default function Profile() {
         e.preventDefault();
         const response = await postData("/profile/changepassword", { oldPassword: oldPassword, newPassword: newPassword, reNewPassword: reNewPassword });
         if (response.state) {
-            setSuccessMessage("Şifre başarılı bir şekilde değiştirildi.");
-            nav("/logout");
+            setSuccessMessage("Şifre başarılı bir şekilde değiştirildi.");         
         } else {
             setErrorMessage(response.message);
         }
