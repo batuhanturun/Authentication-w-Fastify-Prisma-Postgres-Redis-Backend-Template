@@ -376,13 +376,66 @@ const patchResetPassword = async (req, reply) => {
 const getPatchNotes = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            const find = await prisma.patch_notes.findMany({
-               
-            });
-            if(find) {
-                reply.send({state: true});
+            const find = await prisma.patch_notes.findMany();
+            if (find) {
+                reply.send({ state: true });
             } else {
                 throw createError(401, "Notlar bulunamadı. " + error);
+            }
+        } else {
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
+    }
+}
+
+const getAdminPatchNotes = async (req, reply) => {
+    if (req.session.authenticated && req.session.isAdmin) {
+        const find = await prisma.patch_notes.findMany();
+        if (find) {
+            reply.send({ state: true });
+        } else {
+            throw createError(401, "Notlar bulunamadı. " + error);
+        }
+    } else {
+        throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+    }
+}
+
+const getNote = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let id = req.params.id;
+            let parse = parseInt(id);
+            const find = await prisma.patch_notes.findFirst({
+                where: { id: parse }
+            });
+            if (find) {
+                reply.send({ state: true });
+            } else {
+                throw createError(500, "Not içeriğine ulaşılamadı. " + error);
+            }
+        } else {
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+        }
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
+    }
+}
+
+const getNoteOption = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            let id = req.params.id;
+            let parse = parseInt(id);
+            const find = await prisma.patch_notes.findFirst({
+                where: { id: parse }
+            });
+            if (find) {
+                reply.send({ state: true });
+            } else {
+                throw createError(500, "Not içeriğine ulaşılamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
@@ -395,10 +448,10 @@ const getPatchNotes = async (req, reply) => {
 const postPatchNotes = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
-            let { notes } = req.body;
+            let { notes, title } = req.body;
             let id = req.session.user.id;
             const create = await prisma.patch_notes.create({
-                data: { userID: id, notes: notes }
+                data: { userID: id, notes: notes, title: title }
             });
             if (create) {
                 reply.send({ state: true });
@@ -416,7 +469,7 @@ const postPatchNotes = async (req, reply) => {
 const patchPatchNotes = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
-            let { newNotes } = req.body;
+            let { newNotes, title } = req.body;
             let id = req.params.id;
             let parse = parseInt(id);
             const find = await prisma.patch_notes.findFirst({
@@ -425,7 +478,7 @@ const patchPatchNotes = async (req, reply) => {
             if (find) {
                 const fix = await prisma.patch_notes.update({
                     where: { id: find.id },
-                    data: { notes: newNotes }
+                    data: { notes: newNotes, title: title }
                 });
                 if (fix) {
                     reply.send({ state: true });
@@ -580,7 +633,10 @@ module.exports = {
     home,
     deletePatchNotes,
     getLogin,
+    getAdminPatchNotes,
     getPatchNotes,
+    getNote,
+    getNoteOption,
     getVerifyAccount,
     getAdminLogin,
     getResetPassword,

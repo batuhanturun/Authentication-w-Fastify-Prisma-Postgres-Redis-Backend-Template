@@ -9,9 +9,11 @@ export default function PatchNotes() {
 
   useEffect(() => {
     const check = async () => {
-      const response = await getData("/");
+      const response = await getData("/patchnotes");
       if (!response) {
         nav("/login");
+      } else {
+        //! Notları çağır.
       }
     };
     check();
@@ -23,8 +25,8 @@ export default function PatchNotes() {
   return (
     <div className='App'>
       <UsersNavbar />
-      <div>
-        
+      <div className='container'>
+        <h1 style={{ color: "white" }}>Patch Notes</h1>
       </div>
     </div>
   )

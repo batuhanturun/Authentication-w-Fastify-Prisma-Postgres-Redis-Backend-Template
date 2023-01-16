@@ -92,18 +92,33 @@ const routers = [
         handler: authController.getPatchNotes
     },
     {
+        method: "GET",
+        url: "/api/admin/patchnotes",
+        handler: authController.getAdminPatchNotes
+    },
+    {
         method: "POST",
-        url: "/api/patchnotes",
+        url: "/api/admin/patchnotes",
         handler: authController.postPatchNotes
     },
     {
-        method: "PATCH",
+        method: "GET",
         url: "/api/patchnotes/:id",
+        handler: authController.getNote
+    },
+    {
+        method: "GET",
+        url: "/api/admin/patchnotes/:id",
+        handler: authController.getNoteOption
+    },
+    {
+        method: "PATCH",
+        url: "/api/admin/patchnotes/:id",
         handler: authController.patchPatchNotes
     },
     {
         method: "DELETE",
-        url: "/api/patchnotes/:id",
+        url: "/api/admin/patchnotes/:id",
         handler: authController.deletePatchNotes
     }
 ]

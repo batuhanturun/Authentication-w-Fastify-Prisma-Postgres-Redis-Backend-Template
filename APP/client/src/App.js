@@ -21,6 +21,7 @@ import Services from "./screens/Users/Profile/Services";
 import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
 import AdminPatchNotes from "./screens/Admin/AdminPatchNotes/AdminPatchNotes";
+import AdminNoteOptions from "./screens/Admin/AdminPatchNotes/AdminNoteOptions";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -50,6 +51,7 @@ function App() {
         <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
         <Route path='/admin/patchnotes' exact element={<AdminPatchNotes />} />
+        <Route path='/admin/patchnotes/:id' exact element={<AdminNoteOptions />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
