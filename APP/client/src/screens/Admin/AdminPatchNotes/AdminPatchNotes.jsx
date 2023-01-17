@@ -16,12 +16,17 @@ export default function AdminPatchNotes() {
 
     useEffect(() => {
         const check = async () => {
-            const response = await getData("/admin/patchnotes");
-            if (!response.state) {
+            const check = await getData("/admin");
+            if (!check.state) {
                 nav("/adminlogin");
             } else {
-                setUId(response.id);
-                setUTitle(response.title);
+                const response = await getData("/admin/patchnotes");
+                if (response.state) {
+                    setUId(response.id);
+                    setUTitle(response.title);
+                } else {
+                    setErrorMessage(response.message);
+                }
             }
         };
         check();
@@ -53,7 +58,6 @@ export default function AdminPatchNotes() {
                 <button className='btn' onClick={submitHopup} style={{ background: "white" }}><BsPatchPlus size={25} /> Add Note</button>
                 {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                 {hopup ? (<div className='auth-inner'>
-                    <form onSubmit={submitCreate}>
                         <div className='mb-3'>
                             <label>Title:</label>
                             <input type="text" name='title' className="form-control" placeholder="Enter Title" required onChange={(e) => setTitle(e.target.value)} />
@@ -63,16 +67,12 @@ export default function AdminPatchNotes() {
                             <input type="text" name='notes' className="form-control" placeholder="Enter Notes" required onChange={(e) => setNotes(e.target.value)} />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn" style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
+                            <button type="submit" className="btn" onClick={submitCreate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
                         </div>
-                    </form>
                 </div>) : null}
-                <form>
                     {uid === undefined ? (null) : (<div className='mb-3'>
                         <Link to={"/admin/patchnotes/" + uid}>{uid + ", " + utitle}</Link>
                     </div>)}
-
-                </form>
             </div>
 
 

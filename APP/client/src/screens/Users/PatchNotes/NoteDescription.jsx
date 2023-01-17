@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import UsersNavbar from '../../../components/UsersNavbar';
 import { getData } from '../../../functions';
 
 export default function NoteDescription() {
@@ -15,13 +16,18 @@ export default function NoteDescription() {
     useEffect(() => {
         const noteURL = async () => {
             try {
-                const response = await getData(`/patchnotes/${param.id}`);
-                if (!response.state) {
+                const check = await getData("/login");
+                if (!check.state) {
                     nav("/login");
                 } else {
-                    setTitle(response.title);
-                    setNote(response.notes);
-                    setValidUrl(true);
+                    const response = await getData(`/patchnotes/${param.id}`);
+                    if (!response.state) {
+                        setValidUrl(false);
+                    } else {
+                        setTitle(response.title);
+                        setNote(response.notes);
+                        setValidUrl(true);
+                    }
                 }
             } catch (error) {
                 setErrorMessage(error);
@@ -32,6 +38,7 @@ export default function NoteDescription() {
 
     return (
         <div className='App'>
+            <UsersNavbar />
             <Fragment>
                 {validUrl ? (
                     <form>

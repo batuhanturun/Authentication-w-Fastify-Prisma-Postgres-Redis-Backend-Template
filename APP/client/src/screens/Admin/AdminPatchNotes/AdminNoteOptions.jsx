@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getData, patchData, deleteData } from '../../../functions';
 import { BsPencil, BsXCircle } from "react-icons/bs";
+import AdminNavbar from '../../../components/AdminNavbar';
 
 export default function AdminNoteOptions() {
 
@@ -20,15 +21,21 @@ export default function AdminNoteOptions() {
     useEffect(() => {
         const noteURL = async () => {
             try {
-                const response = await getData(`/admin/patchnotes/${param.id}`);
-                if (!response.state) {
-                    nav("/adminlogin");
+                const check = await getData("/admin");
+                if (!check.state) {
+                    nav("/adminlogin")
                 } else {
-                    setTitle(response.title);
-                    setNote(response.notes);
-                    setDate(response.date);
-                    setValidUrl(true);
+                    const response = await getData(`/admin/patchnotes/${param.id}`);
+                    if (!response.state) {
+                        setValidUrl(false);
+                    } else {
+                        setTitle(response.title);
+                        setNote(response.notes);
+                        setDate(response.date);
+                        setValidUrl(true);
+                    }
                 }
+
             } catch (error) {
                 setErrorMessage(error);
             }
@@ -38,10 +45,10 @@ export default function AdminNoteOptions() {
 
     async function submitUpdate(e) {
         e.preventDefault();
-        const response = await patchData(`/admin/patchnotes/${param.id}`, { newNotes: newNotes, title: newTitle });
+        const response = await patchData(`/admin/patchnotes/${param.id}`, { newNotes: newNotes, newTitle: newTitle });
         if (response.state) {
             console.log("Not başarılı bir şekilde değiştirildi.");
-            window.location.reload(true); //!
+            window.location.reload(true);
         } else {
             setErrorMessage(response.message);
         }
@@ -68,36 +75,37 @@ export default function AdminNoteOptions() {
 
     return (
         <div className='App'>
+            <AdminNavbar />
             <Fragment>
                 {validUrl ? (
-                    <form>
+                    <div>
+                        <h3 style={{ color: "white" }}>Patch Note: {param.id}</h3>
                         <div className='container'>
                             <button className='btn' onClick={submitHopup} style={{ background: "white" }}><BsPencil size={25} /> Edit Note</button>
                             <button className='btn' onClick={submitDelete} style={{ background: "white" }}><BsXCircle size={25} /> Delete Note</button>
                         </div>
-                        <h3 style={{ color: "white" }}>Patch Note: ${param.id}</h3>
                         {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                        {hopup ? (<div className='auth-inner'>
-                            <div className='mb-3'>
-                                <label>Title:</label>
-                                <input type="text" name='title' className="form-control" placeholder="Enter New Title" required onChange={(e) => setNewTitle(e.target.value)} />
-                            </div>
-                            <div className='mb-3'>
-                                <label>Notes:</label>
-                                <input type="text" name='notes' className="form-control" placeholder="Enter New Notes" required onChange={(e) => setNewNotes(e.target.value)} />
-                            </div>
-                            <div className="d-grid">
-                                <button type="submit" className="btn" onClick={submitUpdate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
-                            </div>
+                        {hopup ? (<div className='auth-inner'>                  
+                                <div className='mb-3'>
+                                    <label>Title:</label>
+                                    <input type="text" name='title' className="form-control" placeholder="Enter New Title" required onChange={(e) => setNewTitle(e.target.value)} />
+                                </div>
+                                <div className='mb-3'>
+                                    <label>Notes:</label>
+                                    <input type="text" name='notes' className="form-control" placeholder="Enter New Notes" required onChange={(e) => setNewNotes(e.target.value)} />
+                                </div>
+                                <div className="d-grid">
+                                    <button type="submit" className="btn" onClick={submitUpdate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Change Note</button>
+                                </div>
                         </div>) : null}
-                        <div className='mb-3'>
+                        <div className='mb-3' style={{color: "white"}}>
                             {title}
                         </div>
-                        <div className='mb-3'>
+                        <div className='mb-3' style={{color: "white"}}>
                             {note}
                         </div>
-                        <p className='forgot-password text-right'>{date}</p>
-                    </form>) : (<h1>404 Not Found</h1>)}
+                        <p className='mb-3 forgot-password text-right'>{date}</p>
+                    </div>) : (<h1>404 Not Found</h1>)}
             </Fragment>
         </div>
     )
