@@ -378,7 +378,7 @@ const getPatchNotes = async (req, reply) => {
         if (req.session.authenticated) {
             const find = await prisma.patch_notes.findMany();
             if (find) {
-                reply.send({ state: true });
+                reply.send({ state: true, id: find.id, title: find.title });
             } else {
                 throw createError(401, "Notlar bulunamadı. " + error);
             }
@@ -394,7 +394,7 @@ const getAdminPatchNotes = async (req, reply) => {
     if (req.session.authenticated && req.session.isAdmin) {
         const find = await prisma.patch_notes.findMany();
         if (find) {
-            reply.send({ state: true });
+            reply.send({ state: true, id: find.id, title: find.title });
         } else {
             throw createError(401, "Notlar bulunamadı. " + error);
         }
@@ -412,7 +412,7 @@ const getNote = async (req, reply) => {
                 where: { id: parse }
             });
             if (find) {
-                reply.send({ state: true });
+                reply.send({ state: true, title: find.title, notes: find.notes, date: find.creationAt });
             } else {
                 throw createError(500, "Not içeriğine ulaşılamadı. " + error);
             }
@@ -433,7 +433,7 @@ const getNoteOption = async (req, reply) => {
                 where: { id: parse }
             });
             if (find) {
-                reply.send({ state: true });
+                reply.send({ state: true, title: find.title, notes: find.notes, date: find.creationAt });
             } else {
                 throw createError(500, "Not içeriğine ulaşılamadı. " + error);
             }
@@ -448,10 +448,10 @@ const getNoteOption = async (req, reply) => {
 const postPatchNotes = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
-            let { notes, title } = req.body;
+            let { title, notes } = req.body;
             let id = req.session.user.id;
             const create = await prisma.patch_notes.create({
-                data: { userID: id, notes: notes, title: title }
+                data: { userID: id, title: title, notes: notes }
             });
             if (create) {
                 reply.send({ state: true });
@@ -469,7 +469,7 @@ const postPatchNotes = async (req, reply) => {
 const patchPatchNotes = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
-            let { newNotes, title } = req.body;
+            let { newNotes, newTitle } = req.body;
             let id = req.params.id;
             let parse = parseInt(id);
             const find = await prisma.patch_notes.findFirst({
@@ -478,7 +478,7 @@ const patchPatchNotes = async (req, reply) => {
             if (find) {
                 const fix = await prisma.patch_notes.update({
                     where: { id: find.id },
-                    data: { notes: newNotes, title: title }
+                    data: { notes: newNotes, title: newTitle }
                 });
                 if (fix) {
                     reply.send({ state: true });

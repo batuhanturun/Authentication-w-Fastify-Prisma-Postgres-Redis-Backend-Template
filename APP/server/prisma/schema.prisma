@@ -60,10 +60,11 @@ model contact_messages {
 }
 
 model patch_notes {
-  id         Int      @id
+  id         Int      @id @default(autoincrement())
   userID     Int
   notes      String   @db.VarChar(5000)
   creationAt DateTime @default(now()) @db.Timestamptz(6)
+  title      String   @db.VarChar(250)
   users      users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_patch_notes_userID")
 
   @@index([userID], map: "fki_users_id_to_patch_notes_userID")

@@ -22,6 +22,7 @@ import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
 import AdminPatchNotes from "./screens/Admin/AdminPatchNotes/AdminPatchNotes";
 import AdminNoteOptions from "./screens/Admin/AdminPatchNotes/AdminNoteOptions";
+import NoteDescription from "./screens/Users/PatchNotes/NoteDescription";
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/verify/:id/:verifyCode" element={<Verification />} />
         <Route path="/reset/:id/:resetCode" element={<ResetPasswordMail />} />
         <Route path='/patchnotes' exact element={<PatchNotes />} />
+        <Route path='/patchnotes/:id' exact element={<NoteDescription />} />
         <Route path='/contact' exact element={<Contact />} />
         <Route path='/profile/main' exact element={<Profile />} />
         <Route path='/profile/services' exact element={<Services />} />

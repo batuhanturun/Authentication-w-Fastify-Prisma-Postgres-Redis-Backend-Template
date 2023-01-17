@@ -1,9 +1,13 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getData } from '../../../functions';
 
 export default function NoteDescription() {
 
+    const nav = useNavigate();
+
+    let [title, setTitle] = useState();
+    let [note, setNote] = useState();
     let [validUrl, setValidUrl] = useState(false);
     let [errorMessage, setErrorMessage] = useState(null);
     const param = useParams();
@@ -12,7 +16,11 @@ export default function NoteDescription() {
         const noteURL = async () => {
             try {
                 const response = await getData(`/patchnotes/${param.id}`);
-                if (response.state) {
+                if (!response.state) {
+                    nav("/login");
+                } else {
+                    setTitle(response.title);
+                    setNote(response.notes);
                     setValidUrl(true);
                 }
             } catch (error) {
@@ -22,13 +30,21 @@ export default function NoteDescription() {
         noteURL();
     }, [param]);
 
-  return (
-    <div className='App'>
+    return (
+        <div className='App'>
             <Fragment>
                 {validUrl ? (
-                <>
-                </>): (<h1>404 Not Found</h1>)}
-        </Fragment>
-    </div>
-  )
+                    <form>
+                        <h3 style={{ color: "white" }}>Patch Note: ${param.id}</h3>
+                        {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
+                        <div className='mb-3'>
+                            {title}
+                        </div>
+                        <div className='mb-3'>
+                            {note}
+                        </div>
+                    </form>) : (<h1>404 Not Found</h1>)}
+            </Fragment>
+        </div>
+    )
 }
