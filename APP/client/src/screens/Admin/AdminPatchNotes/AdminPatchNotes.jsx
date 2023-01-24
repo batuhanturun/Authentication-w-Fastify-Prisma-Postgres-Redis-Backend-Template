@@ -9,8 +9,7 @@ export default function AdminPatchNotes() {
     let [hopup, setHopup] = useState(false);
     let [notes, setNotes] = useState();
     let [title, setTitle] = useState();
-    let [uid, setUId] = useState();
-    let [utitle, setUTitle] = useState();
+    let [note, setNote] = useState();
     let [errorMessage, setErrorMessage] = useState(null);
     const nav = useNavigate();
 
@@ -26,8 +25,7 @@ export default function AdminPatchNotes() {
                         id: response.id,
                         title: response.title
                     }];        
-                    setUId(list.id);
-                    setUTitle(list.title);
+                    setNote([...note, {uid: response.id, utitle: response.title}]);
                 } else {
                     setErrorMessage(response.message);
                 }
@@ -74,10 +72,7 @@ export default function AdminPatchNotes() {
                             <button type="submit" className="btn" onClick={submitCreate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
                         </div>
                 </div>) : null}
-                    {uid === undefined ? (null) : (<div className='mb-3'>
-
-                        <Link to={"/admin/patchnotes/" + uid}>{uid + ", " + utitle}</Link>
-                    </div>)}
+                    
             </div>
 
 

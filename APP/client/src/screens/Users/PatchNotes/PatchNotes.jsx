@@ -38,7 +38,7 @@ export default function PatchNotes() {
       </div>
       <form>
         {id === undefined ? (null) : (<div className='mb-3'>
-          <Link to={"/admin/patchnotes/" + id}>{id + ", " + title}</Link>
+          <Link to={"/patchnotes/" + id}>{id + ", " + title}</Link>
         </div>)}
       </form>
     </div>

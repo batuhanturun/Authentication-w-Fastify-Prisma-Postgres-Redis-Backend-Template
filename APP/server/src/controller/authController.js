@@ -30,7 +30,10 @@ const home = async (req, reply) => {
 const admin = async (req, reply) => {
     try {
         if (req.session.authenticated && req.session.isAdmin) {
-            reply.send({ state: true })
+            let name = req.session.user.name;
+            let email = req.session.user.email;
+            let accType = req.session.user.isAdmin;
+            reply.send({ state: true, name, email, accType });
         } else {
             reply.send({ state: false })
         }
