@@ -14,7 +14,7 @@ async function patchData(url, data) {
 }
 
 async function deleteData(url) {
-    let req = await fetch(`/api${url}`, { method: "DELETE", headers: { 'Content-Type': 'application/json' } });
+    let req = await fetch(`/api${url}`, { method: "DELETE" });
     return req.json();
 }
 

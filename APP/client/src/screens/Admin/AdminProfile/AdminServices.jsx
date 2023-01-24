@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react'
-import UsersNavbar from '../../../components/UsersNavbar';
-import AccountSidebar from '../../../components/AccountSidebar';
+import AdminNavbar from '../../../components/AdminNavbar';
+import AdminSidebar from '../../../components/AdminSidebar';
 import { getData } from '../../../functions';
 import { useNavigate } from "react-router-dom";
 
-export default function Services() {
+export default function AdminServices() {
 
     const nav = useNavigate();
 
     useEffect(() => {
         const check = async () => {
-            const response = await getData("/");
+            const response = await getData("/admin");
             if (!response.state) {
-                nav("/login");
+                nav("/adminlogin");
             }
         };
         check();
@@ -20,8 +20,8 @@ export default function Services() {
 
     return (
         <div className="App">
-            <UsersNavbar />
-            <AccountSidebar>
+            <AdminNavbar />
+            <AdminSidebar>
                 <div className='auth-wrapper'>
                     <div className='auth-inner'>
                         <form>
@@ -30,7 +30,7 @@ export default function Services() {
                         </form>
                     </div>
                 </div>
-            </AccountSidebar>
+            </AdminSidebar>
         </div>
     )
 }

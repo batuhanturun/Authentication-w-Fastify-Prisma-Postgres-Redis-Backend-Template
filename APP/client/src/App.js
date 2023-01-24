@@ -6,6 +6,9 @@ import ResetPassword from "./screens/Users/ResetPassword/ResetPassword";
 import ResendVerificationMail from "./screens/Users/Verification/ResendVerificationMail";
 import AdminPage from "./screens/Admin/AdminHomePage/AdminPage";
 import AdminLogin from "./screens/Admin/AdminLoginPage/AdminLogin";
+import AdminProfile from "./screens/Admin/AdminProfile/AdminProfile";
+import AdminChangePassword from "./screens/Admin/AdminProfile/AdminChangePassword";
+import AdminServices from "./screens/Admin/AdminProfile/AdminServices";
 import Verification from "./screens/Users/Verification/Verification";
 import ResetPasswordMail from "./screens/Users/ResetPassword/ResetPasswordMail";
 import Logout from "./screens/Users/Components/Logout";
@@ -52,6 +55,9 @@ function App() {
         <Route path='/profile/services' exact element={<Services />} />
         <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
+        <Route path='/admin/profile/main' exact element={<AdminProfile />} />
+        <Route path='/admin/profile/services' exact element={<AdminServices />} />
+        <Route path='/admin/profile/changepassword' exact element={<AdminChangePassword />} />
         <Route path='/admin/patchnotes' exact element={<AdminPatchNotes />} />
         <Route path='/admin/patchnotes/:id' exact element={<AdminNoteOptions />} />
         <Route path='/comingsoon' exact element={<ComingSoon />} />

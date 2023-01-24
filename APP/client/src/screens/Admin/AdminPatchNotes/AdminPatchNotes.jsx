@@ -21,9 +21,13 @@ export default function AdminPatchNotes() {
                 nav("/adminlogin");
             } else {
                 const response = await getData("/admin/patchnotes");
-                if (response.state) {
-                    setUId(response.id);
-                    setUTitle(response.title);
+                if (response.state) {        
+                    let list = [{
+                        id: response.id,
+                        title: response.title
+                    }];        
+                    setUId(list.id);
+                    setUTitle(list.title);
                 } else {
                     setErrorMessage(response.message);
                 }
@@ -71,6 +75,7 @@ export default function AdminPatchNotes() {
                         </div>
                 </div>) : null}
                     {uid === undefined ? (null) : (<div className='mb-3'>
+
                         <Link to={"/admin/patchnotes/" + uid}>{uid + ", " + utitle}</Link>
                     </div>)}
             </div>
