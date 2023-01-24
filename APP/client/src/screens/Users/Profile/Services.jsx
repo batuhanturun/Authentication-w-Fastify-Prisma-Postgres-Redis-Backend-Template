@@ -10,7 +10,7 @@ export default function Services() {
 
     useEffect(() => {
         const check = async () => {
-            const response = await getData("/");
+            const response = await getData("/services");
             if (!response.state) {
                 nav("/login");
             }

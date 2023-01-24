@@ -18,6 +18,7 @@ model users {
   contact_messages contact_messages[]
   patch_notes      patch_notes[]
   reset_password   reset_password[]
+  services         services[]
   verify_account   verify_account[]
 }
 
@@ -68,4 +69,17 @@ model patch_notes {
   users      users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_patch_notes_userID")
 
   @@index([userID], map: "fki_users_id_to_patch_notes_userID")
+}
+
+model services {
+  id            Int     @id
+  userID        Int
+  isPremium     Boolean @default(false)
+  bammaActive   Boolean @default(false)
+  awsActive     Boolean @default(false)
+  awsPlusActive Boolean @default(false)
+  highCap       Boolean @default(false)
+  users         users   @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_services_userID")
+
+  @@index([userID], map: "fki_users_id_to_services_userID")
 }

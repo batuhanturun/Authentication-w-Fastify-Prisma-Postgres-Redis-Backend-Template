@@ -20,12 +20,8 @@ export default function AdminPatchNotes() {
                 nav("/adminlogin");
             } else {
                 const response = await getData("/admin/patchnotes");
-                if (response.state) {        
-                    let list = [{
-                        id: response.id,
-                        title: response.title
-                    }];        
-                    setNote([...note, {uid: response.id, utitle: response.title}]);
+                if (response.state) {              
+                    setNote([{uid: response.id, utitle: response.title}]);
                 } else {
                     setErrorMessage(response.message);
                 }
@@ -72,7 +68,7 @@ export default function AdminPatchNotes() {
                             <button type="submit" className="btn" onClick={submitCreate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
                         </div>
                 </div>) : null}
-                    
+                   
             </div>
 
 

@@ -112,6 +112,16 @@ const routers = [
         handler: authController.getNoteOption
     },
     {
+        method: "GET",
+        url: "/api/admin/services",
+        handler: authController.getAdminServices
+    },
+    {
+        method: "GET",
+        url: "/api/services",
+        handler: authController.getServices
+    },
+    {
         method: "PATCH",
         url: "/api/admin/patchnotes/:id",
         handler: authController.patchPatchNotes

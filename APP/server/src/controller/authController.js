@@ -632,6 +632,52 @@ const postMessage = async (req, reply) => {
     }
 }
 
+const getServices = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let id = req.session.user.id;
+            const find = await prisma.services.findFirst({
+                where: { userID: id }
+            });
+            if (find) {
+                reply.send({ state: true, isPremium: find.isPremium, bammaActive: find.bammaActive, awsActive: find.awsActive, awsPlusActive: find.awsPlusActive, highCap: find.highCap });
+            } else {
+                throw createError(500, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
+            }
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Servisler aranırken hata oluştu. " + error);
+    }
+}
+
+const getAdminServices = async (req, reply) => {
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            let id = req.session.user.id;
+            const find = await prisma.services.findFirst({
+                where: { userID: id }
+            });
+            if(find) {
+                if(!find.isPremium && !find.bammaActive && !find.awsActive && !find.awsPlusActive && !find.highCap) {
+                    const update = await prisma.services.update({
+                        where: { userID: find.id },
+                        data: { bammaActive: true, isPremium: true, awsActive: true, awsPlusActive: true, highCap: true }
+                    });
+                }
+                reply.send({ state: true, isPremium: true, bammaActive: true, awsActive: true, awsPlusActive: true, highCap: true });
+            } else {
+                throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            }
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Servisler aranırken hata oluştu. " + error);
+    }
+}
+
 module.exports = {
     admin,
     home,
@@ -644,6 +690,8 @@ module.exports = {
     getVerifyAccount,
     getAdminLogin,
     getResetPassword,
+    getAdminServices,
+    getServices,
     adminLogOut,
     logOut,
     patchVerificationUser,
@@ -656,5 +704,5 @@ module.exports = {
     postPatchNotes,
     postResetPassword,
     postResendVerificationMail,
-    postProfileChangePassword
+    postProfileChangePassword,
 }

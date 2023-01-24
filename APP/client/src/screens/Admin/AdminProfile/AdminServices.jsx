@@ -10,7 +10,7 @@ export default function AdminServices() {
 
     useEffect(() => {
         const check = async () => {
-            const response = await getData("/admin");
+            const response = await getData("/admin/services");
             if (!response.state) {
                 nav("/adminlogin");
             }
