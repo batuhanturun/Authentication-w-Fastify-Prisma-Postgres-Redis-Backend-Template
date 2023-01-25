@@ -61,7 +61,7 @@ CREATE TABLE "patch_notes" (
 
 -- CreateTable
 CREATE TABLE "services" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "userID" INTEGER NOT NULL,
     "isPremium" BOOLEAN NOT NULL DEFAULT false,
     "bammaActive" BOOLEAN NOT NULL DEFAULT false,

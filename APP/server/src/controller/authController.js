@@ -400,15 +400,19 @@ const getPatchNotes = async (req, reply) => {
 }
 
 const getAdminPatchNotes = async (req, reply) => {
-    if (req.session.authenticated && req.session.isAdmin) {
-        const find = await prisma.patch_notes.findMany();
-        if (find) {
-            reply.send({ state: true, id: find.id, title: find.title });
+    try {
+        if (req.session.authenticated && req.session.isAdmin) {
+            const find = await prisma.patch_notes.findMany();
+            if (find) {
+                reply.send({ state: true, id: find.id, title: find.title });
+            } else {
+                throw createError(401, "Notlar bulunamadı. " + error);
+            }
         } else {
-            throw createError(401, "Notlar bulunamadı. " + error);
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
-    } else {
-        throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
+    } catch (error) {
+        throw createError(400, "Bir hata oluştu. " + error);
     }
 }
 
@@ -664,9 +668,9 @@ const getAdminServices = async (req, reply) => {
             const find = await prisma.services.findFirst({
                 where: { userID: id }
             });
-            if(find) {
-                if(!find.isPremium && !find.bammaActive && !find.awsActive && !find.awsPlusActive && !find.highCap) {
-                    const update = await prisma.services.update({
+            if (find) {
+                if (!find.isPremium && !find.bammaActive && !find.awsActive && !find.awsPlusActive && !find.highCap) {
+                    const update = await prisma.services.updateMany({
                         where: { userID: find.id },
                         data: { bammaActive: true, isPremium: true, awsActive: true, awsPlusActive: true, highCap: true }
                     });

@@ -54,7 +54,7 @@ export default function AdminServices() {
                                     <label>AWS Premium: {awsPlus ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>Kapasite: ({highCap ? (<>Yüksek Kapasite</>) : (<>Düşük Kapasite</>)})</label>
+                                    <label>Kapasite: {highCap ? (<>Yüksek Kapasite</>) : (<>Düşük Kapasite</>)}</label>
                                 </div>
                             </div>) : (<div className='mb-3'>No Service Aviable</div>)}
                         </form>
