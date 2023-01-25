@@ -72,7 +72,7 @@ model patch_notes {
 }
 
 model services {
-  id            Int     @id
+  id            Int     @id @default(autoincrement())
   userID        Int
   isPremium     Boolean @default(false)
   bammaActive   Boolean @default(false)

@@ -50,12 +50,26 @@ CREATE TABLE "contact_messages" (
 
 -- CreateTable
 CREATE TABLE "patch_notes" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "userID" INTEGER NOT NULL,
     "notes" VARCHAR(5000) NOT NULL,
     "creationAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "title" VARCHAR(250) NOT NULL,
 
     CONSTRAINT "patch_notes_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "services" (
+    "id" INTEGER NOT NULL,
+    "userID" INTEGER NOT NULL,
+    "isPremium" BOOLEAN NOT NULL DEFAULT false,
+    "bammaActive" BOOLEAN NOT NULL DEFAULT false,
+    "awsActive" BOOLEAN NOT NULL DEFAULT false,
+    "awsPlusActive" BOOLEAN NOT NULL DEFAULT false,
+    "highCap" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "services_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -76,6 +90,9 @@ CREATE INDEX "fki_users_id_to_contact_messages_userID" ON "contact_messages"("us
 -- CreateIndex
 CREATE INDEX "fki_users_id_to_patch_notes_userID" ON "patch_notes"("userID");
 
+-- CreateIndex
+CREATE INDEX "fki_users_id_to_services_userID" ON "services"("userID");
+
 -- AddForeignKey
 ALTER TABLE "reset_password" ADD CONSTRAINT "users_id_to_reset_password_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -87,3 +104,6 @@ ALTER TABLE "contact_messages" ADD CONSTRAINT "users_id_to_contact_messages_user
 
 -- AddForeignKey
 ALTER TABLE "patch_notes" ADD CONSTRAINT "users_id_to_patch_notes_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "services" ADD CONSTRAINT "users_id_to_services_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

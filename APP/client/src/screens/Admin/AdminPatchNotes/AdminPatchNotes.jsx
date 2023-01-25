@@ -18,13 +18,12 @@ export default function AdminPatchNotes() {
             const check = await getData("/admin");
             if (!check.state) {
                 nav("/adminlogin");
+            }
+            const response = await getData("/admin/patchnotes");
+            if (response.state) {
+                setNote([{ uid: response.id, utitle: response.title }]);
             } else {
-                const response = await getData("/admin/patchnotes");
-                if (response.state) {              
-                    setNote([{uid: response.id, utitle: response.title}]);
-                } else {
-                    setErrorMessage(response.message);
-                }
+                setErrorMessage(response.message);
             }
         };
         check();
@@ -56,19 +55,19 @@ export default function AdminPatchNotes() {
                 <button className='btn' onClick={submitHopup} style={{ background: "white" }}><BsPatchPlus size={25} /> Add Note</button>
                 {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                 {hopup ? (<div className='auth-inner'>
-                        <div className='mb-3'>
-                            <label>Title:</label>
-                            <input type="text" name='title' className="form-control" placeholder="Enter Title" required onChange={(e) => setTitle(e.target.value)} />
-                        </div>
-                        <div className='mb-3'>
-                            <label>Notes:</label>
-                            <input type="text" name='notes' className="form-control" placeholder="Enter Notes" required onChange={(e) => setNotes(e.target.value)} />
-                        </div>
-                        <div className="d-grid">
-                            <button type="submit" className="btn" onClick={submitCreate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
-                        </div>
+                    <div className='mb-3'>
+                        <label>Title:</label>
+                        <input type="text" name='title' className="form-control" placeholder="Enter Title" required onChange={(e) => setTitle(e.target.value)} />
+                    </div>
+                    <div className='mb-3'>
+                        <label>Notes:</label>
+                        <input type="text" name='notes' className="form-control" placeholder="Enter Notes" required onChange={(e) => setNotes(e.target.value)} />
+                    </div>
+                    <div className="d-grid">
+                        <button type="submit" className="btn" onClick={submitCreate} style={{ backgroundColor: "#202020", color: "#FFFFFF" }}>Create Note</button>
+                    </div>
                 </div>) : null}
-                   
+
             </div>
 
 

@@ -16,14 +16,13 @@ export default function PatchNotes() {
       const check = await getData("/login");
       if (!check.state) {
         nav("/login");
+      }
+      const response = await getData("/patchnotes");
+      if (response.state) {
+        setTitle(response.title);
+        setId(response.id);
       } else {
-        const response = await getData("/patchnotes");
-        if (response.state) {
-          setTitle(response.title);
-          setId(response.id);
-        } else {
-          setErrorMessage(response.message);
-        }
+        setErrorMessage(response.message);
       }
     };
     check();

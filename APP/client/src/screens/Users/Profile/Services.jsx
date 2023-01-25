@@ -42,19 +42,19 @@ export default function Services() {
                             <h3>Services</h3>
                             {isPremium ? (<div>
                                 <div className='mb-3'>
-                                    <label>{isPremium}</label>
+                                    <label>Premium: {isPremium ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>{bammaActive}</label>
+                                    <label>Bamma Erişim: {bammaActive ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>{awsActive}</label>
+                                    <label>AWS Erişim: {awsActive ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>{awsPlus}</label>
+                                    <label>AWS Premium: {awsPlus ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>{highCap}</label>
+                                    <label>Kapasite: ({highCap ? (<>Yüksek Kapasite</>) : (<>Düşük Kapasite</>)})</label>
                                 </div>
                             </div>) : (<div className='mb-3'>No Service Aviable</div>)}
                         </form>
