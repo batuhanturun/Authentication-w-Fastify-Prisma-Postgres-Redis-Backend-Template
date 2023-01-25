@@ -66,6 +66,11 @@ const postRegister = async (req, reply) => {
                     verifyCode: dbSave
                 }
             });
+            const services = await prisma.services.create({
+                data: {
+                    userID: newUser.id
+                }
+            });
             let url = 'Hello ' + newUser.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/verify\/' + newUser.id + '\/' + sendLink + '\n\nThank You!\n';
             await sendMail(email, "Verify Email", url);
             if (sendMail) {
@@ -668,7 +673,7 @@ const getAdminServices = async (req, reply) => {
                 }
                 reply.send({ state: true, isPremium: true, bammaActive: true, awsActive: true, awsPlusActive: true, highCap: true });
             } else {
-                throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+                throw createError(500, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
             }
         } else {
             throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
