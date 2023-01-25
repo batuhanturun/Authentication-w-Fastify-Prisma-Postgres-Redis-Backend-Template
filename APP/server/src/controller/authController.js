@@ -671,7 +671,7 @@ const getAdminServices = async (req, reply) => {
             if (find) {
                 if (!find.isPremium && !find.bammaActive && !find.awsActive && !find.awsPlusActive && !find.highCap) {
                     const update = await prisma.services.updateMany({
-                        where: { userID: find.id },
+                        where: { userID: find.userID },
                         data: { bammaActive: true, isPremium: true, awsActive: true, awsPlusActive: true, highCap: true }
                     });
                 }
