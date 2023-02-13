@@ -35,7 +35,7 @@ export default function PatchNotes() {
       </div>
       <form>
         {notes === undefined ? (null) : (<div className='mb-3'>
-          {notes.map(notes => (<Link to={"/patchnotes/"+notes.id}>{notes.id + ", " + notes.title}</Link>))}       
+          {notes.map(notes => (<div><Link to={"/patchnotes/"+notes.id}>{notes.id + ", " + notes.title}</Link></div>))}       
         </div>)}
       </form>
     </div>

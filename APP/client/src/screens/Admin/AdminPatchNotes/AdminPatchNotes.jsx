@@ -70,7 +70,7 @@ export default function AdminPatchNotes() {
 
                 <form>
                     {getNote === undefined ? (null) : (<div className='mb-3'>
-                        {getNote.map(getNote => (<Link to={"/patchnotes/" + getNote.id}>{getNote.id + ", " + getNote.title}</Link>))}
+                        {getNote.map(getNote => (<div><Link to={"/patchnotes/" + getNote.id}>{getNote.id + ", " + getNote.title}</Link></div>))}
                     </div>)}
                 </form>
 
