@@ -25,7 +25,7 @@ export default function AdminServices() {
                 setBammaActive(data.bammaActive);
                 setIsPremium(data.isPremium);
                 setAwsActive(data.awsActive);
-                setAwsPlus(data.awsPlus);
+                setAwsPlus(data.awsPlusActive);
                 setHighCap(data.highCap);
             }
         };

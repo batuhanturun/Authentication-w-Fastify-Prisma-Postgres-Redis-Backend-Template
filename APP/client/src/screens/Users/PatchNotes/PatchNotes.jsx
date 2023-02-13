@@ -7,9 +7,8 @@ export default function PatchNotes() {
 
   const nav = useNavigate();
 
-  let [title, setTitle] = useState();
   let [errorMessage, setErrorMessage] = useState(null);
-  let [id, setId] = useState();
+  let [notes, setNotes] = useState();
 
   useEffect(() => {
     const check = async () => {
@@ -19,8 +18,7 @@ export default function PatchNotes() {
       }
       const response = await getData("/patchnotes");
       if (response.state) {
-        setTitle(response.title);
-        setId(response.id);
+        //setNotes(response.notes);
       } else {
         setErrorMessage(response.message);
       }
@@ -36,8 +34,8 @@ export default function PatchNotes() {
         {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
       </div>
       <form>
-        {id === undefined ? (null) : (<div className='mb-3'>
-          <Link to={"/patchnotes/" + id}>{id + ", " + title}</Link>
+        {notes === undefined ? (null) : (<div className='mb-3'>
+          <Link to={"/patchnotes/"}>{}</Link>
         </div>)}
       </form>
     </div>

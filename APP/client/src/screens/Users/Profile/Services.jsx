@@ -25,7 +25,7 @@ export default function Services() {
                 setBammaActive(data.bammaActive);
                 setIsPremium(data.isPremium);
                 setAwsActive(data.awsActive);
-                setAwsPlus(data.awsPlus);
+                setAwsPlus(data.awsPlusActive);
                 setHighCap(data.highCap);
             }
         };
@@ -54,7 +54,7 @@ export default function Services() {
                                     <label>AWS Premium: {awsPlus ? (<>Aktif</>) : (<>Pasif</>)}</label>
                                 </div>
                                 <div className='mb-3'>
-                                    <label>Kapasite: ({highCap ? (<>Yüksek Kapasite</>) : (<>Düşük Kapasite</>)})</label>
+                                    <label>Kapasite: {highCap ? (<>Yüksek Kapasite</>) : (<>Düşük Kapasite</>)}</label>
                                 </div>
                             </div>) : (<div className='mb-3'>No Service Aviable</div>)}
                         </form>

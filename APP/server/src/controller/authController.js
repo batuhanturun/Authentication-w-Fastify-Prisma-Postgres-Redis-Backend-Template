@@ -387,7 +387,7 @@ const getPatchNotes = async (req, reply) => {
         if (req.session.authenticated) {
             const find = await prisma.patch_notes.findMany();
             if (find) {
-                reply.send({ state: true, id: find.id, title: find.title });
+                reply.send({ state: true, notes: find });
             } else {
                 throw createError(401, "Notlar bulunamadı. " + error);
             }
@@ -404,7 +404,7 @@ const getAdminPatchNotes = async (req, reply) => {
         if (req.session.authenticated && req.session.isAdmin) {
             const find = await prisma.patch_notes.findMany();
             if (find) {
-                reply.send({ state: true, id: find.id, title: find.title });
+                reply.send({ state: true, notes: find });
             } else {
                 throw createError(401, "Notlar bulunamadı. " + error);
             }
@@ -675,7 +675,7 @@ const getAdminServices = async (req, reply) => {
                         data: { bammaActive: true, isPremium: true, awsActive: true, awsPlusActive: true, highCap: true }
                     });
                 }
-                reply.send({ state: true, isPremium: true, bammaActive: true, awsActive: true, awsPlusActive: true, highCap: true });
+                reply.send({ state: true, isPremium: find.isPremium, bammaActive: find.bammaActive, awsActive: find.awsActive, awsPlusActive: find.awsPlusActive, highCap: find.highCap });
             } else {
                 throw createError(500, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
             }
