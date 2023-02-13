@@ -8,9 +8,7 @@ const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
 const host = "localhost:3000";
 
-//! Session'lar silinmiyor, her logout işleminde yeni ve boş kayıtlar açılıyor.
 //! CSS rahmetli, değiştir.
-//! Patch Notes'da başlıklar sıralanmıyor.
 
 const home = async (req, reply) => {
     try {
