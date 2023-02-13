@@ -42,7 +42,7 @@ export default function NoteDescription() {
             <Fragment>
                 {validUrl ? (
                     <form>
-                        <h3 style={{ color: "white" }}>Patch Note: ${param.id}</h3>
+                        <h3 style={{ color: "white" }}>Patch Note: {param.id}</h3>
                         {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                         <div className='mb-3'>
                             {title}

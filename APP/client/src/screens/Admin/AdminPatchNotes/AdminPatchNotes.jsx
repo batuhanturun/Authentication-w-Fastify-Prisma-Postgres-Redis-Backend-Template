@@ -9,8 +9,7 @@ export default function AdminPatchNotes() {
     let [hopup, setHopup] = useState(false);
     let [notes, setNotes] = useState();
     let [title, setTitle] = useState();
-    let [id, setId] = useState();
-    let [gtitle, setGTitle] = useState();
+    let [getNote, setGetNote] = useState([]);
     let [errorMessage, setErrorMessage] = useState(null);
     const nav = useNavigate();
 
@@ -22,7 +21,7 @@ export default function AdminPatchNotes() {
             }
             const response = await getData("/admin/patchnotes");
             if (response.state) {
-                
+                setGetNote(response.notes);
             } else {
                 setErrorMessage(response.message);
             }
@@ -70,8 +69,8 @@ export default function AdminPatchNotes() {
                 </div>) : null}
 
                 <form>
-                    {id === undefined ? (null) : (<div className='mb-3'>
-                        <Link to={"/admin/patchnotes/" + id}>{id + ", " + gtitle}</Link>
+                    {getNote === undefined ? (null) : (<div className='mb-3'>
+                        {getNote.map(getNote => (<Link to={"/patchnotes/" + getNote.id}>{getNote.id + ", " + getNote.title}</Link>))}
                     </div>)}
                 </form>
 

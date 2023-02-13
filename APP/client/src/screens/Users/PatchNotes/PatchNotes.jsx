@@ -8,7 +8,7 @@ export default function PatchNotes() {
   const nav = useNavigate();
 
   let [errorMessage, setErrorMessage] = useState(null);
-  let [notes, setNotes] = useState();
+  let [notes, setNotes] = useState([]);
 
   useEffect(() => {
     const check = async () => {
@@ -18,7 +18,7 @@ export default function PatchNotes() {
       }
       const response = await getData("/patchnotes");
       if (response.state) {
-        //setNotes(response.notes);
+        setNotes(response.notes);
       } else {
         setErrorMessage(response.message);
       }
@@ -35,7 +35,7 @@ export default function PatchNotes() {
       </div>
       <form>
         {notes === undefined ? (null) : (<div className='mb-3'>
-          <Link to={"/patchnotes/"}>{}</Link>
+          {notes.map(notes => (<Link to={"/patchnotes/"+notes.id}>{notes.id + ", " + notes.title}</Link>))}       
         </div>)}
       </form>
     </div>
