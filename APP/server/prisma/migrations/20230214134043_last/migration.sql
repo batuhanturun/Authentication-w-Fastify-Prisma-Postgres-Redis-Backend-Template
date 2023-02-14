@@ -72,6 +72,20 @@ CREATE TABLE "services" (
     CONSTRAINT "services_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "payments" (
+    "id" SERIAL NOT NULL,
+    "userID" INTEGER NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "cardNumber" VARCHAR(256) NOT NULL,
+    "cardCVC" VARCHAR(256) NOT NULL,
+    "cardEX" VARCHAR(256) NOT NULL,
+    "creationAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "cardLastDigits" INTEGER NOT NULL,
+
+    CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -93,6 +107,9 @@ CREATE INDEX "fki_users_id_to_patch_notes_userID" ON "patch_notes"("userID");
 -- CreateIndex
 CREATE INDEX "fki_users_id_to_services_userID" ON "services"("userID");
 
+-- CreateIndex
+CREATE INDEX "fki_users_id_to_payments_userID" ON "payments"("userID");
+
 -- AddForeignKey
 ALTER TABLE "reset_password" ADD CONSTRAINT "users_id_to_reset_password_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -107,3 +124,6 @@ ALTER TABLE "patch_notes" ADD CONSTRAINT "users_id_to_patch_notes_userID" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "services" ADD CONSTRAINT "users_id_to_services_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "payments" ADD CONSTRAINT "users_id_to_payments_userID" FOREIGN KEY ("userID") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

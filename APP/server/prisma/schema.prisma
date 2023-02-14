@@ -17,6 +17,7 @@ model users {
   isAdmin          Boolean            @default(false)
   contact_messages contact_messages[]
   patch_notes      patch_notes[]
+  payments         payments[]
   reset_password   reset_password[]
   services         services[]
   verify_account   verify_account[]
@@ -82,4 +83,18 @@ model services {
   users         users   @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_services_userID")
 
   @@index([userID], map: "fki_users_id_to_services_userID")
+}
+
+model payments {
+  id             Int      @id @default(autoincrement())
+  userID         Int
+  isActive       Boolean  @default(true)
+  cardNumber     String   @db.VarChar(256)
+  cardCVC        String   @db.VarChar(256)
+  cardEX         String   @db.VarChar(256)
+  creationAt     DateTime @default(now()) @db.Timestamptz(6)
+  cardLastDigits Int
+  users          users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_payments_userID")
+
+  @@index([userID], map: "fki_users_id_to_payments_userID")
 }

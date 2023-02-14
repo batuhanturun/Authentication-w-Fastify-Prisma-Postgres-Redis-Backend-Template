@@ -173,7 +173,7 @@ const postLogin = async (req, reply) => {
         const user = await prisma.users.findFirst({
             where: { email }
         });
-        let result = await bcrypt.compare(password, user.password)
+        let result = await bcrypt.compare(password, user.password);
         if (!user) {
             throw createError(401, "Şifre veya E-Posta hatalı.");
         }
@@ -685,10 +685,87 @@ const getAdminServices = async (req, reply) => {
     }
 }
 
+const getPaymentMethod = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let id = req.session.user.id;
+            const find = await prisma.payments.findMany({
+                where: {userID: id}
+            });
+            if(find) {
+                reply.send({state: true, cardLastDigits: find.cardLastDigits});
+            } else {
+                throw createError(401, "Kayıtlı kredi kartı bulunamadı.");
+            }
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Sayfa yüklenirken hata oluştu. " + error);
+    }
+}
+
+const patchPaymentMethod = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Ödeme yöntemi değiştirilirken hata oluştu. " + error);
+    }
+}
+
+const deletePaymentMethod = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Ödeme yöntemi silinirken hata oluştu. " + error)
+    }
+}
+
+const postAddPaymentMethod = async (req, reply) => {
+    try {
+        if (req.session.authenticated) {
+            let { cnumber, cexperied, cCVC } = req.body;
+            let id = req.session.user.id;
+            const find = await prisma.payments.findMany({
+                where: {userID: id}
+            });
+            let checkCC = await bcrypt.compare(cnumber, find.cardNumber);
+            let cardLastDigits = cnumber.substr(-3);
+            if(checkCC) {
+                throw createError(400, "Kart zaten ekli.");
+            } else {
+                const createCC = await prisma.payments.create({
+                    data: {
+                        userID: id,
+                        cardNumber: await bcrypt.hash(cnumber.toString(), 10),
+                        cardCVC: await bcrypt.hash(cCVC.toString(), 10),
+                        cardEX: await bcrypt.hash(cexperied.toString(), 10),
+                        cardLastDigits: cardLastDigits
+                    }
+                });
+                reply.send({state: true});
+            }
+        } else {
+            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+        }
+    } catch (error) {
+        throw createError(400, "Kart Eklenirken hata oluştu. " + error);
+    }
+}
+
 module.exports = {
     admin,
     home,
     deletePatchNotes,
+    deletePaymentMethod,
     getLogin,
     getAdminPatchNotes,
     getPatchNotes,
@@ -698,14 +775,17 @@ module.exports = {
     getAdminLogin,
     getResetPassword,
     getAdminServices,
+    getPaymentMethod,
     getServices,
     adminLogOut,
     logOut,
     patchVerificationUser,
+    patchPaymentMethod,
     patchResetPassword,
     patchPatchNotes,
     postLogin,
     postMessage,
+    postAddPaymentMethod,
     postAdminLogin,
     postRegister,
     postPatchNotes,

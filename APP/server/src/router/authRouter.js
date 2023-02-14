@@ -42,6 +42,11 @@ const routers = [
         handler: authController.getResetPassword
     },
     {
+        method: "GET",
+        url: "/api/paymentmethod",
+        handler: authController.getPaymentMethod
+    },
+    {
         method: "PATCH",
         url: "/api/reset/:id/:resetCode",
         handler: authController.patchResetPassword
@@ -50,6 +55,11 @@ const routers = [
         method: "PATCH",
         url: "/api/verificationuser",
         handler: authController.patchVerificationUser
+    },
+    {
+        method: "PATCH",
+        url: "/api/paymentmethod",
+        handler: authController.patchPaymentMethod
     },
     {
         method: "POST",
@@ -102,6 +112,11 @@ const routers = [
         handler: authController.postPatchNotes
     },
     {
+        method: "POST",
+        url: "/api/addpaymentmethod",
+        handler: authController.postAddPaymentMethod
+    },
+    {
         method: "GET",
         url: "/api/patchnotes/:id",
         handler: authController.getNote
@@ -130,6 +145,11 @@ const routers = [
         method: "DELETE",
         url: "/api/admin/patchnotes/:id",
         handler: authController.deletePatchNotes
+    },
+    {
+        method: "DELETE",
+        url: "/api/paymentmethod",
+        handler: authController.deletePaymentMethod
     }
 ]
 
