@@ -34,7 +34,7 @@ export default function PatchNotes() {
         {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
       </div>
       <form>
-        {notes === undefined ? (null) : (<div className='mb-3'>
+        {notes.length === 0 ? (<div style={{color: "white"}}>No note</div>) : (<div className='mb-3'>
           {notes.map(notes => (<div><Link to={"/patchnotes/"+notes.id}>{notes.id + ", " + notes.title}</Link></div>))}       
         </div>)}
       </form>

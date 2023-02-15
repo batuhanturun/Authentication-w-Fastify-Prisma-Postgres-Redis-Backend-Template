@@ -685,7 +685,7 @@ const getAdminServices = async (req, reply) => {
     }
 }
 
-const getPaymentMethod = async (req, reply) => {
+const getPaymentMethods = async (req, reply) => {
     try {
         if (req.session.authenticated) {
             let id = req.session.user.id;
@@ -705,10 +705,29 @@ const getPaymentMethod = async (req, reply) => {
     }
 }
 
-const patchPaymentMethod = async (req, reply) => {
+const patchPaymentMethods = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-
+            let id = req.params.id;
+            let parse = parseInt(id);
+            let { cnumber, cexperied, cCVC } = req.body;
+            const find = await prisma.payments.findFirst({
+                where: {id: parse}
+            });
+            if(find) {
+                const uptadeCC = await prisma.payments.update({
+                    where: {id: parse},
+                    data: {
+                        cardNumber: await bcrypt.hash(cnumber.toString(), 10),
+                        cardCVC: await bcrypt.hash(cCVC.toString(), 10),
+                        cardEX: await bcrypt.hash(cexperied.toString(), 10),
+                        cardLastDigits: cardLastDigits
+                    }
+                });
+                reply.send({state: true});
+            } else {
+                throw createError(400, "Kart bulunamadı.");
+            }
         } else {
             throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
@@ -717,10 +736,26 @@ const patchPaymentMethod = async (req, reply) => {
     }
 }
 
-const deletePaymentMethod = async (req, reply) => {
+const deletePaymentMethods = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-
+            let id = req.params.id;
+            let parse = parseInt(id);
+            const find = await prisma.payments.findFirst({
+                where: { id: parse }
+            });
+            if (find) {
+                const destroy = await prisma.payments.delete({
+                    where: { id: find.id }
+                });
+                if (destroy) {
+                    reply.send({ state: true });
+                } else {
+                    throw createError(400, "Kredi kartı silinirken bir hata oluştu. " + error);
+                }
+            } else {
+                throw createError(401, "Silinecek kredi kartı bulunamadı. " + error);
+            }
         } else {
             throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
@@ -737,8 +772,8 @@ const postAddPaymentMethod = async (req, reply) => {
             const find = await prisma.payments.findMany({
                 where: {userID: id}
             });
-            let checkCC = await bcrypt.compare(cnumber, find.cardNumber);
-            let cardLastDigits = cnumber.substr(-3);
+            let checkCC = await bcrypt.compare(cnumber.toString(), find.cardNumber);
+            let cardLastDigits = cnumber.toString().substr(-3);
             if(checkCC) {
                 throw createError(400, "Kart zaten ekli.");
             } else {
@@ -765,7 +800,7 @@ module.exports = {
     admin,
     home,
     deletePatchNotes,
-    deletePaymentMethod,
+    deletePaymentMethods,
     getLogin,
     getAdminPatchNotes,
     getPatchNotes,
@@ -775,12 +810,12 @@ module.exports = {
     getAdminLogin,
     getResetPassword,
     getAdminServices,
-    getPaymentMethod,
+    getPaymentMethods,
     getServices,
     adminLogOut,
     logOut,
     patchVerificationUser,
-    patchPaymentMethod,
+    patchPaymentMethods,
     patchResetPassword,
     patchPatchNotes,
     postLogin,

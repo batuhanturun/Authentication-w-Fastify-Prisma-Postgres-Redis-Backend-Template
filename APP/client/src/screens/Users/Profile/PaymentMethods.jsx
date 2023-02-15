@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import UsersNavbar from '../../../components/UsersNavbar';
 import AccountSidebar from '../../../components/AccountSidebar';
-import { getData } from '../../../functions';
-import { useNavigate } from "react-router-dom";
+import { deleteData, getData } from '../../../functions';
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PaymentMethods() {
 
     let [cnumber, setCNumber] = useState([]);
+    let [successMessage, setSuccessMessage] = useState(null);
     let [errorMessage, setErrorMessage] = useState(null);
+    const param = useParams();
     const nav = useNavigate();
 
     useEffect(() => {
@@ -27,11 +29,23 @@ export default function PaymentMethods() {
     });
 
     async function submitNewCard(e) {
+        e.preventDefault();
         nav("/profile/addpaymentmethod");
     }
 
     async function submitChangeCard(e) {
+        e.preventDefault();
+        nav(`/profile/paymentmethods/${param.id}`);
+    }
 
+    async function submitDeleteCard(e) {
+        e.preventDefault();
+        const deleteCard = await deleteData(`/profile/paymentmethods/${param.id}`);
+        if(deleteCard.state) {
+            setSuccessMessage("Kredi kartı başarılı bir şekilde silindi.");
+        } else {
+            setErrorMessage(deleteCard.message);
+        }
     }
 
     return (
@@ -43,8 +57,11 @@ export default function PaymentMethods() {
                         <form>
                             <h3>Payment Methods</h3>
                             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
-                            {cnumber === undefined ? (<div>Payment Methods Not Saved</div>) : (<div className='mb-3'>{cnumber.map(cnumber => (<div>****-****-****-*{cnumber.cardLastDigits}<button>Edit</button>
-                                <button>Delete</button></div>))}</div>)}
+                            {successMessage ? (<span style={{ color: "green" }}>{successMessage}</span>) : (null)}
+                            {cnumber.length === 0 ? (<div>Payment Methods Not Found</div>) : (<div className='mb-3'>{cnumber.map(cnumber => (<div>****-****-****-*{cnumber.cardLastDigits}
+                                <button onClick={submitChangeCard}>Edit</button>
+                                <button onClick={submitDeleteCard}>Delete</button>
+                                </div>))}</div>)}
                             <div className="d-grid">
                                 <button type="submit" className="btn" style={{ backgroundColor: "#202020", color: "#FFFFFF" }} onClick={submitNewCard}>Add New Card</button>
                             </div>

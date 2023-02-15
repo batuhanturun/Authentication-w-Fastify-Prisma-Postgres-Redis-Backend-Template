@@ -43,8 +43,8 @@ const routers = [
     },
     {
         method: "GET",
-        url: "/api/paymentmethod",
-        handler: authController.getPaymentMethod
+        url: "/api/profile/paymentmethods",
+        handler: authController.getPaymentMethods
     },
     {
         method: "PATCH",
@@ -58,8 +58,8 @@ const routers = [
     },
     {
         method: "PATCH",
-        url: "/api/paymentmethod",
-        handler: authController.patchPaymentMethod
+        url: "/api/profile/paymentmethods/:id",
+        handler: authController.patchPaymentMethods
     },
     {
         method: "POST",
@@ -113,7 +113,7 @@ const routers = [
     },
     {
         method: "POST",
-        url: "/api/addpaymentmethod",
+        url: "/api/profile/addpaymentmethod",
         handler: authController.postAddPaymentMethod
     },
     {
@@ -148,8 +148,8 @@ const routers = [
     },
     {
         method: "DELETE",
-        url: "/api/paymentmethod",
-        handler: authController.deletePaymentMethod
+        url: "/api/profile/paymentmethods/:id",
+        handler: authController.deletePaymentMethods
     }
 ]
 

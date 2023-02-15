@@ -22,6 +22,7 @@ import ComingSoon from "./screens/Users/Components/ComingSoon";
 import Profile from "./screens/Users/Profile/Profile";
 import Services from "./screens/Users/Profile/Services";
 import PaymentMethods from "./screens/Users/Profile/PaymentMethods";
+import ChangePaymentMethod from "./screens/Users/Profile/ChangePaymentMethod";
 import AddPaymentMethod from "./screens/Users/Profile/AddPaymentMethod";
 import ChangePassword from "./screens/Users/Profile/ChangePassword";
 import AdminPatchNotes from "./screens/Admin/AdminPatchNotes/AdminPatchNotes";
@@ -56,6 +57,7 @@ function App() {
         <Route path='/profile/services' exact element={<Services />} />
         <Route path='/profile/paymentmethods' exact element={<PaymentMethods />} />
         <Route path='/profile/addpaymentmethod' exact element={<AddPaymentMethod />} />
+        <Route path='/admin/paymentmethods/:id' exact element={<ChangePaymentMethod />} />
         <Route path='/profile/changepassword' exact element={<ChangePassword />} />
         <Route path='/admin/profile/main' exact element={<AdminProfile />} />
         <Route path='/admin/profile/services' exact element={<AdminServices />} />
