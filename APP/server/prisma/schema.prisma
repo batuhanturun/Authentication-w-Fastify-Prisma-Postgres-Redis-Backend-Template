@@ -91,9 +91,10 @@ model payments {
   isActive       Boolean  @default(true)
   cardNumber     String   @db.VarChar(256)
   cardCVC        String   @db.VarChar(256)
-  cardEX         String   @db.VarChar(256)
+  cardEXMonth    String   @db.VarChar(256)
   creationAt     DateTime @default(now()) @db.Timestamptz(6)
   cardLastDigits Int
+  cardEXYear     String   @db.VarChar(256)
   users          users    @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_id_to_payments_userID")
 
   @@index([userID], map: "fki_users_id_to_payments_userID")

@@ -7,7 +7,8 @@ import { useNavigate, Link } from "react-router-dom";
 export default function AddPaymentMethod() {
 
     let [cnumber, setCNumber] = useState();
-    let [cexpired, setCExpired] = useState();
+    let [cexpiredMonth, setCExpiredMonth] = useState();
+    let [cexpiredYear, setCExpiredYear] = useState();
     let [cCVC, setCCVC] = useState();
     let [errorMessage, setErrorMessage] = useState(null);
     const nav = useNavigate();
@@ -24,7 +25,7 @@ export default function AddPaymentMethod() {
 
     async function submitSaveCard(e) {
         e.preventDefault();
-        const response = await postData("/profile/addpaymentmethod", {cnumber: cnumber, cexpired: cexpired, cCVC: cCVC});
+        const response = await postData("/profile/addpaymentmethod", {cnumber: cnumber, cexpiredMonth: cexpiredMonth, cexpiredYear: cexpiredYear, cCVC: cCVC});
         if(response.state) {
             nav("/profile/paymentmethods");
         } else {
@@ -50,7 +51,8 @@ export default function AddPaymentMethod() {
                             <div className='mb-3'>
                                 <label>Credit Card Expired Time:</label>
                                 <div>
-                                    <input type="number" name='cardexpired' className='form-control' placeholder='Month/Year' required onChange={(e) => setCExpired(e.target.value)} />
+                                    <input type="number" name='cardexpiredMonth' className='form-control' placeholder='Month' required onChange={(e) => setCExpiredMonth(e.target.value)} />
+                                    <input type="number" name='cardexpiredYear' className='form-control' placeholder='Year(Last 2 Digits)' required onChange={(e) => setCExpiredYear(e.target.value)} />
                                 </div>
                             </div>
                             <div className='mb-3'>

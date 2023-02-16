@@ -710,7 +710,7 @@ const patchPaymentMethods = async (req, reply) => {
         if (req.session.authenticated) {
             let id = req.params.id;
             let parse = parseInt(id);
-            let { cnumber, cexperied, cCVC } = req.body;
+            let { cnumber, cexperiedMonth, cexperiedYear, cCVC } = req.body;
             const find = await prisma.payments.findFirst({
                 where: {id: parse}
             });
@@ -720,7 +720,8 @@ const patchPaymentMethods = async (req, reply) => {
                     data: {
                         cardNumber: await bcrypt.hash(cnumber.toString(), 10),
                         cardCVC: await bcrypt.hash(cCVC.toString(), 10),
-                        cardEX: await bcrypt.hash(cexperied.toString(), 10),
+                        cardEXMonth: await bcrypt.hash(cexperiedMonth.toString(), 10),
+                        cardEXYear: await bcrypt.hash(cexperiedYear.toString(), 10),
                         cardLastDigits: cardLastDigits
                     }
                 });
@@ -767,7 +768,7 @@ const deletePaymentMethods = async (req, reply) => {
 const postAddPaymentMethod = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            let { cnumber, cexperied, cCVC } = req.body;
+            let { cnumber, cexperiedMonth, cexperiedYear, cCVC } = req.body;
             let id = req.session.user.id;
             const find = await prisma.payments.findMany({
                 where: {userID: id}
@@ -782,7 +783,8 @@ const postAddPaymentMethod = async (req, reply) => {
                         userID: id,
                         cardNumber: await bcrypt.hash(cnumber.toString(), 10),
                         cardCVC: await bcrypt.hash(cCVC.toString(), 10),
-                        cardEX: await bcrypt.hash(cexperied.toString(), 10),
+                        cardEXMonth: await bcrypt.hash(cexperiedMonth.toString(), 10),
+                        cardEXYear: await bcrypt.hash(cexperiedYear.toString(), 10),
                         cardLastDigits: cardLastDigits
                     }
                 });

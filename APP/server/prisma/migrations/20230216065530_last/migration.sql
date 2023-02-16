@@ -79,9 +79,10 @@ CREATE TABLE "payments" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "cardNumber" VARCHAR(256) NOT NULL,
     "cardCVC" VARCHAR(256) NOT NULL,
-    "cardEX" VARCHAR(256) NOT NULL,
+    "cardEXMonth" VARCHAR(256) NOT NULL,
     "creationAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "cardLastDigits" INTEGER NOT NULL,
+    "cardEXYear" VARCHAR(256) NOT NULL,
 
     CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
 );
