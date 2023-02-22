@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
 import { getData } from '../../../functions';
 import UsersNavbar from '../../../components/UsersNavbar';
-
-// <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+import AnonymousNavbar from '../../../components/AnonymousNavbar';
 
 export default function Home() {
 
-    const nav = useNavigate();
+    let [isLog, setIsLog] = useState();
 
     useEffect(() => {
         const home = async () => {
             const response = await getData("/");
             if (!response.state) {
-                nav("/login");
+                setIsLog(false);              
+            } else {
+                setIsLog(true);
             }
         };
         home();
@@ -21,7 +21,7 @@ export default function Home() {
 
     return (
         <div className="App">
-            <UsersNavbar />
+            {isLog ? <UsersNavbar /> : <AnonymousNavbar />}
             <div className="auth-wrapper">
                 <div className="auth-inner">
                     <form>

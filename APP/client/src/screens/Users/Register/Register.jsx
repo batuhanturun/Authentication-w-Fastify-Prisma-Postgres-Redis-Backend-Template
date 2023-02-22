@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { getData, postData } from '../../../functions';
+import AnonymousNavbar from '../../../components/AnonymousNavbar';
 
 export default function Register() {
 
@@ -9,17 +10,13 @@ export default function Register() {
     let [password, setPassword] = useState("");
     let [rePassword, setRePassword] = useState("");
     let [errorMessage, setErrorMessage] = useState(null);
-    let [onExit, setOnExit] = useState(false);
     const nav = useNavigate();
 
     useEffect(() => {
         const check = async () => {
             const response = await getData("/login");
             if (response.state) {
-                setOnExit(true);
                 nav("/");
-            } else {
-                setOnExit(false);
             }
         };
         check();
@@ -43,22 +40,7 @@ export default function Register() {
 
     return (
         <div className="App">
-            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-                <div className="container">
-                    <Link className="navbar-brand" to={'/login'}>
-                        Authentication Demo
-                    </Link>
-                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-                        <ul className="navbar-nav ml-auto">
-                            {onExit ? (<li className="nav-item">
-                                <Link className="nav-link" onClick={setOnExit(false)} to={'/logout'}>
-                                    Exit
-                                </Link>
-                            </li>) : null}
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <AnonymousNavbar />
             <div className="auth-wrapper">
                 <div className="auth-inner">
                     <form onSubmit={submitRegister}>

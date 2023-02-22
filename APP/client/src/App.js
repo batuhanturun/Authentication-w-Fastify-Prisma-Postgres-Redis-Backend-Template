@@ -32,7 +32,6 @@ import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -67,7 +66,7 @@ function App() {
         <Route path='/comingsoon' exact element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
 export default App;

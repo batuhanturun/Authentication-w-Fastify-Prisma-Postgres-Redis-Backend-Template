@@ -5,6 +5,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 import map from "../../../assets/images/Map.png"
 import building from "../../../assets/images/Building.jpg"
 import UsersNavbar from '../../../components/UsersNavbar';
+import AnonymousNavbar from '../../../components/AnonymousNavbar';
 
 
 export default function Contact() {
@@ -15,13 +16,16 @@ export default function Contact() {
   let [phone, setPhone] = useState();
   let [location, setLocation] = useState();
   let [message, setMessage] = useState();
+  let [isLog, setIsLog] = useState();
   const nav = useNavigate();
 
   useEffect(() => {
     const home = async () => {
       const response = await getData("/");
-      if (!response.state) {
-        nav("/login");
+      if (response.state) {
+        setIsLog(true);
+      } else {
+        setIsLog(false);
       }
     };
     home();
@@ -39,8 +43,8 @@ export default function Contact() {
 
   return (
     <div className="App">
-      <UsersNavbar />
-
+      {isLog ? <UsersNavbar /> : <AnonymousNavbar />}
+      
       <div className="contact2" style={{ backgroundImage: `url(${map})` }} id="contact">
         <div className="container">
           <div className="row contact-container">
@@ -103,7 +107,5 @@ export default function Contact() {
           </div>
         </div>
       </div>
-
-    </div>
-  )
+    </div>)
 }

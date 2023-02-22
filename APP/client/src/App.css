@@ -17,16 +17,16 @@ html,
   text-decoration: none;
 }
 
-.container{
+.container {
   display: flex;
 }
 
-main{
+main {
   width: 100%;
   padding: 20px;
 }
 
-.sidebar{
+.sidebar {
   background-color: #f1f1f1;
   color: #202020;
   height: 100vh;
@@ -34,13 +34,13 @@ main{
   transition: all 0.5s;
 }
 
-.top-section{
+.top-section {
   display: flex;
   align-items: center;
   padding: 20px;
 }
 
-.link{
+.link {
   display: flex;
   color: #202020;
   padding: 10px;
@@ -49,18 +49,19 @@ main{
   transition: all 0.5s;
 }
 
-.link:hover{
+.link:hover {
   background: rgb(166, 255, 0);
   color: #202020;
   transition: all 0.5s;
 }
 
-.active{
+.active {
   background: aqua;
   color: #202020;
 }
 
-.icon,.link-text{
+.icon,
+.link-text {
   font-size: 16px;
 }
 
@@ -149,11 +150,12 @@ input[type=number] {
 }
 
 @import url(//fonts.googleapis.com/css?family=Montserrat:300,400,500);
+
 .contact2 {
   font-family: "Montserrat", sans-serif;
   color: #8d97ad;
   font-weight: 400;
-	padding: 310px 0;
+  padding: 310px 0;
   margin-bottom: 170px;
   background-position: center bottom;
 }
@@ -186,8 +188,8 @@ input[type=number] {
 }
 
 .contact2 .card.card-shadow {
-    -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
-    box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+  -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+  box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
 }
 
 .contact2 .detail-box .round-social {
@@ -218,11 +220,40 @@ input[type=number] {
   background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
 }
 
- .contact2 .btn-danger-gradiant:hover {
+.contact2 .btn-danger-gradiant:hover {
   background: #ff6a5b;
   background: -webkit-linear-gradient(legacy-direction(to right), #ff6a5b 0%, #ff4d7e 100%);
   background: -webkit-gradient(linear, left top, right top, from(#ff6a5b), to(#ff4d7e));
   background: -webkit-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
   background: -o-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
   background: linear-gradient(to right, #ff6a5b 0%, #ff4d7e 100%);
+}
+
+.loader-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.834);
+  z-index: 1;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
+@keyframes spin-anim {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
 }

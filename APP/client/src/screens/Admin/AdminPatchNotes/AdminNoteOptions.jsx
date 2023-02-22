@@ -23,7 +23,7 @@ export default function AdminNoteOptions() {
             try {
                 const check = await getData("/admin");
                 if (!check.state) {
-                    nav("/adminlogin")
+                    nav("/adminlogin");
                 } else {
                     const response = await getData(`/admin/patchnotes/${param.id}`);
                     if (!response.state) {
@@ -35,7 +35,6 @@ export default function AdminNoteOptions() {
                         setValidUrl(true);
                     }
                 }
-
             } catch (error) {
                 setErrorMessage(error);
             }

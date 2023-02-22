@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { postData, getData } from '../../../functions';
+import AnonymousNavbar from '../../../components/AnonymousNavbar';
 
 export default function Login() {
 
@@ -33,13 +34,7 @@ export default function Login() {
 
   return (
     <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to={'/login'}>
-            Authentication Demo
-          </Link>
-        </div>
-      </nav>
+      <AnonymousNavbar />
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={submitLogin}>
