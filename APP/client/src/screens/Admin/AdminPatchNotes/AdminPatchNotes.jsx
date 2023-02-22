@@ -69,7 +69,7 @@ export default function AdminPatchNotes() {
                 </div>) : null}
 
                 <form>
-                    {getNote === undefined ? (null) : (<div className='mb-3'>
+                    {getNote.length === 0 ? (<div style={{color: "white"}}>No note</div>) : (<div className='mb-3'>
                         {getNote.map(getNote => (<div><Link to={"/patchnotes/" + getNote.id}>{getNote.id + ", " + getNote.title}</Link></div>))}
                     </div>)}
                 </form>

@@ -41,7 +41,7 @@ export default function PaymentMethods() {
     async function submitDeleteCard(e) {
         e.preventDefault();
         const deleteCard = await deleteData(`/profile/paymentmethods/${param.id}`);
-        if(deleteCard.state) {
+        if (deleteCard.state) {
             setSuccessMessage("Kredi kartı başarılı bir şekilde silindi.");
         } else {
             setErrorMessage(deleteCard.message);
@@ -58,10 +58,10 @@ export default function PaymentMethods() {
                             <h3>Payment Methods</h3>
                             {errorMessage ? (<span style={{ color: "red" }}>{errorMessage}</span>) : (null)}
                             {successMessage ? (<span style={{ color: "green" }}>{successMessage}</span>) : (null)}
-                            {cnumber.length === 0 ? (<div>Payment Methods Not Found</div>) : (<div className='mb-3'>{cnumber.map(cnumber => (<div>****-****-****-*{cnumber.cardLastDigits}
+                            {cnumber === undefined ? (<div>Payment Methods Not Found</div>) : (<div className='mb-3'>{cnumber.map(cnumber => (<div>****-****-****-*{cnumber.cardLastDigits}
                                 <button onClick={submitChangeCard}>Edit</button>
                                 <button onClick={submitDeleteCard}>Delete</button>
-                                </div>))}</div>)}
+                            </div>))}</div>)}
                             <div className="d-grid">
                                 <button type="submit" className="btn" style={{ backgroundColor: "#202020", color: "#FFFFFF" }} onClick={submitNewCard}>Add New Card</button>
                             </div>
@@ -72,3 +72,4 @@ export default function PaymentMethods() {
         </div>
     )
 }
+//! {cnumber.lenght === 0 ? (<div>Payment Methods Not Found</div>) : (<div className='mb-3'>{cnumber.map(cnumber => (<div>****-****-****-*{cnumber.cardLastDigits} <button onClick={submitChangeCard}>Edit</button> <button onClick={submitDeleteCard}>Delete</button> </div >))}</div >)} }

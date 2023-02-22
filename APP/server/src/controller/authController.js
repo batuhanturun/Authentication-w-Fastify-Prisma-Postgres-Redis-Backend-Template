@@ -688,7 +688,7 @@ const getAdminServices = async (req, reply) => {
 const getPaymentMethods = async (req, reply) => {
     try {
         if (req.session.authenticated) {
-            let id = req.session.user.id;
+            let id = req.session.user.id;           
             const find = await prisma.payments.findMany({
                 where: {userID: id}
             });
@@ -801,6 +801,8 @@ const postAddPaymentMethod = async (req, reply) => {
 module.exports = {
     admin,
     home,
+    adminLogOut,
+    logOut,
     deletePatchNotes,
     deletePaymentMethods,
     getLogin,
@@ -813,9 +815,7 @@ module.exports = {
     getResetPassword,
     getAdminServices,
     getPaymentMethods,
-    getServices,
-    adminLogOut,
-    logOut,
+    getServices, 
     patchVerificationUser,
     patchPaymentMethods,
     patchResetPassword,

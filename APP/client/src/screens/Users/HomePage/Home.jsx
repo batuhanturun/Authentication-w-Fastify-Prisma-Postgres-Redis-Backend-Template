@@ -6,12 +6,15 @@ import AnonymousNavbar from '../../../components/AnonymousNavbar';
 export default function Home() {
 
     let [isLog, setIsLog] = useState();
+    let [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const home = async () => {
-            const response = await getData("/");
+            setLoading(true);
+            const response = await getData("/").then(setLoading(false));
             if (!response.state) {
-                setIsLog(false);              
+                setIsLog(false);
+
             } else {
                 setIsLog(true);
             }
@@ -21,15 +24,23 @@ export default function Home() {
 
     return (
         <div className="App">
-            {isLog ? <UsersNavbar /> : <AnonymousNavbar />}
-            <div className="auth-wrapper">
-                <div className="auth-inner">
-                    <form>
-                        <h3>Welcome</h3>
-
-                    </form>
+            {loading ? (
+                <div className="loader-container">
+                    <div className="spinner"></div>
                 </div>
-            </div>
+            ) : (
+                <>
+                    {isLog ? <UsersNavbar /> : <AnonymousNavbar />}
+                    <div className="auth-wrapper">
+                        <div className="auth-inner">
+                            <form>
+                                <h3>Welcome</h3>
+
+                            </form>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     )
 }
