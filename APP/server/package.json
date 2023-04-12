@@ -1,14 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Batuhan",
   "license": "ISC",
   "dependencies": {
     "@fastify/cookie": "^8.3.0",
@@ -38,5 +37,14 @@
   },
   "devDependencies": {
     "prisma": "^4.10.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cysquatch999/Authentication-w-Fastify-Prisma-Postgres.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cysquatch999/Authentication-w-Fastify-Prisma-Postgres/issues"
+  },
+  "homepage": "https://github.com/Cysquatch999/Authentication-w-Fastify-Prisma-Postgres#readme",
+  "description": ""
 }
