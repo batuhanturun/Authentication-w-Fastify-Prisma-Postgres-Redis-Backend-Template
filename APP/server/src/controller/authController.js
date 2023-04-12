@@ -21,7 +21,7 @@ const home = async (req, reply) => {
             reply.send({ state: false })
         }
     } catch (error) {
-        throw createError(400, "Error : " + error);
+        throw createError(401, "Error : " + error);
     }
 }
 
@@ -36,7 +36,7 @@ const admin = async (req, reply) => {
             reply.send({ state: false })
         }
     } catch (error) {
-        throw createError(400, "Error : " + error);
+        throw createError(401, "Error : " + error);
     }
 }
 
@@ -77,10 +77,10 @@ const postRegister = async (req, reply) => {
                 console.log("Hata oluştu!");
             }
         } else {
-            throw createError(401, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
+            throw createError(400, "Sistemde bu E-Mail adresine kayıtlı kullanıcı bulunmaktadır.");
         }
     } catch (error) {
-        throw createError(400, "Kullanıcı kayıt olurken bir hata oluştu. " + error);
+        throw createError(401, "Kullanıcı kayıt olurken bir hata oluştu. " + error);
     }
 }
 
@@ -112,7 +112,7 @@ const patchVerificationUser = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -151,7 +151,7 @@ const postResendVerificationMail = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Error: " + error);
+        throw createError(401, "Error: " + error);
     }
 }
 
@@ -163,7 +163,7 @@ const getLogin = async (req, reply) => {
             reply.send({ state: false });
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -175,10 +175,10 @@ const postLogin = async (req, reply) => {
         });
         let result = await bcrypt.compare(password, user.password);
         if (!user) {
-            throw createError(401, "Şifre veya E-Posta hatalı.");
+            throw createError(400, "Şifre veya E-Posta hatalı.");
         }
         if (!result) {
-            throw createError(401, "Şifre veya E-Posta hatalı.");
+            throw createError(400, "Şifre veya E-Posta hatalı.");
         } else {
             if (user.isVerified !== true) {
                 throw createError(401, "Lütfen E-Mail adresinize gönderdiğimiz bağlantıdan hesabınızı onaylayın!");
@@ -213,7 +213,7 @@ const getAdminLogin = async (req, reply) => {
             reply.send({ state: false });
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -225,11 +225,11 @@ const postAdminLogin = async (req, reply) => {
         });
         let result = await bcrypt.compare(password, admin.password);
         if (!admin) {
-            throw createError(401, "Şifre veya E-Posta hatalı.");
+            throw createError(400, "Şifre veya E-Posta hatalı.");
         } else if (!result) {
-            throw createError(401, "Şifre veya E-Posta hatalı.");
+            throw createError(400, "Şifre veya E-Posta hatalı.");
         } else if (!admin.isAdmin) {
-            throw createError(401, "Şifre veya E-Posta hatalı.");
+            throw createError(400, "Şifre veya E-Posta hatalı.");
         } else {
             req.session.authenticated = true;
             req.session.user = admin;
@@ -247,7 +247,7 @@ const logOut = async (req, reply) => {
         reply.send({ logout: true });
         await req.session.destroy();
     } catch (error) {
-        throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
+        throw createError(401, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
 }
 
@@ -258,7 +258,7 @@ const adminLogOut = async (req, reply) => {
         reply.send({ logout: true });
         await req.session.destroy();
     } catch (error) {
-        throw createError(400, "Kullanıcı çıkış yaparken hata oluştu. " + error);
+        throw createError(401, "Kullanıcı çıkış yaparken hata oluştu. " + error);
     }
 }
 
@@ -269,7 +269,7 @@ const postResetPassword = async (req, reply) => {
             where: { email }
         });
         if (!reset) {
-            throw createError(401, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
+            throw createError(400, "Bu E-Mail'e kayıtlı kullanıcı bulunamadı.");
         } else {
             let random = Math.floor(Math.random() * 90000) + 10000;
             let sendLink = CryptoJS.SHA256(random.toString()).toString();
@@ -305,7 +305,7 @@ const postResetPassword = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Şifre sıfırlanırken hata oluştu. " + error);
+        throw createError(401, "Şifre sıfırlanırken hata oluştu. " + error);
     }
 }
 
@@ -315,14 +315,14 @@ const postProfileChangePassword = async (req, reply) => {
             let { oldPassword, newPassword, reNewPassword } = req.body;
             let email = req.session.user.email;
             if (newPassword !== reNewPassword) {
-                throw createError(401, "Şifreler eşleşmemektedir.");
+                throw createError(400, "Şifreler eşleşmemektedir.");
             } else {
                 const change = await prisma.users.findFirst({
                     where: { email: email }
                 });
                 let result = await bcrypt.compare(oldPassword, change.password);
                 if (!result) {
-                    throw createError(401, "Şifre hatalı.");
+                    throw createError(400, "Şifre hatalı.");
                 } else {
 
                     const updatePassword = await prisma.users.update({
@@ -335,10 +335,10 @@ const postProfileChangePassword = async (req, reply) => {
                 }
             }
         } else {
-            throw createError(500, "Beklenmeyen bir hata oluştu.");
+            throw createError(400, "Beklenmeyen bir hata oluştu.");
         }
     } catch (error) {
-        throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
+        throw createError(401, "Şifre değiştirilirken hata oluştu. " + error);
     }
 }
 
@@ -349,7 +349,7 @@ const patchResetPassword = async (req, reply) => {
         let id = parseInt(req.params.id);
         let { password, verifyPassword } = req.body;
         if (password !== verifyPassword) {
-            throw createError(401, "Şifreler eşleşmemektedir.");
+            throw createError(400, "Şifreler eşleşmemektedir.");
         } else {
             const change = await prisma.reset_password.findFirst({
                 where: { resetCode: resetCode, userID: id }
@@ -376,7 +376,7 @@ const patchResetPassword = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Şifre değiştirilirken hata oluştu. " + error);
+        throw createError(401, "Şifre değiştirilirken hata oluştu. " + error);
     }
 }
 
@@ -387,13 +387,13 @@ const getPatchNotes = async (req, reply) => {
             if (find) {
                 reply.send({ state: true, notes: find });
             } else {
-                throw createError(401, "Notlar bulunamadı. " + error);
+                throw createError(400, "Notlar bulunamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -404,13 +404,13 @@ const getAdminPatchNotes = async (req, reply) => {
             if (find) {
                 reply.send({ state: true, notes: find });
             } else {
-                throw createError(401, "Notlar bulunamadı. " + error);
+                throw createError(400, "Notlar bulunamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -425,13 +425,13 @@ const getNote = async (req, reply) => {
             if (find) {
                 reply.send({ state: true, title: find.title, notes: find.notes, date: find.creationAt });
             } else {
-                throw createError(500, "Not içeriğine ulaşılamadı. " + error);
+                throw createError(400, "Not içeriğine ulaşılamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -446,13 +446,13 @@ const getNoteOption = async (req, reply) => {
             if (find) {
                 reply.send({ state: true, title: find.title, notes: find.notes, date: find.creationAt });
             } else {
-                throw createError(500, "Not içeriğine ulaşılamadı. " + error);
+                throw createError(400, "Not içeriğine ulaşılamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Bir hata oluştu. " + error);
+        throw createError(401, "Bir hata oluştu. " + error);
     }
 }
 
@@ -467,13 +467,13 @@ const postPatchNotes = async (req, reply) => {
             if (create) {
                 reply.send({ state: true });
             } else {
-                throw createError(401, "Not eklenirken beklenmeyen bir hata oluştu. " + error);
+                throw createError(400, "Not eklenirken beklenmeyen bir hata oluştu. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Not eklenirken bir hata oluştu. " + error);
+        throw createError(401, "Not eklenirken bir hata oluştu. " + error);
     }
 }
 
@@ -497,13 +497,13 @@ const patchPatchNotes = async (req, reply) => {
                     throw createError(400, "Not düzeltilirken bir hata oluştu. " + error);
                 }
             } else {
-                throw createError(401, "Düzeltilecek not bulunamadı. " + error);
+                throw createError(400, "Düzeltilecek not bulunamadı. " + error);
             }
         } else {
             throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Not düzenlenirken bir hata oluştu. " + error);
+        throw createError(401, "Not düzenlenirken bir hata oluştu. " + error);
     }
 }
 
@@ -525,13 +525,13 @@ const deletePatchNotes = async (req, reply) => {
                     throw createError(400, "Not silinirken bir hata oluştu. " + error);
                 }
             } else {
-                throw createError(401, "Silinecek not bulunamadı. " + error);
+                throw createError(400, "Silinecek not bulunamadı. " + error);
             }
         } else {
-            throw createError(500, "Beklenmeyen bir hata oluştu. " + error);
+            throw createError(400, "Beklenmeyen bir hata oluştu. " + error);
         }
     } catch (error) {
-        throw createError(400, "Not silinirken bir hata oluştu. " + error);
+        throw createError(401, "Not silinirken bir hata oluştu. " + error);
     }
 }
 
@@ -548,19 +548,19 @@ const getVerifyAccount = async (req, reply) => {
             where: { id: parse }
         });
         if (user.id !== verify.userID) {
-            throw createError(401, "We were unable to find a user for this verification. Please Register!");
+            throw createError(400, "We were unable to find a user for this verification. Please Register!");
         } else {
             if (!user) {
                 throw createError(401, "We were unable to find a user for this verification. Please Register!");
             } else {
                 if (!verify) {
-                    throw createError(401, "We were unable to find a user for this verification. Please Register!");
+                    throw createError(400, "We were unable to find a user for this verification. Please Register!");
                 } else if (verify.isUsed) {
-                    throw createError(401, "User has been already verified. Please Login!");
+                    throw createError(400, "User has been already verified. Please Login!");
                 } else if (user.isVerified) {
-                    throw createError(401, "User has been already verified. Please Login!");
+                    throw createError(400, "User has been already verified. Please Login!");
                 } else if (!verify.isActive) {
-                    throw createError(401, "Link status expired.");
+                    throw createError(400, "Link status expired.");
                 } else {
                     const updateUser = await prisma.users.update({
                         where: { id: verify.userID },
@@ -575,7 +575,7 @@ const getVerifyAccount = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Onaylama işleminde bir hata oluştu. " + error);
+        throw createError(401, "Onaylama işleminde bir hata oluştu. " + error);
     }
 }
 
@@ -591,7 +591,7 @@ const getResetPassword = async (req, reply) => {
             where: { id: reset.userID }
         });
         if (user.id !== reset.userID) {
-            throw createError(401, "We were unable to find a user. Please Register!");
+            throw createError(400, "We were unable to find a user. Please Register!");
         } else {
             if (!reset.isActive) {
                 throw createError(400, "Kod geçerliliğini kaybetmiştir.");
@@ -602,7 +602,7 @@ const getResetPassword = async (req, reply) => {
             }
         }
     } catch (error) {
-        throw createError(400, "Şifre sıfırlama işleminde bir hata oluştu. " + error);
+        throw createError(401, "Şifre sıfırlama işleminde bir hata oluştu. " + error);
     }
 }
 
@@ -629,13 +629,13 @@ const postMessage = async (req, reply) => {
                 await sendMail(find.email, `Issue: ${save.id}`, url);
                 reply.send({ send: true });
             } else {
-                throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+                throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Mesajınız gönderilirken hata oluştu. " + error);
+        throw createError(401, "Mesajınız gönderilirken hata oluştu. " + error);
     }
 }
 
@@ -649,13 +649,13 @@ const getServices = async (req, reply) => {
             if (find) {
                 reply.send({ state: true, isPremium: find.isPremium, bammaActive: find.bammaActive, awsActive: find.awsActive, awsPlusActive: find.awsPlusActive, highCap: find.highCap });
             } else {
-                throw createError(500, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
+                throw createError(400, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Servisler aranırken hata oluştu. " + error);
+        throw createError(401, "Servisler aranırken hata oluştu. " + error);
     }
 }
 
@@ -675,13 +675,13 @@ const getAdminServices = async (req, reply) => {
                 }
                 reply.send({ state: true, isPremium: find.isPremium, bammaActive: find.bammaActive, awsActive: find.awsActive, awsPlusActive: find.awsPlusActive, highCap: find.highCap });
             } else {
-                throw createError(500, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
+                throw createError(400, "Kullanıcı bilgileri bulunamadı. Lütfen tekrar giriş yapınız.");
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Servisler aranırken hata oluştu. " + error);
+        throw createError(401, "Servisler aranırken hata oluştu. " + error);
     }
 }
 
@@ -695,13 +695,13 @@ const getPaymentMethods = async (req, reply) => {
             if(find) {
                 reply.send({state: true, cardLastDigits: find.cardLastDigits});
             } else {
-                throw createError(401, "Kayıtlı kredi kartı bulunamadı.");
+                throw createError(400, "Kayıtlı kredi kartı bulunamadı.");
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Sayfa yüklenirken hata oluştu. " + error);
+        throw createError(401, "Sayfa yüklenirken hata oluştu. " + error);
     }
 }
 
@@ -730,10 +730,10 @@ const patchPaymentMethods = async (req, reply) => {
                 throw createError(400, "Kart bulunamadı.");
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Ödeme yöntemi değiştirilirken hata oluştu. " + error);
+        throw createError(401, "Ödeme yöntemi değiştirilirken hata oluştu. " + error);
     }
 }
 
@@ -755,13 +755,13 @@ const deletePaymentMethods = async (req, reply) => {
                     throw createError(400, "Kredi kartı silinirken bir hata oluştu. " + error);
                 }
             } else {
-                throw createError(401, "Silinecek kredi kartı bulunamadı. " + error);
+                throw createError(400, "Silinecek kredi kartı bulunamadı. " + error);
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Ödeme yöntemi silinirken hata oluştu. " + error)
+        throw createError(401, "Ödeme yöntemi silinirken hata oluştu. " + error)
     }
 }
 
@@ -791,10 +791,10 @@ const postAddPaymentMethod = async (req, reply) => {
                 reply.send({state: true});
             }
         } else {
-            throw createError(500, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
+            throw createError(400, "Kullanıcı bulunamadı. Lütfen tekrar giriş yapınız.");
         }
     } catch (error) {
-        throw createError(400, "Kart Eklenirken hata oluştu. " + error);
+        throw createError(401, "Kart Eklenirken hata oluştu. " + error);
     }
 }
 
